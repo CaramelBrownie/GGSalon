@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salon Dashboard — Appointments</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f7f4f1;
+    color: #222;
+  }
+
+  header {
+    background: #fff;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  header h1 {
+    font-family: 'Georgia', serif;
+    font-size: 1.6rem;
+    margin: 0;
+  }
+  header .role {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
+  }
+  .logout-btn {
+    background: #e74c3c;
+    border: none;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+  }
+  .logout-btn:hover {
+    background: #c0392b;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    color: #555;
+  }
+  .tab.active {
+    border-bottom: 3px solid #d4af37;
+    color: #d4af37;
+  }
+  .tab .badge {
+    background: #ddd;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    margin-left: 0.5rem;
+  }
+
+  /* Content */
+  .tab-content {
+    padding: 2rem;
+    max-width: 1100px;
+    margin: auto;
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+
+  /* Appointment Cards */
+  .appointment-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .appointment-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .appointment-card p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: #555;
+  }
+  /* Status Labels */
+.status {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.pending { background: #f39c12; color: #fff; }     /* Yellow */
+.status.approved { background: #27ae60; color: #fff; }    /* Green */
+.status.completed { background: #2980b9; color: #fff; }   /* Blue */
+.status.cancelled { background: #e74c3c; color: #fff; }   /* Red */
+  .status-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    color: #fff;
+  }
+  .pending { background: #f39c12; color: #fff; }
+  .completed { background: #27ae60; }
+  .canceled { background: #7f8c8d; }
+  .unapproved { background: #e74c3c; }
+
+  .actions {
+    margin-top: 1rem;
+  }
+  .actions button {
+    margin-right: 0.4rem;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .approve-btn { background: #27ae60; color: #fff; }
+  .approve-btn:hover { background: #219150; }
+  .cancel-btn { background: #e74c3c; color: #fff; }
+  .cancel-btn:hover { background: #c0392b; }
+  .complete-btn { background: #2980b9; color: #fff; }
+  .complete-btn:hover { background: #21618c; }
+  .delete-btn { background: #7f8c8d; color: #fff; }
+  .delete-btn:hover { background: #626e70; }
+
+  .empty-state {
+    text-align: center;
+    color: #777;
+    padding: 3rem;
+  }
+
+  @media(max-width: 768px) {
+    .tab-content { padding: 1rem; }
+    .appointment-card { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Appointments</h1>
+    <div class="role" id="roleDisplay"></div>
+  </div>
+  <button class="logout-btn" id="logoutBtn">Logout</button>
+</header>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-status="pending">Pending <span class="badge">0</span></div>
+  <div class="tab" data-status="completed">Completed <span class="badge">0</span></div>
+  <div class="tab" data-status="canceled">Canceled <span class="badge">0</span></div>
+  <div class="tab" data-status="unapproved">Unapproved <span class="badge">0</span></div>
+</div>
+
+<!-- Content sections -->
+<div id="pending" class="tab-content active"></div>
+<div id="completed" class="tab-content"></div>
+<div id="canceled" class="tab-content"></div>
+<div id="unapproved" class="tab-content"></div>
+
+<script>
+// --- Elements ---
+const appointmentsListEl = document.getElementById("appointmentsList");
+const noAppointmentsEl = document.getElementById("noAppointments");
+
+// --- Load all appointments ---
+function loadAppointments() {
+    return JSON.parse(localStorage.getItem("confirmedAppointments")) || [];
+}
+
+// --- Save all appointments ---
+function saveAppointments(appointments) {
+    localStorage.setItem("confirmedAppointments", JSON.stringify(appointments));
+}
+
+// --- Update appointment status ---
+function updateStatus(id, newStatus) {
+    let allAppointments = loadAppointments();
+    const index = allAppointments.findIndex(a => a.id === id);
+    if (index > -1) {
+        allAppointments[index].status = newStatus;
+        saveAppointments(allAppointments);
+        renderAppointments();
+    }
+}
+
+// --- Delete appointment ---
+function deleteAppointment(id) {
+    let allAppointments = loadAppointments();
+    allAppointments = allAppointments.filter(a => a.id !== id);
+    saveAppointments(allAppointments);
+    renderAppointments();
+}
+
+// --- Render all appointments ---
+function renderAppointments() {
+    const allAppointments = loadAppointments();
+
+    appointmentsListEl.innerHTML = "";
+
+    if (allAppointments.length === 0) {
+        noAppointmentsEl.style.display = "block";
+        noAppointmentsEl.innerHTML = "<p>No appointments found.</p>";
+        return;
+    } else {
+        noAppointmentsEl.style.display = "none";
+    }
+
+    allAppointments.forEach(app => {
+        const li = document.createElement("li");
+        li.className = "appointment-card";
+
+        const services = app.itemNames?.join(", ") || "—";
+        const styles = app.styleNames?.join(", ") || "—";
+        const status = app.status || "pending";
+
+        li.innerHTML = `
+            <div class="appointment-info">
+                <h3>${services}</h3>
+                <p><strong>Client:</strong> ${app.clientName || "Unknown"}</p>
+                <p><strong>Date:</strong> ${app.date} at ${app.time}</p>
+                <p><strong>Styles:</strong> ${styles}</p>
+                <p><strong>Status:</strong> <span class="status ${status}">${status}</span></p>
+            </div>
+            <div class="appointment-actions">
+                <button onclick="updateStatus('${app.id}', 'approved')">Approve</button>
+                <button onclick="updateStatus('${app.id}', 'cancelled')">Cancel</button>
+                <button onclick="updateStatus('${app.id}', 'completed')">Complete</button>
+                <button onclick="deleteAppointment('${app.id}')">Delete</button>
+            </div>
+        `;
+
+        appointmentsListEl.appendChild(li);
+    });
+}
+
+// --- Init ---
+renderAppointments();
+</script>
+</body>
+</html>

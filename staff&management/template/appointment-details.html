@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Appointment Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f7f7f7;
+    }
+    header {
+      background: #222; color: #fff;
+      padding: 1rem; text-align: center;
+    }
+    header h1 { margin: 0; font-size: 1.5rem; }
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    }
+    .section { margin-bottom: 2rem; }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .info-box {
+      background: #fafafa;
+      padding: 1rem;
+      border: 1px solid #eee;
+      border-radius: 5px;
+    }
+    .info-box strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      color: #444;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .actions button {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+    .btn-approve { background: #28a745; color: #fff; }
+    .btn-unapprove { background: #ffc107; color: #000; }
+    .btn-complete { background: #007bff; color: #fff; }
+    .btn-cancel { background: #dc3545; color: #fff; }
+    .btn-assign { background: #17a2b8; color: #fff; }
+    .btn-back { background: #6c757d; color: #fff; }
+    .actions button:hover { opacity: 0.85; }
+    select { padding: 0.5rem; font-size: 1rem; }
+    .status-label {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+    .status-pending { background: #ffeeba; color: #856404; }
+    .status-approved { background: #c3e6cb; color: #155724; }
+    .status-completed { background: #bee5eb; color: #0c5460; }
+    .status-canceled { background: #f5c6cb; color: #721c24; }
+    .status-unapproved { background: #e2e3e5; color: #383d41; }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      padding: 1rem;
+      background: #222;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Appointment Details</h1>
+  </header>
+  <main>
+    <!-- Client info -->
+    <section class="section">
+      <h2>Client Information</h2>
+      <div class="info-grid">
+        <div class="info-box">
+          <strong>Name:</strong>
+          <span id="clientName"></span>
+        </div>
+        <div class="info-box">
+          <strong>Contact:</strong>
+          <span id="clientContact"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking info -->
+    <section class="section">
+      <h2>Booking Details</h2>
+      <div class="info-grid">
+        <div class="info-box">
+          <strong>Date:</strong>
+          <span id="appointmentDate"></span>
+        </div>
+        <div class="info-box">
+          <strong>Time:</strong>
+          <span id="appointmentTime"></span>
+        </div>
+        <div class="info-box">
+          <strong>Services:</strong>
+          <span id="appointmentServices"></span>
+        </div>
+        <div class="info-box">
+          <strong>Styles:</strong>
+          <span id="appointmentStyles"></span>
+        </div>
+        <div class="info-box">
+          <strong>Price:</strong>
+          <span id="appointmentPrice"></span>
+        </div>
+        <div class="info-box">
+          <strong>Status:</strong>
+          <span id="appointmentStatus"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Staff info -->
+    <section class="section">
+      <h2>Assigned Staff</h2>
+      <div class="info-box">
+        <strong>Currently Assigned:</strong>
+        <span id="assignedStaff"></span>
+      </div>
+      <div id="assignSection" style="margin-top:1rem; display:none;">
+        <label for="staffSelect"><strong>Reassign Staff:</strong></label>
+        <select id="staffSelect"></select>
+        <button class="btn-assign" id="assignBtn">Assign</button>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="section">
+      <h2>Actions</h2>
+      <div class="actions">
+        <button class="btn-approve" id="approveBtn">Approve</button>
+        <button class="btn-unapprove" id="unapproveBtn">Unapprove</button>
+        <button class="btn-complete" id="completeBtn">Mark Completed</button>
+        <button class="btn-cancel" id="cancelBtn">Cancel</button>
+        <button class="btn-back" id="backBtn">← Back</button>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; <span id="year"></span> Salon Staff Portal</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // --- Helpers ---
+    function loadAppointments(){
+      return JSON.parse(localStorage.getItem("appointments")) || [];
+    }
+    function saveAppointments(appts){
+      localStorage.setItem("appointments", JSON.stringify(appts));
+    }
+    function loadStaff(){
+      return JSON.parse(localStorage.getItem("staffAccounts")) || [];
+    }
+    function getCurrentUser(){
+      return JSON.parse(localStorage.getItem("gg_staff_logged_in"));
+    }
+
+    // --- Page Init ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const apptId = urlParams.get("id");
+    const appointments = loadAppointments();
+    const appointment = appointments.find(a => a.id === apptId);
+    const staffList = loadStaff();
+    const user = getCurrentUser();
+
+    const clientNameEl = document.getElementById("clientName");
+    const clientContactEl = document.getElementById("clientContact");
+    const dateEl = document.getElementById("appointmentDate");
+    const timeEl = document.getElementById("appointmentTime");
+    const servicesEl = document.getElementById("appointmentServices");
+    const stylesEl = document.getElementById("appointmentStyles");
+    const priceEl = document.getElementById("appointmentPrice");
+    const statusEl = document.getElementById("appointmentStatus");
+    const assignedEl = document.getElementById("assignedStaff");
+    const assignSection = document.getElementById("assignSection");
+    const staffSelect = document.getElementById("staffSelect");
+
+    function renderStatus(status){
+      const span = document.createElement("span");
+      span.textContent = status;
+      span.classList.add("status-label");
+      if(status === "pending") span.classList.add("status-pending");
+      if(status === "approved") span.classList.add("status-approved");
+      if(status === "completed") span.classList.add("status-completed");
+      if(status === "canceled") span.classList.add("status-canceled");
+      if(status === "unapproved") span.classList.add("status-unapproved");
+      return span;
+    }
+
+    function renderAppointment(){
+      if(!appointment){
+        document.querySelector("main").innerHTML = "<p>Appointment not found.</p>";
+        return;
+      }
+      clientNameEl.textContent = appointment.clientName || "";
+      clientContactEl.textContent = appointment.contact?.email || appointment.contact?.phone || "";
+      dateEl.textContent = appointment.date || "";
+      timeEl.textContent = appointment.time || "";
+      servicesEl.textContent = (appointment.items || []).join(", ");
+      stylesEl.textContent = (appointment.styles || []).join(", ");
+      priceEl.textContent = "R" + (appointment.price || 0);
+      statusEl.innerHTML = "";
+      statusEl.appendChild(renderStatus(appointment.status || "pending"));
+      assignedEl.textContent = appointment.assignedStaff ? appointment.assignedStaff : "Not assigned";
+
+      // --- Manager only can reassign staff ---
+      if(user && user.role === "manager"){
+        assignSection.style.display = "block";
+        staffSelect.innerHTML = "";
+        staffList.filter(s => s.role === "staff").forEach(s => {
+          const opt = document.createElement("option");
+          opt.value = s.staffId;
+          opt.textContent = s.name + " (" + s.staffId + ")";
+          if(appointment.assignedStaff === s.staffId){
+            opt.selected = true;
+          }
+          staffSelect.appendChild(opt);
+        });
+      } else {
+        assignSection.style.display = "none";
+      }
+    }
+
+    renderAppointment();
+
+    // --- Actions ---
+    document.getElementById("approveBtn").addEventListener("click", ()=>{
+      if(user.role === "manager"){
+        appointment.status = "approved";
+        saveAppointments(appointments);
+        renderAppointment();
+      } else {
+        alert("Only manager can approve.");
+      }
+    });
+    document.getElementById("unapproveBtn").addEventListener("click", ()=>{
+      if(user.role === "manager"){
+        appointment.status = "unapproved";
+        saveAppointments(appointments);
+        renderAppointment();
+      } else {
+        alert("Only manager can unapprove.");
+      }
+    });
+    document.getElementById("completeBtn").addEventListener("click", ()=>{
+      appointment.status = "completed";
+      saveAppointments(appointments);
+      renderAppointment();
+    });
+    document.getElementById("cancelBtn").addEventListener("click", ()=>{
+      appointment.status = "canceled";
+      saveAppointments(appointments);
+      renderAppointment();
+    });
+    document.getElementById("assignBtn").addEventListener("click", ()=>{
+      if(user.role === "manager"){
+        const selectedStaff = staffSelect.value;
+        appointment.assignedStaff = selectedStaff;
+        saveAppointments(appointments);
+        renderAppointment();
+      } else {
+        alert("Only manager can reassign.");
+      }
+    });
+    document.getElementById("backBtn").addEventListener("click", ()=>{
+      window.location.href = "appointments.html";
+    });
+  </script>
+</body>
+</html>

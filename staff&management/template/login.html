@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salon Staff & Manager Login</title>
+<style>
+  /* --- Seamless, Unified Professional Salon Login Style - LIGHT MODE --- */
+
+/* General Setup: Classic clean white background */
+body {
+    /* Subtle off-white for the background, very common in corporate portals */
+    background-color: #f7f7f7; 
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* --- Login Container: Seamless Integration (Transparent on light background) --- */
+
+.login-container {
+    /* Container blends with the body background */
+    background-color: transparent; 
+    padding: 0;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: none;
+    border: none;
+}
+
+.login-container h1 {
+    color: #333333; /* Dark text for high contrast */
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    /* Professional blue accent line */
+    border-bottom: 2px solid #007bff; 
+    padding-bottom: 10px;
+}
+
+.login-container .subtitle {
+    text-align: left;
+    color: #6a6a6a; 
+    margin-bottom: 40px; 
+    font-size: 16px;
+    font-weight: 400;
+    /* Very light separator line */
+    border-bottom: 1px solid #e0e0e0; 
+    padding-bottom: 15px;
+}
+
+/* --- Form Field Styling --- */
+
+.field {
+    margin-bottom: 25px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333333; /* Dark labels */
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Input and Select Styling: The High-Contrast Bottom Border */
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 12px 0; 
+    border: none;
+    /* Invisible background, blends with the light page */
+    background-color: transparent;
+    /* Initial border is a subtle, light grey */
+    border-bottom: 1px solid #cccccc; 
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #333333; /* Dark input text */
+    transition: border-bottom-color 0.2s ease;
+}
+
+/* Placeholder text color */
+input::placeholder {
+    color: #aaaaaa;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus {
+    /* Sharp, primary blue for focus */
+    border-bottom: 2px solid #007bff; 
+    outline: none;
+}
+
+/* --- Button Styling: High-Visibility CTA --- */
+
+.btn-login {
+    width: 100%;
+    padding: 15px;
+    /* Primary blue for the button */
+    background-color: #007bff; 
+    color: white; /* White text on blue */
+    border: none;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: background-color 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-login:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* --- Error and Footer Link Styling --- */
+
+.error-message {
+    text-align: center;
+    color: #dc3545; /* Standard professional red */
+    font-size: 14px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #dc3545;
+    /* Very light, subtle red background */
+    background-color: #fff0f0; 
+    display: none;
+}
+
+.footer-link {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    color: #6a6a6a;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: #007bff; 
+    text-decoration: underline;
+}
+
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <h1>Salon Login</h1>
+  <p class="subtitle">Access your staff or manager portal</p>
+
+  <div class="field">
+    <label for="role">Select Role</label>
+    <select id="role">
+      <option value="">-- Choose Role --</option>
+      <option value="staff">Staff</option>
+      <option value="manager">Manager</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="staffId">Staff / Employee ID</label>
+    <input type="text" id="staffId" placeholder="Enter your ID">
+  </div>
+
+  <div class="field">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter your password">
+  </div>
+
+  <button class="btn-login" id="loginBtn">Login</button>
+  <div class="error-message" id="loginError">Invalid ID, password, or role.</div>
+  
+  <span class="footer-link" onclick="alert('Contact your salon admin to reset password')">Forgot Password?</span>
+</div>
+
+<script>
+  // --- Initialize default staff and manager accounts ---
+  const defaultAccounts = [
+      { id: "staff001", role: "staff", name: "Sally Stylist", password: "1234" },
+      { id: "staff002", role: "staff", name: "John Barber", password: "abcd" },
+      { id: "manager001", role: "manager", name: "Mark Manager", password: "1234" }
+  ];
+
+  if(!localStorage.getItem("gg_staff_accounts")){
+      localStorage.setItem("gg_staff_accounts", JSON.stringify(defaultAccounts));
+  }
+
+  const loginBtn = document.getElementById("loginBtn");
+  const loginError = document.getElementById("loginError");
+
+  loginBtn.addEventListener("click", () => {
+      const role = document.getElementById("role").value;
+      const staffId = document.getElementById("staffId").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      loginError.style.display = "none";
+
+      // --- Validation ---
+      if(!role || !staffId || !password){
+          loginError.textContent = "All fields are required.";
+          loginError.style.display = "block";
+          return;
+      }
+
+      // --- Check credentials against localStorage ---
+      const accounts = JSON.parse(localStorage.getItem("gg_staff_accounts")) || [];
+      const user = accounts.find(acc => acc.id === staffId && acc.password === password && acc.role === role);
+
+      if(user){
+          // Save logged-in user
+          localStorage.setItem("gg_staff_logged_in", JSON.stringify(user));
+
+          // Redirect based on role
+          if(role === "manager") {
+              window.location.href = "manager-dashboard.html";
+          } else {
+              window.location.href = "staff-dashboard.html";
+          }
+      } else {
+          loginError.textContent = "Invalid ID, password, or role.";
+          loginError.style.display = "block";
+      }
+  });
+
+  // Optional: Enter key triggers login
+  document.addEventListener("keydown", e => {
+      if(e.key === "Enter"){
+          loginBtn.click();
+      }
+  });
+
+  // --- Debug: show accounts in console ---
+  console.log("Staff & Manager accounts:", JSON.parse(localStorage.getItem("gg_staff_accounts")));
+</script>
+</body>
+</html>

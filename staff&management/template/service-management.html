@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f7f7fb;
+      color: #333;
+    }
+    header {
+      background: #2c2c2c;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    main {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    form label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+    form input, form select {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+    }
+    .form-actions {
+      grid-column: span 2;
+      text-align: right;
+    }
+    .form-actions button {
+      margin-left: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.3s ease;
+    }
+    .btn-add { background: #28a745; color: #fff; }
+    .btn-edit { background: #007bff; color: #fff; }
+    .btn-delete { background: #dc3545; color: #fff; }
+    .btn:hover { opacity: 0.85; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.8rem;
+      text-align: left;
+    }
+    th {
+      background: #f4f4f4;
+    }
+
+    .hidden { display: none; }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      padding: 1rem;
+      background: #222;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Service Management</h1>
+  </header>
+  <main>
+    <section>
+      <h2>Add / Edit Service</h2>
+      <form id="serviceForm">
+        <div>
+          <label for="serviceId">Service ID</label>
+          <input type="text" id="serviceId" required>
+        </div>
+        <div>
+          <label for="serviceName">Service Name</label>
+          <input type="text" id="serviceName" required>
+        </div>
+        <div>
+          <label for="servicePrice">Price ($)</label>
+          <input type="number" id="servicePrice" step="0.01" required>
+        </div>
+        <div>
+          <label for="serviceCategory">Category</label>
+          <select id="serviceCategory" required>
+            <option value="Hair">Hair</option>
+            <option value="Nails">Nails</option>
+            <option value="Skin">Skin</option>
+            <option value="Spa">Spa</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-add">Save Service</button>
+          <button type="button" id="cancelEdit" class="btn hidden">Cancel Edit</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <h2>Services List</h2>
+      <table id="serviceTable">
+        <thead>
+          <tr>
+            <th>Service ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; <span id="year"></span> Salon Staff Portal</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // --- Helpers ---
+    function loadServices() {
+      return JSON.parse(localStorage.getItem("servicesList")) || [];
+    }
+    function saveServices(list) {
+      localStorage.setItem("servicesList", JSON.stringify(list));
+    }
+    function getCurrentUser() {
+      return JSON.parse(localStorage.getItem("gg_staff_logged_in"));
+    }
+
+    // --- Role check ---
+    const user = getCurrentUser();
+    if(!user || user.role !== "manager"){
+      document.querySelector("main").innerHTML = "<p>You do not have permission to view this page.</p>";
+    }
+
+    // --- Elements ---
+    const serviceForm = document.getElementById("serviceForm");
+    const serviceIdInput = document.getElementById("serviceId");
+    const serviceNameInput = document.getElementById("serviceName");
+    const servicePriceInput = document.getElementById("servicePrice");
+    const serviceCategoryInput = document.getElementById("serviceCategory");
+    const serviceTableBody = document.querySelector("#serviceTable tbody");
+    const cancelEditBtn = document.getElementById("cancelEdit");
+
+    let services = loadServices();
+    let editIndex = null;
+
+    // --- Render ---
+    function renderServiceTable() {
+      serviceTableBody.innerHTML = "";
+      services.forEach((s, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${s.serviceId}</td>
+          <td>${s.name}</td>
+          <td>$${s.price}</td>
+          <td>${s.category}</td>
+          <td>
+            <button class="btn btn-edit" onclick="editService(${index})">Edit</button>
+            <button class="btn btn-delete" onclick="deleteService(${index})">Delete</button>
+          </td>
+        `;
+        serviceTableBody.appendChild(row);
+      });
+    }
+
+    // --- Add/Edit ---
+    serviceForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const newService = {
+        serviceId: serviceIdInput.value.trim(),
+        name: serviceNameInput.value.trim(),
+        price: parseFloat(servicePriceInput.value.trim()).toFixed(2),
+        category: serviceCategoryInput.value
+      };
+
+      if(editIndex !== null){
+        services[editIndex] = newService;
+        editIndex = null;
+        cancelEditBtn.classList.add("hidden");
+      } else {
+        if(services.some(s => s.serviceId === newService.serviceId)){
+          alert("Service ID already exists.");
+          return;
+        }
+        services.push(newService);
+      }
+      saveServices(services);
+      renderServiceTable();
+      serviceForm.reset();
+    });
+
+    // --- Cancel Edit ---
+    cancelEditBtn.addEventListener("click", () => {
+      serviceForm.reset();
+      editIndex = null;
+      cancelEditBtn.classList.add("hidden");
+    });
+
+    // --- Global funcs ---
+    window.editService = function(index){
+      const s = services[index];
+      serviceIdInput.value = s.serviceId;
+      serviceNameInput.value = s.name;
+      servicePriceInput.value = s.price;
+      serviceCategoryInput.value = s.category;
+      editIndex = index;
+      cancelEditBtn.classList.remove("hidden");
+    };
+
+    window.deleteService = function(index){
+      if(confirm("Are you sure you want to delete this service?")){
+        services.splice(index, 1);
+        saveServices(services);
+        renderServiceTable();
+      }
+    };
+
+    // Initial
+    renderServiceTable();
+  </script>
+</body>
+</html>
