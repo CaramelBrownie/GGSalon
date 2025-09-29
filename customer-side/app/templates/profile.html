@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>God’s Grace Salon — My Account</title>
+    <link rel="stylesheet" href="css/profile.css" />
+    <style>
+      /* General */
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f7f4f1;
+        color: #222222;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+
+      /* Header */
+      .header {
+        padding: 2rem;
+        border-bottom: 1px solid #ddd;
+        background-color: #fff;
+      }
+      .header h1 {
+        font-family: "Georgia", serif;
+        font-size: 2rem;
+        margin: 0;
+      }
+      .header p {
+        margin: 0.5rem 0 0;
+        color: #555;
+      }
+      .breadcrumb {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        color: #999;
+      }
+      
+      .logout-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: #e44f6f; /* soft red */
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.9rem;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background 0.3s ease;
+}
+.logout-btn:hover {
+  background: #c93c59;
+}
+
+      /* Profile Card */
+      .profile-card {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        margin: 2rem auto;
+        max-width: 1000px;
+        position: relative;
+      }
+      .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 3px solid #d4af37; /* matte gold accent */
+        background-color: #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #d4af37;
+        margin-right: 2rem;
+        flex-shrink: 0;
+      }
+      .profile-info {
+        flex: 1;
+      }
+      .profile-info h2 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+      .profile-info p {
+        margin: 0.3rem 0;
+        color: #555;
+      }
+      .edit-profile {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: #d4af37;
+      }
+
+      /* Tabs */
+      .tabs {
+        display: flex;
+        background: #fff;
+        padding: 0 2rem;
+        margin: 0 auto;
+        max-width: 1000px;
+        border-bottom: 1px solid #ddd;
+        overflow-x: auto;
+        scrollbar-width: none; /* Firefox */
+      }
+      .tabs::-webkit-scrollbar {
+        display: none;
+      }
+      .tab {
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        font-weight: 600;
+        white-space: nowrap;
+        color: #555;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+      }
+      .tab.active {
+        color: #d4af37;
+        border-bottom: 3px solid #d4af37;
+      }
+
+      /* Tab Content */
+      .tab-content {
+        max-width: 1000px;
+        margin: 2rem auto;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Profile Info Form */
+      .profile-form label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: 600;
+      }
+      .profile-form input,
+      .profile-form select,
+      .profile-form textarea {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.3rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
+      .profile-form .save-btn {
+        margin-top: 1.5rem;
+        background: #d4af37;
+        color: #fff;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 50px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .profile-form .save-btn:hover {
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+      }
+      .profile-form .delete-btn {
+        margin-top: 1rem;
+        background: #eee;
+        color: #999;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border-radius: 50px;
+      }
+
+      /* Floating CTA */
+      .floating-cta {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: #d4af37;
+        color: #fff;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        transition: all 0.3s ease;
+      }
+      .floating-cta:hover {
+        transform: translateY(-2px);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .profile-card {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .profile-avatar {
+          margin-bottom: 1rem;
+          margin-right: 0;
+        }
+        .tabs {
+          padding: 0 1rem;
+        }
+        .tab-content {
+          margin: 1rem;
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+  <h1>My Account</h1>
+  <p>Manage your profile, preferences, and appointments.</p>
+  <div class="breadcrumb">Home &gt; Account</div>
+  <button id="logoutBtn" class="logout-btn">Logout</button>
+</header>
+
+    <!-- Profile Card -->
+    <section class="profile-card">
+      <div class="profile-avatar">JG</div>
+      <div class="profile-info">
+        <h2>Hello, Jane!</h2>
+        <p>Email: jane.doe@example.com</p>
+        <p>Phone: +27 123 456 789</p>
+        <p>Gold Member — 120 points</p>
+      </div>
+      <button class="edit-profile">&#9998;</button>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" data-tab="profile-info">Profile Info</div>
+      <div class="tab" data-tab="appointments">My Appointments</div>
+      <div class="tab" data-tab="liked">Liked Hairstyles</div>
+      <div class="tab" data-tab="preferences">Preferences</div>
+      <div class="tab" data-tab="wallet">Payment / Wallet</div>
+      <div class="tab" data-tab="notifications">Notifications</div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div id="profile-info" class="tab-content active">
+      <form class="profile-form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" value="Jane Doe" />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" value="jane.doe@example.com" />
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" value="+27 123 456 789" />
+        <label for="hair-type">Hair Type</label>
+        <select id="hair-type">
+          <option>Straight</option>
+          <option>Wavy</option>
+          <option>Curly</option>
+          <option>Coily</option>
+        </select>
+
+        <label for="hair-length">Hair Length</label>
+        <select id="hair-length">
+          <option>Short</option>
+          <option>Medium</option>
+          <option>Long</option>
+        </select>
+
+        <label for="allergies">Allergies / Sensitive Scalp</label>
+        <textarea id="allergies" placeholder="Optional notes"></textarea>
+
+        <button type="submit" class="save-btn">Save Changes</button>
+        <button type="button" class="delete-btn">Deactivate Account</button>
+      </form>
+    </div>
+
+    <div id="appointments" class="tab-content">
+      <p>Your Appointments will appear here..</p>
+      <button class="save-btn">Book New Appointment</button>
+    </div>
+
+    <div id="liked" class="tab-content">
+      <p>Your liked hairstyles will appear here.</p>
+    </div>
+
+    <div id="preferences" class="tab-content">
+      <p>
+        Set your hair preferences, notification settings, and marketing consent.
+      </p>
+    </div>
+
+    <div id="wallet" class="tab-content">
+      <p>View saved cards, deposits, and transaction history.</p>
+    </div>
+
+    <div id="notifications" class="tab-content">
+      <p>Manage your appointment reminders and notification preferences.</p>
+    </div>
+
+    <!-- Floating CTA -->
+    <a href="appointments.html" class="floating-cta">Book New Appointment</a>
+
+    <script>
+  // Load logged-in user
+  const user = JSON.parse(localStorage.getItem("gg_logged_in"));
+
+  if (!user) {
+    // Not logged in → go to login
+    window.location.href = "login.html";
+  } else {
+    document.addEventListener("DOMContentLoaded", () => {
+      // Avatar initials
+      const avatar = document.querySelector(".profile-avatar");
+      avatar.textContent = user.name
+        .split(" ")
+        .map(n => n[0])
+        .join("")
+        .toUpperCase();
+
+      // Greeting
+      document.querySelector(".profile-info h2").textContent = `Hello, ${user.name}!`;
+      document.querySelector(".profile-info p:nth-of-type(1)").textContent = `Email: ${user.email}`;
+      document.querySelector(".profile-info p:nth-of-type(2)").textContent = `Phone: ${user.phone}`;
+
+      // Form fields
+      document.getElementById("name").value = user.name;
+      document.getElementById("email").value = user.email;
+      document.getElementById("phone").value = user.phone;
+
+      // Handle save
+      document.querySelector(".profile-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const updatedUser = {
+          ...user,
+          name: document.getElementById("name").value.trim(),
+          email: document.getElementById("email").value.trim().toLowerCase(),
+          phone: document.getElementById("phone").value.trim(),
+        };
+
+        // Update in accounts
+        const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+        const index = accounts.findIndex(acc => acc.email === user.email);
+        if (index !== -1) {
+          accounts[index] = updatedUser;
+          localStorage.setItem("accounts", JSON.stringify(accounts));
+        }
+
+        // Update current session
+        localStorage.setItem("gg_logged_in", JSON.stringify(updatedUser));
+        alert("Profile updated!");
+        location.reload();
+      });
+      
+      // Handle logout
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  localStorage.removeItem("gg_logged_in");
+  window.location.href = "login.html";
+});
+
+      // Handle delete/deactivate
+      document.querySelector(".delete-btn").addEventListener("click", () => {
+        if (confirm("Are you sure you want to deactivate your account?")) {
+          let accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+          accounts = accounts.filter(acc => acc.email !== user.email);
+          localStorage.setItem("accounts", JSON.stringify(accounts));
+          localStorage.removeItem("gg_logged_in");
+          window.location.href = "signup.html";
+        }
+      });
+    });
+  }
+</script>
+  </body>
+</html>
