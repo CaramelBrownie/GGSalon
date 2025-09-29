@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>God’s Grace Salon – Experience Divine Beauty & Grace</title>
+    <meta
+      name="description"
+      content="From elegant hairstyling to rejuvenating spa care, book your beauty experience with God’s Grace Salon."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../static/css/style.css">
+  <body>
+    <header>
+      <nav class="container nav" aria-label="Primary">
+        <a class="brand" href="#">
+          <span class="logo">GG</span>
+          <div>
+            <strong style="display: block; line-height: 1"
+              >God’s Grace Salon</strong
+            >
+            <small style="color: var(--muted)">Beauty • Hair • Wellness</small>
+          </div>
+        </a>
+
+        <ul class="desktop-menu">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+         <div>
+         
+<div id="userProfile" class="user-profile drop desktop-view" style="padding:0.1rem; display:none">
+  <button class="profile-btn">
+    <img src="../static/img/avatar.jpg" alt="User Avatar" class="avatar" />
+    <h1> <span class="user-name"></span></h1>
+    <span class="dropdown-icon">▼</span>
+  </button>
+
+  <ul class="profile-dropdown">
+    <li><a href="profile.html">Profile</a></li>
+    <li><a href="appointments.html">My Appointments</a></li>
+    <li><a id="logoutBtn">Logout</a></li>
+  </ul>
+</div>
+
+<!-- Account button -->
+<a id="accountBtn" class="btn btn-secondary desktop-view" href="login.html" aria-label="Login Account">Account</a>
+
+        <a
+          class="btn btn-primary desktop-view"
+          href="booking.html"
+          aria-label="Book appointment now"
+          >Book Now</a
+        >
+         </div>
+
+        <button
+          class="mobile-toggle"
+          aria-label="Open Menu"
+          onclick="document.querySelector('.mobile-menu').classList.toggle('open');"
+        >
+          ☰
+        </button>
+      </nav>
+
+      <div class="mobile-menu" aria-hidden="true">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a
+          class="btn btn-secondary"
+          href="login.html"
+          style="margin-top: 12px; width: 100%"
+          >Account</a
+        >
+        <a
+          class="btn btn-primary"
+          href="booking.html"
+          style="margin-top: 12px; width: 100%"
+          >Book Now</a
+        >
+      </div>
+    </header>
+
+    <section id="home" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-card">
+          <div class="t-eyebrow">
+            <span class="stars" aria-hidden="true">
+              <svg width="0" height="0">
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="1">
+                    <stop offset="0%" stop-color="#e44f6f" />
+                    <stop offset="100%" stop-color="#ff9c48" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path
+                  d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                />
+              </svg>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path
+                  d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                />
+              </svg>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path
+                  d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                />
+              </svg>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path
+                  d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                />
+              </svg>
+              <svg viewBox="0 0 24 24" width="18" height="18">
+                <path
+                  d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                />
+              </svg>
+            </span>
+            <span aria-label="Average 5.0 out of 5 stars"
+              >5.0 • Rated by 280+ clients</span
+            >
+          </div>
+
+          <h1 class="title">Experience Divine<br />Beauty &amp; Grace</h1>
+          <p class="subtitle">
+            Transform your look with our premium care &amp; services. From
+            elegant hairstyles to fresh nail art, glowing skin, and serene spa
+            therapy — with God’s grace and professional touch.
+          </p>
+
+          <div class="hero-ctas">
+            <a href="booking.html" class="btn btn-primary">Book Appointment</a>
+            <a href="#services" class="btn btn-ghost">View Services</a>
+          </div>
+
+          <div class="hero-stats" role="list">
+            <span class="pill" role="listitem">✨ 1000+ Happy Clients</span>
+            <span class="pill" role="listitem">💇‍♀️ 15+ Premium Services</span>
+            <span class="pill" role="listitem">👑 5* Expertise</span>
+          </div>
+        </div>
+
+        <div class="hero-right" aria-hidden="true">
+          <div class="mirror"></div>
+        </div>
+      </div>
+    </section>
+ 
+    <section id="services" class="section">
+      <div class="container">
+        <h2 class="title" style="font-size: 2rem; margin-bottom: 0.5rem;">
+          Our Premium Services
+        </h2>
+        <p class="subtitle" style="margin-bottom: 1.5rem;">
+          Discover our signature catalogue of beauty &amp; wellness services,
+          each designed to elevate your natural radiance and boost your
+          confidence.
+        </p>
+
+        <!-- Category Tabs -->
+        <div class="service-tabs" role="tablist">
+          <button class="tab" data-tab="all">All</button>
+          <button class="tab active" data-tab="glow">Glow Studio</button>
+          <button class="tab" data-tab="crown">Crown Collective</button>
+          <button class="tab" data-tab="nails">Nail Couture</button>
+          <button class="tab" data-tab="gentlemen">Gentleman’s Den</button>
+          <button class="tab" data-tab="divine">Divine Styles</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="service-content">
+
+          <div class="tab-panel" id="all">
+            <div class="svc-grid">
+              <div class="svc-card">
+                <img src="../static/img/facial.jpg" alt="Radiance Facials" />
+                <h3>Radiance Facials</h3>
+                <p>Deep cleanse & revive your glow.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/brows.jpg" alt="Brow Sculpting" />
+                <h3>Brow Sculpting</h3>
+                <p>Perfect arches tailored to you.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/lashes.jpg" alt="Lash Lifts" />
+                <h3>Lash Lifts</h3>
+                <p>Effortless length & curl.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/haircut.jpg" alt="Precision Cuts" />
+                <h3>Precision Cuts</h3>
+                <p>Tailored cuts for every crown.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/color.jpg" alt="Balayage & Color" />
+                <h3>Balayage & Color</h3>
+                <p>Vibrant tones & natural blends.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/blowout.jpg" alt="Luxe Blowouts" />
+                <h3>Luxe Blowouts</h3>
+                <p>Shine & volume that lasts.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/manicure.jpg" alt="Classic Manis & Pedis" />
+                <h3>Classic Manis & Pedis</h3>
+                <p>Timeless nail perfection.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/nailart.jpg" alt="Designer Nail Art" />
+                <h3>Designer Nail Art</h3>
+                <p>Custom styles for every mood.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/menscut.jpg" alt="Tailored Haircuts & Fades" />
+                <h3>Tailored Haircuts & Fades</h3>
+                <p>Sharp looks for modern gents.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/beard.jpg" alt="Beard Care" />
+                <h3>Beard Care</h3>
+                <p>Shape, trim & nourish.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/braids.jpg" alt="Braids & Locs" />
+                <h3>Braids & Locs</h3>
+                <p>Protective styles, reimagined.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/wigs.jpg" alt="Wigs & Weaves" />
+                <h3>Wigs & Weaves</h3>
+                <p>Seamless installs & styling.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Glow Studio -->
+          <div class="tab-panel active" id="glow">
+            <div class="svc-grid">
+              <div class="svc-card">
+                <img src="../static/img/facial.jpg" alt="Radiance Facials" />
+                <h3>Radiance Facials</h3>
+                <p>Deep cleanse & revive your glow.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/brows.jpg" alt="Brow Sculpting" />
+                <h3>Brow Sculpting</h3>
+                <p>Perfect arches tailored to you.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/lashes.jpg" alt="Lash Lifts" />
+                <h3>Lash Lifts</h3>
+                <p>Effortless length & curl.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Crown Collective -->
+          <div class="tab-panel" id="crown">
+            <div class="svc-grid">
+              <div class="svc-card">
+                <img src="../static/img/haircut.jpg" alt="Precision Cuts" />
+                <h3>Precision Cuts</h3>
+                <p>Tailored cuts for every crown.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/color.jpg" alt="Balayage & Color" />
+                <h3>Balayage & Color</h3>
+                <p>Vibrant tones & natural blends.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/blowout.jpg" alt="Luxe Blowouts" />
+                <h3>Luxe Blowouts</h3>
+                <p>Shine & volume that lasts.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nail Couture -->
+          <div class="tab-panel" id="nails">
+            <div class="svc-grid">
+              <div class="svc-card">
+                <img src="../static/img/manicure.jpg" alt="Classic Manis & Pedis" />
+                <h3>Classic Manis & Pedis</h3>
+                <p>Timeless nail perfection.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/nailart.jpg" alt="Designer Nail Art" />
+                <h3>Designer Nail Art</h3>
+                <p>Custom styles for every mood.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gentleman’s Den -->
+          <div class="tab-panel" id="gentlemen">
+            <div class="svc-grid">
+              <div class="svc-card">
+                <img src="../static/img/menscut.jpg" alt="Tailored Haircuts & Fades" />
+                <h3>Tailored Haircuts & Fades</h3>
+                <p>Sharp looks for modern gents.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/beard.jpg" alt="Beard Care" />
+                <h3>Beard Care</h3>
+                <p>Shape, trim & nourish.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divine Styles -->
+          <div class="tab-panel" id="divine">
+            <div class="svc-grid">
+              <div class="svc-card">
+                <img src="../static/img/braids.jpg" alt="Braids & Locs" />
+                <h3>Braids & Locs</h3>
+                <p>Protective styles, reimagined.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+              <div class="svc-card">
+                <img src="../static/img/wigs.jpg" alt="Wigs & Weaves" />
+                <h3>Wigs & Weaves</h3>
+                <p>Seamless installs & styling.</p>
+                <a class="btn btn-ghost" href="#">Learn more →</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    
+    <section id="about" class="ggs-about" aria-labelledby="about-heading">
+      <div class="wrap">
+        <div class="grid">
+          <div>
+            <h2 id="about-heading">God’s Grace Salon — Where Beauty Meets Serenity</h2>
+            <p class="lead">At God’s Grace Salon, we combine technical skill with a calm, restorative atmosphere so you leave looking polished and feeling renewed. We provide hair, nails, skin, and makeup services tailored to each client — delivered with humility, excellence, and care.</p>
+
+            <div class="cards" role="list">
+              <article class="card" role="listitem" aria-labelledby="mission-title">
+                <h3 id="mission-title">Our Mission</h3>
+                <p class="muted">Deliver professional, personalized beauty services that build confidence and celebrate each client's natural grace — consistently, safely, and with heart.</p>
+              </article>
+
+              <article class="card" role="listitem" aria-labelledby="expertise-title">
+                <h3 id="expertise-title">Our Expertise</h3>
+                <p class="muted">Our team stays current with global trends and industry training — from precision cutting and colour to bridal makeup, advanced nail art, and restorative skincare.</p>
+              </article>
+
+              <article class="card" role="listitem" aria-labelledby="experience-title">
+                <h3 id="experience-title">The Experience</h3>
+                <p class="muted">Step into a welcoming space focused on comfort, hygiene, and a calm client experience — quick consultations, honest recommendations, and results you can trust.</p>
+              </article>
+
+              <article class="card" role="listitem" aria-labelledby="trust-title">
+                <h3 id="trust-title">Trust & Safety</h3>
+                <p class="muted">We follow strict sanitation protocols, use high-quality products, and provide transparent pricing so there are no surprises at checkout.</p>
+              </article>
+            </div>
+
+            <div class="cta">
+                <a class="btn btn-primary" href="booking.html">Book an Appointment</a>
+                <a class="btn btn-ghost" href="#contact">Learn More</a>
+            </div>
+
+            <p class="meta">Got questions? Call us or visit our <a href="/contact.html">Contact</a> page. We welcome walk-ins where possible — professionalism with a personal touch.</p>
+          </div>
+
+          <aside aria-label="Salon snapshot and team" class="aside">
+            <figure style="margin:0">
+              <img src="../static/img/Interior.png" alt="God's Grace Salon interior" style="width:100%;border-radius:10px;max-height:260px;object-fit:cover">
+              <figcaption class="muted" style="margin-top:.5rem;font-size:.9rem">Our salon — warm, clean, and inviting.</figcaption>
+            </figure>
+
+            <div class="ggs-team" aria-hidden="false">
+              <div style="display:flex;align-items:center;gap:.5rem">
+                <img src="../static/img/stylist/Maduna.png" alt="Stylist - Maria"/>
+                <div style="font-size:.95rem"><strong>Hlumelihle</strong><br><span class="muted">Senior Stylist</span></div>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:.5rem">
+                <img src="../static/img/stylist/Mbuli.png" alt="Nail Artist - Thabo"/>
+                <div style="font-size:.95rem"><strong>Yollanda</strong><br><span class="muted">Nail Artist</span></div>
+              </div>
+            </div>
+
+          </aside>
+        </div>
+
+        <!-- Yindawo ye'Short testimonial strip as social proof -->
+        <div style="margin-top:1.5rem;padding:1rem;border-radius:10px;background:linear-gradient(180deg,rgba(228,79,111,0.05),transparent);border:1px solid rgba(228,79,111,0.06)">
+          <strong>"Consistently excellent service — I always leave feeling refreshed."</strong>
+          <div class="muted" style="margin-top:.5rem">— Mpesh</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= Footer ======= -->
+    <footer id="contact">
+      <div class="container footer">
+        <div>
+          <div class="foot-brand">
+            <span class="logo">GG</span>
+            <div>
+              <strong class="brand-name">God’s Grace Salon</strong>
+              <small class="brand-tagline">Experience Divine Beauty &amp; Grace</small>
+            </div>
+          </div>
+
+          <p class="address">
+            123 Serenity Lane, Suite 5<br />East London, GC 10010
+          </p>
+
+          <p class="contact-info">
+            <a href="tel:+27100000000">+27 (00) 000-0000</a><br />
+            <a href="mailto:hello@godsgracesalon.com">hello@godsgracesalon.com</a>
+          </p>
+
+          <div class="socials" aria-label="Social links">
+            <a href="#" aria-label="Instagram">⌁</a>
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="TikTok">♬</a>
+          </div>
+        </div>
+
+        <div>
+          <h5>Quick Links</h5>
+          <ul class="footer-list">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="booking.html">Book Now</a></li>
+            <li><a href="#">Gift Cards</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Opening Hours</h5>
+          <ul class="footer-list">
+            <li>Mon–Fri: 9:00 AM – 7:00 PM</li>
+            <li>Saturday: 9:00 AM – 6:00 PM</li>
+            <li>Sunday: Closed</li>
+          </ul>
+        </div>
+
+        <div>
+          <h5>Directions</h5>
+          <p class="directions-text">
+            Street parking available. Wheelchair accessible entrance.
+          </p>
+          <a class="btn btn-ghost" href="#" aria-label="Open Google Maps">Open in Maps</a>
+        </div>
+      </div>
+
+      <div class="container copyright">
+        <small>© <span id="y"></span> God’s Grace Salon. All rights reserved.</small>
+        <small><a href="#">Privacy Policy</a> • <a href="#">Terms of Service</a></small>
+      </div>
+    </footer>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const accountBtn = document.getElementById("accountBtn");
+  const userProfile = document.getElementById("userProfile");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  let user = JSON.parse(localStorage.getItem("gg_logged_in"));
+
+  if (user) {
+    // Ensure user has a unique id
+    if (!user.id) {
+      user.id = 'user-' + Date.now();
+      // Save updated user back to accounts
+      const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+      const idx = accounts.findIndex(acc => acc.email === user.email);
+      if (idx !== -1) accounts[idx].id = user.id;
+      localStorage.setItem("accounts", JSON.stringify(accounts));
+      localStorage.setItem("gg_logged_in", JSON.stringify(user));
+    }
+
+    // User is logged in → show profile
+    accountBtn.style.display = "none";
+    userProfile.style.display = "block";
+    document.querySelectorAll(".user-name").forEach(el => el.textContent = user.name);
+
+  } else {
+    // Not logged in → show account button
+    accountBtn.style.display = "inline-block";
+    userProfile.style.display = "none";
+  }
+
+  // Logout
+  logoutBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("gg_logged_in");
+    window.location.href = "home.html";
+  });
+});
+</script>
+    <script src="../static/js/script.js"></script>
+  </body>
+</html>
