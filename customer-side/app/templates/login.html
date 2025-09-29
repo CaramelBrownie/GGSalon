@@ -194,6 +194,40 @@ header .small { font-size: 0.8rem; color: var(--muted); }
   font-size: 0.8rem;
   color: var(--muted);
 }
+
+.floating-login-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg,#e44f6f 0%,#ff7c64 35%,#ff9c48 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    line-height: 1.2; 
+  }
+  
+  .floating-login-btn .btn-line-1 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .floating-login-btn .btn-line-2 {
+    font-size: 12px;
+    font-weight: normal;
+  }
+  
+  .floating-login-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  }
+
 .page-foot a { color: var(--primary); text-decoration: none; }
 @media (max-width: 768px) {
   .auth-wrap { flex-direction: column; margin: 20px; }
@@ -264,6 +298,12 @@ header .small { font-size: 0.8rem; color: var(--muted); }
       </main>
       <footer style="margin-top:34px;text-align:center;color:var(--muted);font-size:0.9rem">© <span id="year"></span> God’s Grace Salon</footer>
     </div>
+
+
+<a href="../../app-salon/templates/login.html" class="floating-login-btn">
+  <span class="btn-line-1">God’s Grace Salon</span>
+  <span class="btn-line-2">Staff Only</span>
+</a>
     
   <script>
   document.getElementById('year').textContent = new Date().getFullYear();
