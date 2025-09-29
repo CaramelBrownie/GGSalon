@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   $('backBtn').addEventListener('click', ()=>{ if(state.step>1) goToStep(state.step-1); });
   $('saveDraft').addEventListener('click', ()=>{ localStorage.setItem('salon_draft_v2', JSON.stringify(state)); alert('Draft saved locally.'); });
-  $('cancelBtn').addEventListener('click', ()=>{ if(confirm('Cancel this booking? All changes will be lost.')){ localStorage.removeItem('salon_draft_v2'); window.location.href='index.html'; } });
+  $('cancelBtn').addEventListener('click', ()=>{ if(confirm('Cancel this booking? All changes will be lost.')){ localStorage.removeItem('salon_draft_v2'); window.location.href='home.html'; } });
   $('editSelection').addEventListener('click', ()=> goToStep(4));
   $('editBtn').addEventListener('click', ()=> goToStep(4));
   $('toCheckout').addEventListener('click', ()=>{ const totals = calcTotals(); const user = JSON.parse(localStorage.getItem('gg_logged_in')); const appointment={ client:state.client, contact:state.contact, categories:state.categories, items:state.items, styles:state.styles, date:state.date, time:state.time, duration: minsToStr(totals.totalDuration), price:totals.totalPrice, clientId:user?.id || null }; localStorage.setItem('appointment', JSON.stringify(appointment)); window.location.href='checkout.html'; });
