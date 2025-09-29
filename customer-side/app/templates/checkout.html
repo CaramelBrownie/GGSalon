@@ -24,6 +24,8 @@
       color: var(--text);
       line-height: 1.6;
     }
+    a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; }
     .checkout-header { text-align: center; padding: 2rem 1rem 1.25rem; background: #fff; border-bottom: 1px solid #eee; }
     .checkout-header h1 { font-family: "Playfair Display", serif; font-size: 2.25rem; margin-bottom: 0.25rem; }
     .checkout-header .breadcrumb { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.65rem; }
@@ -76,7 +78,7 @@
 </head>
 <body>
 <header class="checkout-header">
-  <div class="breadcrumb">Home &nbsp;›&nbsp; Services &nbsp;›&nbsp; Checkout</div>
+  <div class="breadcrumb"><a onclick="window.history.back()" style="font-weight:900;color:#000;cursor:pointer;">《</a> &nbsp;> <a href="home.html">Home</a> &nbsp;›&nbsp; Services &nbsp;›&nbsp; Checkout</div>
   <h1>Checkout</h1>
   <p class="subtitle">Review your appointment and secure your spot with a deposit or full payment.</p>
 </header>
@@ -198,7 +200,7 @@ appointment = appointment || {
 };
 
 // --- Load logged-in client ------------------------------------------------
-const loggedIn = JSON.parse(localStorage.getItem("gg_logged_in"));
+const loggedIn = JSON.parse(localStorage.getItem("gg_logged_in") || "null");
 const clientId = loggedIn?.clientId || "guest";
 const clientName = loggedIn?.fullname || appointment?.client?.fullname || "Guest User";
 
@@ -271,6 +273,7 @@ function validateForm() {
     payButton.disabled = !(cardName && cardNumber && cardExpiry && cardCVC && agreeTerms.checked);
 }
 
+// Attach input events for validation
 ["cardName","cardNumber","cardExpiry","cardCVC"].forEach(id => {
     document.getElementById(id).addEventListener("input", validateForm);
 });
@@ -294,10 +297,19 @@ form.addEventListener("submit", e => {
         timestamp: new Date().toISOString()
     };
 
-    let allConfirmed = JSON.parse(localStorage.getItem("confirmedAppointments")) || [];
+    // --- Safely handle localStorage array ---
+    let allConfirmed;
+    try {
+        allConfirmed = JSON.parse(localStorage.getItem("confirmedAppointments") || "[]");
+        if (!Array.isArray(allConfirmed)) throw new Error("Not an array");
+    } catch {
+        allConfirmed = [];
+    }
+
     allConfirmed.push(confirmedAppointment);
     localStorage.setItem("confirmedAppointments", JSON.stringify(allConfirmed));
 
+    // --- Show success modal ---
     successDetails.textContent = `You have successfully booked "${appointment.itemNames.join(", ") || 'service'}" on ${appointment.date} at ${appointment.time}.`;
     successModal.style.display = "flex";
 
