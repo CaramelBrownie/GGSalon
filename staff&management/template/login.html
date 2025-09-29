@@ -137,6 +137,39 @@ select:focus {
     display: none;
 }
 
+.floating-login-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(28deg, #63ECBB 0%, #1FEFA6 35%, #F080FD 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    line-height: 1.2; 
+  }
+  
+  .floating-login-btn .btn-line-1 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .floating-login-btn .btn-line-2 {
+    font-size: 12px;
+    font-weight: normal;
+  }
+  
+  .floating-login-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  }
+
 .footer-link {
     display: block;
     text-align: center;
@@ -190,40 +223,6 @@ select:focus {
   <span class="btn-line-1">God’s Grace Salon</span>
   <span class="btn-line-2">Staff Only</span>
 </a>
-<style>
-  .floating-login-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(28deg, #63ECBB 0%, #1FEFA6 35%, #F080FD 100%);
-    color: white;
-    padding: 15px 20px;
-    border-radius: 50px;
-    text-decoration: none;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.2s, box-shadow 0.2s;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    line-height: 1.2; 
-  }
-  
-  .floating-login-btn .btn-line-1 {
-    font-size: 14px;
-    font-weight: bold;
-  }
-  
-  .floating-login-btn .btn-line-2 {
-    font-size: 12px;
-    font-weight: normal;
-  }
-  
-  .floating-login-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-  }
-</style>
 
 <script>
   // --- Initialize default staff and manager accounts ---
