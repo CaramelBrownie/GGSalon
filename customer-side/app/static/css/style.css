@@ -724,7 +724,7 @@ footer {
     display: none;
   }
   .desktop-view {
-    display: none;
+    display: none !important;
   }
   .mobile-toggle {
     display: inline-flex;
