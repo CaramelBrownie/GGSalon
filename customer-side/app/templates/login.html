@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login — God’s Grace Salon</title>
+    <meta name="description" content="Sign in to manage bookings, view appointments and save favourites at God’s Grace Salon." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+:root {
+  --primary: #f5a623;
+  --dark: #111;
+  --muted: #666;
+  --border: #e2e2e2;
+  --bg-light: #fff;
+  --bg-dark: linear-gradient(160deg, #1a1a1a, #2c2c2c 80%);
+  --radius: 12px;
+  --shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; font-family: 'Inter', sans-serif; background: #f5f5f5; color: #222; }
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+}
+header .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #111;
+}
+header .logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+header .title { font-weight: 600; font-size: 1.05rem; }
+header .small { font-size: 0.8rem; color: var(--muted); }
+.auth-wrap {
+  flex: 1;
+  display: flex;
+  max-width: 1000px;
+  margin: 40px auto;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.auth-wrap .promo {
+  flex: 1;
+  background: var(--bg-dark);
+  color: #fff;
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.auth-wrap .promo h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+.auth-wrap .promo p {
+  color: #ddd;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+.auth-wrap .promo ul {
+  margin-left: 18px;
+  color: #bbb;
+  line-height: 1.6;
+}
+.auth-wrap .promo .btn-ghost {
+  margin-top: 24px;
+  padding: 10px 16px;
+  border: 1px solid #888;
+  border-radius: 8px;
+  color: #fff;
+  background: transparent;
+  text-decoration: none;
+  font-weight: 500;
+}
+.auth-wrap .login-card {
+  flex: 1;
+  background: #fff;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.login-card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.login-card .lead {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.form-group { margin-bottom: 18px; }
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(245,166,35,0.2);
+}
+.input-error { border-color: #e44f6f !important; }
+.error-msg {
+  font-size: 0.8rem;
+  color: #e44f6f;
+  margin-top: 4px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+.row .small { color: var(--muted); }
+.row a { text-decoration: none; color: var(--primary); }
+.btn {
+  display: inline-block;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  width: 100%;
+}
+.btn-primary:hover { background: #e08d1e; }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: #333;
+  margin-top: 12px;
+  width: 100%;
+}
+.social-btn {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.social-btn button {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fafafa;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.social-btn button:hover { background: #f0f0f0; }
+.page-foot {
+  margin-top: 32px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.page-foot a { color: var(--primary); text-decoration: none; }
+@media (max-width: 768px) {
+  .auth-wrap { flex-direction: column; margin: 20px; }
+  .promo { display: none; }
+}
+</style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a class="brand" href="/">
+          <div class="logo">GG</div>
+          <div>
+            <div class="title">God’s Grace Salon</div>
+            <div class="small">Beauty • Hair • Wellness</div>
+          </div>
+        </a>
+        <nav aria-label="utility">
+          <a class="small" href="booking.html">Book an appointment</a>
+        </nav>
+      </header>
+      <main class="auth-wrap" id="auth-wrap">
+        <section class="promo" aria-hidden="true">
+          <h1>Welcome back</h1>
+          <p>Sign in to manage bookings, view appointment history and access exclusive offers.</p>
+          <ul style="margin-top:16px;padding-left:18px;color:var(--muted)">
+            <li>Fast rebooking</li>
+            <li>Saved preferences</li>
+            <li>Secure payments &amp; receipts</li>
+          </ul>
+          <div style="margin-top:18px">
+            <a class="btn btn-ghost" href="home.html">Return to site</a>
+          </div>
+        </section>
+        <section class="login-card" aria-labelledby="login-title">
+          <h2 id="login-title">Account sign in</h2>
+          <p class="lead">Use your email or phone number. For first-time visitors, register below.</p>
+          <form id="loginForm" novalidate aria-describedby="form-desc">
+            <div id="form-desc" class="sr-only" style="display:none">Login form. Fields: identifier, password, rememberMe.</div>
+            <div class="form-group">
+              <label for="identifier">Email or phone</label>
+              <input id="identifier" name="identifier" type="text" inputmode="email" autocomplete="email" placeholder="you@domain.com or +27 71 000 0000" required aria-required="true">
+              <div class="error-msg" id="id-error" aria-live="polite" style="display:none"></div>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div style="position:relative">
+                <input id="password" name="password" type="password" autocomplete="current-password" required aria-required="true">
+                <button type="button" id="togglePwd" aria-label="Show password" style="position:absolute;right:8px;top:8px;background:none;border:0;font-weight:700;cursor:pointer">Show</button>
+              </div>
+              <div class="error-msg" id="pw-error" aria-live="polite" style="display:none"></div>
+            </div>
+            <div class="row" style="margin-top:8px;align-items:center">
+              <label style="display:flex;align-items:center;gap:8px"><input id="remember" name="remember" type="checkbox"> <span class="small">Remember this device</span></label>
+              <div style="margin-left:auto"><a href="#forgot" class="small">Forgot password?</a></div>
+            </div>
+            <div class="actions">
+              <button id="submitBtn" class="btn btn-primary" type="submit">Sign in</button>
+              <a class="btn btn-ghost" href="signup.html">Create account</a>
+            </div>
+            <!-- Social login buttons removed -->
+            <div id="status" role="status" aria-live="polite" style="margin-top:12px"></div>
+          </form>
+          <footer class="page-foot">
+            By signing in you agree to our <a href="#privacy">Privacy Policy</a> and <a href="#tos">Terms</a>.
+          </footer>
+        </section>
+      </main>
+      <footer style="margin-top:34px;text-align:center;color:var(--muted);font-size:0.9rem">© <span id="year"></span> God’s Grace Salon</footer>
+    </div>
+    
+  <script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const idInput = document.getElementById('identifier');
+  const pwInput = document.getElementById('password');
+  const idErr = document.getElementById('id-error');
+  const pwErr = document.getElementById('pw-error');
+  const status = document.getElementById('status');
+  const toggle = document.getElementById('togglePwd');
+  const form = document.getElementById('loginForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // Toggle password visibility
+  toggle.addEventListener('click', () => {
+    const isPwd = pwInput.type === 'password';
+    pwInput.type = isPwd ? 'text' : 'password';
+    toggle.textContent = isPwd ? 'Hide' : 'Show';
+    toggle.setAttribute('aria-pressed', String(isPwd));
+  });
+
+  function clearErrors(){
+    idErr.style.display = 'none'; idErr.textContent = '';
+    idInput.classList.remove('input-error');
+    pwErr.style.display = 'none'; pwErr.textContent = '';
+    pwInput.classList.remove('input-error');
+    status.textContent = '';
+  }
+
+  function loadAccounts() {
+    return JSON.parse(localStorage.getItem('accounts')) || [];
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const email = idInput.value.trim().toLowerCase();
+    const password = pwInput.value;
+
+    if (!email) {
+      idErr.textContent = "Please enter your email.";
+      idErr.style.display = 'block';
+      idInput.classList.add('input-error');
+      return;
+    }
+    if (!password) {
+      pwErr.textContent = "Please enter your password.";
+      pwErr.style.display = 'block';
+      pwInput.classList.add('input-error');
+      return;
+    }
+
+    const accounts = loadAccounts();
+    // Find account by email and password
+    const account = accounts.find(acc => acc.email === email && acc.password === password);
+
+    if (!account) {
+      pwErr.textContent = "Invalid email or password.";
+      pwErr.style.display = 'block';
+      pwInput.classList.add('input-error');
+      return;
+    }
+
+    // Ensure account has a unique id (for legacy accounts without id)
+    if (!account.id) {
+      account.id = 'user-' + Date.now();
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+    }
+
+    // Success → save session + redirect
+    localStorage.setItem("gg_logged_in", JSON.stringify(account));
+    window.location.href = "home.html";
+  });
+</script>
+
+  </body>
+</html>
