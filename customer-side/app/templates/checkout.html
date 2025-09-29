@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout – God’s Grace Salon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --card: #ffffff;
+      --text: #222222;
+      --muted: #777777;
+      --accent-1: #e6b566;
+      --accent-2: #e39fb3;
+      --shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .checkout-header { text-align: center; padding: 2rem 1rem 1.25rem; background: #fff; border-bottom: 1px solid #eee; }
+    .checkout-header h1 { font-family: "Playfair Display", serif; font-size: 2.25rem; margin-bottom: 0.25rem; }
+    .checkout-header .breadcrumb { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.65rem; }
+    .checkout-header .subtitle { color: var(--muted); max-width: 900px; margin: 0 auto; font-size: 1rem; }
+
+    .checkout-container { display: flex; gap: 2rem; align-items: flex-start; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+    .summary-panel { flex: 1 1 320px; background: var(--card); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); position: sticky; top: 1.25rem; height: max-content; border: 1px solid #f0ebe6; }
+    .summary-panel h2 { font-family: "Playfair Display", serif; font-size: 1.05rem; margin-bottom: 0.75rem; }
+    .summary-list { list-style: none; margin-bottom: 1rem; }
+    .summary-list li { padding: 0.5rem 0; border-bottom: 1px dashed #f3ede9; font-size: 0.95rem; color: var(--text); }
+    .summary-total { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid #f3ede9; font-weight: 700; font-size: 1.1rem; }
+    .small-note { font-size: 0.87rem; color: var(--muted); margin-top: 0.5rem; }
+
+    .payment-section { flex: 2 1 700px; background: var(--card); border-radius: var(--radius); padding: 1.75rem; box-shadow: var(--shadow); border: 1px solid #f0ebe6; }
+    .payment-section h2 { font-family: "Playfair Display", serif; margin-bottom: 0.5rem; font-size: 1.05rem; }
+
+    .payment-options { background: #fff; padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid #f5efe9; }
+    .payment-options .row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .payment-options label { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text); font-weight: 600; }
+    .microcopy { color: var(--muted); font-size: 0.92rem; margin-top: 0.5rem; }
+
+    form .group { margin-top: 1rem; }
+    label.field { display: block; margin-top: 0.9rem; font-weight: 600; color: var(--text); font-size: 0.95rem; }
+    input[type="text"], input[type="email"], input[type="tel"] {
+      width: 100%; padding: 0.9rem; border-radius: 10px; border: 1px solid #e6dfd8;
+      background: #fff; margin-top: 0.4rem; font-size: 1rem;
+    }
+    input:focus { outline: none; box-shadow: 0 6px 20px rgba(230, 181, 102, 0.12); border-color: var(--accent-1); }
+
+    .card-inputs { display: grid; gap: 0.6rem; }
+    .card-exp-cvc { display: flex; gap: 0.75rem; }
+    .card-exp-cvc input { flex: 1; }
+
+    .controls { display: flex; gap: 1rem; align-items: center; margin-top: 1.2rem; flex-wrap: wrap; }
+    .btn-pay { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #fff; border: 0; padding: 0.95rem 1.6rem; font-weight: 700; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.6rem; }
+    .btn-pay:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .terms { margin-top: 1rem; font-size: 0.92rem; color: var(--muted); }
+    .terms a { color: var(--text); text-decoration: underline; font-weight: 600; }
+
+    .success-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.45); z-index: 2000; }
+    .success-card { background: var(--card); padding: 2rem; border-radius: 12px; max-width: 520px; width: 94%; text-align: center; box-shadow: var(--shadow); border: 1px solid #efe7df; }
+    .success-check { width: 88px; height: 88px; border-radius: 999px; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); display: grid; place-items: center; margin: 0 auto 1rem; color: #fff; font-size: 2.25rem; }
+    .success-title { font-family: "Playfair Display", serif; font-size: 1.25rem; margin-top: 0.25rem; }
+    .success-msg { color: var(--muted); margin-top: 0.5rem; }
+
+    @media (max-width: 980px) { .checkout-container { padding: 1rem; gap: 1rem; } .summary-panel { position: relative; top: 0; } }
+    @media (max-width: 720px) { .checkout-container { flex-direction: column; } .payment-section { order: 2; } .summary-panel { order: 1; } }
+  </style>
+</head>
+<body>
+<header class="checkout-header">
+  <div class="breadcrumb">Home &nbsp;›&nbsp; Services &nbsp;›&nbsp; Checkout</div>
+  <h1>Checkout</h1>
+  <p class="subtitle">Review your appointment and secure your spot with a deposit or full payment.</p>
+</header>
+
+<main class="checkout-container">
+  <aside class="summary-panel">
+    <h2>Appointment Summary</h2>
+    <ul class="summary-list" id="appointmentSummary"></ul>
+    <div class="summary-total">
+      <div>
+        <div class="muted">Amount due</div>
+        <div class="small-note" id="summaryModeText"></div>
+      </div>
+      <div style="text-align:right">
+        <div class="muted">Total</div>
+        <div style="font-size:1.15rem;font-weight:800" id="summaryTotal">R0</div>
+      </div>
+    </div>
+    <p class="small-note">You will receive confirmation via SMS & Email. Deposits refundable up to 24 hours before appointment.</p>
+  </aside>
+
+  <section class="payment-section">
+    <h2>Payment</h2>
+
+    <div class="payment-options">
+      <div class="row">
+        <label><input type="radio" name="paymentType" value="deposit" checked /> Deposit Only</label>
+        <label><input type="radio" name="paymentType" value="full" /> Pay Full Amount</label>
+      </div>
+      <div class="microcopy" id="paymentMicrocopy">A deposit confirms your appointment. Remaining balance is payable at the salon.</div>
+    </div>
+
+    <form id="paymentForm" novalidate>
+      <div class="group card-inputs">
+        <h2 style="font-size:1rem;margin-bottom:0.25rem">Card Details</h2>
+        <label class="field">Cardholder Name
+          <input type="text" id="cardName" required placeholder="Full name on card">
+        </label>
+        <label class="field">Card Number
+          <input type="text" id="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456" required>
+        </label>
+        <div class="card-exp-cvc">
+          <label class="field" style="flex:1">Expiry (MM/YY)
+            <input type="text" id="cardExpiry" maxlength="5" placeholder="MM/YY" required>
+          </label>
+          <label class="field" style="width:120px">CVC
+            <input type="text" id="cardCVC" maxlength="4" placeholder="123" required>
+          </label>
+        </div>
+      </div>
+
+      <div class="group" style="margin-top:1.25rem">
+        <h2 style="font-size:1rem;margin-bottom:0.25rem">Billing Details</h2>
+        <label class="field">Name
+          <input type="text" id="billingName" placeholder="Jane Doe">
+        </label>
+        <label class="field">Email
+          <input type="email" id="billingEmail" placeholder="you@example.com">
+        </label>
+        <label class="field">Phone
+          <input type="tel" id="billingPhone" placeholder="+27 76 123 4567">
+        </label>
+        <label style="margin-top:0.6rem"><input type="checkbox" id="useForConfirmation" checked /> Use same contact for appointment confirmation</label>
+      </div>
+
+      <div class="terms" style="margin-top:1rem">
+        <label><input type="checkbox" id="agreeTerms" /> I agree to the salon’s <a href="#" id="policyLink">Cancellation & Refund Policy</a></label>
+      </div>
+
+      <div class="controls" style="margin-top:1.25rem">
+        <button class="btn-pay" id="payButton" type="submit" disabled><span id="payLabel">Confirm & Pay</span></button>
+        <button type="button" class="btn-ghost" id="payLaterBtn">Pay Later</button>
+        <div style="margin-left:auto" class="muted">Secure payment • PCI compliant</div>
+      </div>
+    </form>
+  </section>
+</main>
+
+<div class="success-modal" id="successModal">
+  <div class="success-card">
+    <div class="success-check">✓</div>
+    <h3 class="success-title">Thank you — your appointment is confirmed</h3>
+    <p id="successDetails" class="success-msg"></p>
+  </div>
+</div>
+
+<script>
+// --- Elements -------------------------------------------------------------
+const appointmentSummaryEl = document.getElementById("appointmentSummary");
+const summaryTotalEl = document.getElementById("summaryTotal");
+const modeTextEl = document.getElementById("summaryModeText");
+const paymentMicrocopyEl = document.getElementById("paymentMicrocopy");
+const payButton = document.getElementById("payButton");
+const form = document.getElementById("paymentForm");
+const successModal = document.getElementById("successModal");
+const successDetails = document.getElementById("successDetails");
+const agreeTerms = document.getElementById("agreeTerms");
+
+// --- Load logged-in client and appointment --------------------------------
+const loggedIn = JSON.parse(localStorage.getItem("gg_logged_in"));
+const clientId = loggedIn?.clientId || "guest";
+const clientName = loggedIn?.fullname || appointment?.client?.fullname || "Guest User";
+
+let appointment = JSON.parse(localStorage.getItem("appointment")) || {
+    client: { fullname: "", title: "", gender: "" },
+    contact: { phone: "", email: "" },
+    categories: [],
+    items: {},
+    styles: {},
+    itemNames: [],
+    styleNames: [],
+    date: new Date().toISOString().slice(0,10),
+    time: "--:--",
+    duration: "",
+    price: 0,
+    deposit: 0
+};
+
+// --- Helper: Format currency ---------------------------------------------
+function formatR(n) {
+    n = Number(n) || 0;
+    return "R" + n.toLocaleString("en-ZA");
+}
+
+// --- Render Appointment Summary -------------------------------------------
+function renderSummary(mode = "deposit") {
+    appointmentSummaryEl.innerHTML = "";
+
+    const clientName = appointment.client?.fullname ? `${appointment.client.title} ${appointment.client.fullname}` : "—";
+    const email = appointment.contact?.email || "—";
+    const phone = appointment.contact?.phone || "—";
+    const services = appointment.itemNames?.join(", ") || "—";
+    const styles = appointment.styleNames?.join(", ") || "—";
+
+    const summaryItems = [
+        { k: "Client", v: clientName },
+        { k: "Email", v: email },
+        { k: "Phone", v: phone },
+        { k: "Services", v: services },
+        { k: "Styles", v: styles },
+        { k: "Date & Time", v: appointment.date ? `${appointment.date} • ${appointment.time}` : "—" },
+        { k: "Duration", v: appointment.duration || "—" }
+    ];
+
+    summaryItems.forEach(item => {
+        if (!item.v || item.v === "—") return;
+        const li = document.createElement("li");
+        li.innerHTML = `<strong style="display:inline-block;width:95px;color:var(--muted);font-weight:600">${item.k}</strong> <span>${item.v}</span>`;
+        appointmentSummaryEl.appendChild(li);
+    });
+
+    // Total / Deposit
+    const deposit = appointment.deposit || Math.round(appointment.price * 0.5);
+    if (mode === "full") {
+        summaryTotalEl.textContent = formatR(appointment.price);
+        modeTextEl.textContent = "Full amount payable now";
+    } else {
+        summaryTotalEl.textContent = formatR(deposit);
+        modeTextEl.textContent = `Deposit required — ${formatR(deposit)}. Remaining ${formatR((appointment.price || 0) - deposit)} at salon`;
+    }
+}
+
+// --- Initial render --------------------------------------------------------
+renderSummary();
+
+// --- Payment Type Toggle --------------------------------------------------
+document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
+    radio.addEventListener("change", e => {
+        const mode = e.target.value;
+        paymentMicrocopyEl.textContent = mode === "deposit"
+            ? "A deposit confirms your appointment. Remaining balance is payable at the salon."
+            : "Pay everything now for a seamless experience.";
+        renderSummary(mode);
+        validateForm();
+    });
+});
+
+// --- Form Validation ------------------------------------------------------
+function validateForm() {
+    const cardName = document.getElementById("cardName").value.trim();
+    const cardNumber = document.getElementById("cardNumber").value.trim();
+    const cardExpiry = document.getElementById("cardExpiry").value.trim();
+    const cardCVC = document.getElementById("cardCVC").value.trim();
+    payButton.disabled = !(cardName && cardNumber && cardExpiry && cardCVC && agreeTerms.checked);
+}
+
+["cardName","cardNumber","cardExpiry","cardCVC"].forEach(id => {
+    document.getElementById(id).addEventListener("input", validateForm);
+});
+agreeTerms.addEventListener("change", validateForm);
+
+// --- Form Submission ------------------------------------------------------
+form.addEventListener("submit", e => {
+    e.preventDefault();
+    const mode = document.querySelector('input[name="paymentType"]:checked').value;
+
+    // Ensure arrays exist
+    appointment.itemNames = appointment.itemNames || [];
+    appointment.styleNames = appointment.styleNames || [];
+
+    // Build the confirmed appointment object
+    const confirmedAppointment = {
+        id: "apt_" + Date.now(),
+        clientId: clientId,
+        clientName: clientName,
+        ...appointment,
+        paid: mode,
+        status: "pending",
+        timestamp: new Date().toISOString()
+    };
+
+    // Save into global confirmedAppointments (array)
+    let allConfirmed = JSON.parse(localStorage.getItem("confirmedAppointments")) || [];
+    allConfirmed.push(confirmedAppointment);
+    localStorage.setItem("confirmedAppointments", JSON.stringify(allConfirmed));
+
+    // Success modal
+    successDetails.textContent = `You have successfully booked "${appointment.itemNames.join(", ") || 'service'}" on ${appointment.date} at ${appointment.time}.`;
+    successModal.style.display = "flex";
+
+    setTimeout(() => {
+        successModal.style.display = "none";
+        window.location.href = "appointments.html";
+    }, 2500);
+});
+</script>
+</body>
+</html>
