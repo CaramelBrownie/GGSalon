@@ -1,0 +1,482 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign up — God's Grace Salon</title>
+  <meta name="description" content="Sign up page for God's Grace Salon customers — create account to book services." />
+  <style>
+    *,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #fff8f3;
+  --card: #ffffff;
+  --text: #2b2b2b;
+  --muted: #6d6d6d;
+  --line: #eee6df;
+  --primary: #e44f6f;
+  --primary-2: #ff9c48;
+  --dark: #2a1f1a;
+  --accent: #f5d1b8;
+  --radius: 7px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.06);
+  --grad: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    #ff7c64 35%,
+    var(--primary-2) 100%
+  );
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.card {
+  display: flex;
+  background-color: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+  }
+}
+
+.panel-visual {
+  flex: 1;
+  background-image: var(--grad);
+  color: var(--card);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .panel-visual {
+    padding: 20px;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 900;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--card);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-soft);
+  background-image: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.panel-visual h2 {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0;
+}
+
+.lead {
+  font-size: 1.1em;
+  opacity: 0.9;
+}
+
+.form-side {
+  flex: 1.2;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--card);
+}
+
+@media (max-width: 768px) {
+  .form-side {
+    padding: 20px;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+@media (max-width: 480px) {
+  .row {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+label {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--text);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 1em;
+  color: var(--dark);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: var(--card);
+}
+
+input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15);
+}
+
+input:invalid:not(:placeholder-shown) {
+  border-color: var(--primary);
+}
+
+.tiny {
+  font-size: 0.8em;
+  color: var(--muted);
+}
+
+.pwd-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.pwd-toggle {
+  background-color: var(--line);
+  color: var(--text);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0 12px;
+  cursor: pointer;
+  font-size: 0.9em;
+  flex-shrink: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pwd-toggle:hover {
+  background-color: var(--muted);
+  color: var(--card);
+}
+
+meter {
+  height: 8px;
+  flex: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  border: none;
+}
+
+meter::-webkit-meter-bar {
+  background: var(--line);
+}
+
+meter::-webkit-meter-optimum-value,
+meter::-webkit-meter-suboptimum-value,
+meter::-webkit-meter-even-less-good-value {
+  transition: width 0.3s;
+  background-color: #f4c430; /* Medium strength default */
+}
+
+/* Example meter strength colors - must be set via JS typically */
+/* meter[value="4"]::-webkit-meter-optimum-value { background: #5cb85c; } green */
+/* meter[value="3"]::-webkit-meter-suboptimum-value { background: #f4c430; } yellow */
+/* meter[value="2"]::-webkit-meter-even-less-good-value { background: #f0ad4e; } orange */
+/* meter[value="1"]::-webkit-meter-even-less-good-value { background: var(--primary); } red */
+
+.error-msg {
+  color: var(--primary);
+  font-size: 0.8em;
+  margin-top: -4px;
+}
+
+.hidden {
+  display: none;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1em;
+}
+
+button.primary {
+  flex: 2;
+  background-image: var(--grad);
+  color: var(--card);
+  border: none;
+  box-shadow: var(--shadow-soft);
+}
+
+button.primary:hover {
+  box-shadow: 0 8px 25px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.4);
+  transform: translateY(-1px);
+}
+
+button.ghost {
+  flex: 1;
+  background-color: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+button.ghost:hover {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--dark);
+  text-decoration: underline;
+}
+
+.footer-small {
+  font-size: 0.9em;
+  text-align: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="region" aria-label="Create account card">
+      <div class="panel-visual">
+        <div class="brand">
+          <div class="logo" aria-hidden>GG</div>
+          <div>
+            <div style="font-weight:700">God's Grace Salon</div>
+            <div class="tiny">Beauty • Hair • Wellness</div>
+          </div>
+        </div>
+        <h2>Create your customer account</h2>
+        <p class="lead">Book appointments, manage your profile and pay securely.</p>
+        
+      </div><div class="form-side">
+    <h3 style="margin:0 0 12px 0">Sign up</h3>
+    <form id="signupForm" novalidate>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label for="firstName">First name</label>
+          <input id="firstName" name="first_name" type="text" placeholder="Thandi" required autocomplete="given-name" />
+        </div>
+        <div class="field" style="flex:1">
+          <label for="lastName">Last name</label>
+          <input id="lastName" name="last_name" type="text" placeholder="Dlamini" required autocomplete="family-name" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@domain.com" required autocomplete="email" />
+        <div id="emailError" class="error-msg hidden"></div>
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" type="tel" placeholder="+27 82 123 4567" autocomplete="tel" pattern="^\+?[0-9\s-]{7,20}$" />
+        <div class="tiny">International format recommended. e.g. +27821234567</div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pwd-row">
+          <input id="password" name="password" type="password" placeholder="Create a password" minlength="8" required autocomplete="new-password" style="flex:1" />
+          <button type="button" id="togglePwd" class="pwd-toggle" aria-label="Show password">Show</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+          <meter id="pwdMeter" min="0" max="4" value="0"></meter>
+          <div id="pwdText" class="tiny">Too short</div>
+        </div>
+        <div id="pwdHint" class="tiny">Use at least 8 characters, mix letters, numbers & symbols.</div>
+      </div>
+
+      <div class="field">
+        <label for="confirm">Confirm password</label>
+        <input id="confirm" name="confirm_password" type="password" placeholder="Repeat password" required autocomplete="new-password" />
+        <div id="confirmError" class="error-msg hidden"></div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" type="submit">Create account</button>
+        <button type="button" class="ghost" id="clearBtn">Clear</button>
+      </div>
+
+      <div id="status" class="status" aria-live="polite"></div>
+
+      <input type="hidden" name="created_at" id="createdAtInput" />
+    </form>
+
+    <div class="footer-small">Already have an account? <a href="login.html">Log in</a></div>
+
+    <div style="margin-top:16px;font-size:13px;color:var(--muted)">
+      
+    </div>
+  </div>
+</div>
+
+  </div>  
+  
+  <script>
+  const form = document.getElementById("signupForm");
+  const pwd = document.getElementById("password");
+  const confirmPwd = document.getElementById("confirm");
+  const meter = document.getElementById("pwdMeter");
+  const pwdText = document.getElementById("pwdText");
+  const emailInput = document.getElementById("email");
+  const emailError = document.getElementById("emailError");
+  const confirmError = document.getElementById("confirmError");
+
+  // --- Password strength ---
+  function passwordScore(pw) {
+    let score = 0;
+    if (!pw) return 0;
+    if (pw.length >= 8) score++;
+    if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
+    if (/\d/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    return Math.min(score, 4);
+  }
+
+  function updatePwdMeter() {
+    const s = passwordScore(pwd.value);
+    meter.value = s;
+    const labels = ["Very weak", "Weak", "Okay", "Good", "Strong"];
+    pwdText.textContent = labels[s];
+  }
+  pwd.addEventListener("input", updatePwdMeter);
+
+  // --- Helpers ---
+  function saveAccounts(accounts) {
+    localStorage.setItem("accounts", JSON.stringify(accounts));
+  }
+  function loadAccounts() {
+    return JSON.parse(localStorage.getItem("accounts")) || [];
+  }
+  function generateUserId() {
+    return 'user-' + Date.now(); // unique user ID
+  }
+
+  // --- Form submit ---
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (pwd.value !== confirmPwd.value) {
+      confirmError.textContent = "Passwords do not match";
+      confirmError.classList.remove("hidden");
+      return;
+    } else {
+      confirmError.classList.add("hidden");
+    }
+
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const phone = document.getElementById("phone").value.trim();
+    const password = pwd.value;
+
+    const accounts = loadAccounts();
+    if (accounts.some(acc => acc.email === email)) {
+      emailError.textContent = "Account already exists.";
+      emailError.classList.remove("hidden");
+      return;
+    }
+
+    // --- Create account with unique ID ---
+    const account = { 
+      id: generateUserId(),      // 🔑 unique user ID
+      name: `${firstName} ${lastName}`, 
+      email, 
+      phone, 
+      password 
+    };
+
+    accounts.push(account);
+    saveAccounts(accounts);
+
+    // Log them in immediately
+    localStorage.setItem("gg_logged_in", JSON.stringify(account));
+
+    // Redirect to home
+    window.location.href = "home.html";
+  });
+</script>
+  
+  </body>
+</html>
+
