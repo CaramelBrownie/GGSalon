@@ -24,6 +24,7 @@
     font-family: 'Georgia', serif;
     font-size: 2rem;
     margin: 0;
+    margin-left: -25px;
   }
   .header p {
     margin: 0.5rem 0 0;
@@ -184,13 +185,15 @@
 
 <!-- Header -->
 <header class="header">
-  <h1>My Appointments</h1>
+    <h1>
+    <a onclick="window.history.back()" style="font-weight:900;color:#000;cursor:pointer;">《</a>
+  My Appointments</h1>
   <p>Track all your past, current, and pending appointments. Book a new one anytime.</p>
-  <div class="breadcrumb">Home &gt; My Account &gt; Appointments</div>
+  <div class="breadcrumb"><a href="home.html">Home</a> &gt; <a href="profile.html">My Account</a> &gt; <a href="#appointments">Appointments </a></div>
 </header>
 
 <!-- Tabs -->
-<div class="tabs">
+<div class="tabs" id="appointments">
   <div class="tab active" data-tab="pending">Pending <span class="badge">0</span></div>
   <div class="tab" data-tab="completed">Completed <span class="badge">0</span></div>
   <div class="tab" data-tab="canceled">Canceled <span class="badge">0</span></div>
@@ -207,59 +210,106 @@
 <a href="booking.html" class="floating-cta">+ New Appointment</a>
 
 <script>
-// --- Elements ---
-const appointmentsListEl = document.getElementById("appointmentsList");
-const noAppointmentsEl = document.getElementById("noAppointments");
+// --- Tabs ---
+const tabs = document.querySelectorAll(".tab");
+const tabContents = document.querySelectorAll(".tab-content");
 
-// --- Load logged-in client ---
-const loggedIn = JSON.parse(localStorage.getItem("gg_logged_in"));
-const clientId = loggedIn?.clientId || null;
-
-if (!clientId) {
-    appointmentsListEl.innerHTML = "<p>Please log in to view your appointments.</p>";
-} else {
-    renderAppointments();
+// --- Load logged-in client safely ---
+let loggedIn;
+try {
+    loggedIn = JSON.parse(localStorage.getItem("gg_logged_in") || "null");
+} catch {
+    loggedIn = null;
 }
+// Use account.id instead of clientId
+const clientId = loggedIn?.id || "guest";  
 
-// --- Helper: Load all appointments ---
+// --- Load all appointments safely ---
 function loadAppointments() {
-    return JSON.parse(localStorage.getItem("confirmedAppointments")) || [];
+    let all = [];
+    try {
+        all = JSON.parse(localStorage.getItem("confirmedAppointments") || "[]");
+        if (!Array.isArray(all)) all = [];
+    } catch {
+        all = [];
+    }
+    return all;
 }
 
-// --- Render Customer's Appointments ---
+// --- Render Appointments ---
 function renderAppointments() {
     const allAppointments = loadAppointments();
-    const clientAppointments = allAppointments.filter(a => a.clientId === clientId);
 
-    appointmentsListEl.innerHTML = "";
+    // Filter appointments for this client safely
+    const clientAppointments = allAppointments.filter(
+        a => String(a.clientId || "guest") === String(clientId)
+    );
+
+    // Clear tab contents
+    tabContents.forEach(tc => tc.innerHTML = "");
+
+    // Count badges
+    const counts = { pending: 0, completed: 0, canceled: 0, unapproved: 0 };
 
     if (clientAppointments.length === 0) {
-        noAppointmentsEl.style.display = "block";
-        noAppointmentsEl.innerHTML = "<p>You don’t have any appointments yet.</p>";
+        tabContents.forEach(tc => tc.innerHTML = "<div class='empty-state'>You don’t have any appointments yet.</div>");
+        tabs.forEach(tab => tab.querySelector(".badge").textContent = 0);
         return;
-    } else {
-        noAppointmentsEl.style.display = "none";
     }
 
     clientAppointments.forEach(app => {
-        const li = document.createElement("li");
-        li.className = "appointment-card";
+        const status = app.status || "pending";
+        counts[status] = (counts[status] || 0) + 1;
 
+        const container = document.getElementById(status);
+        const card = document.createElement("div");
+        card.className = "appointment-card";
         const services = app.itemNames?.join(", ") || "—";
         const styles = app.styleNames?.join(", ") || "—";
-        const status = app.status || "pending";
 
-        li.innerHTML = `
+        card.innerHTML = `
+            <div class="appointment-thumb">📅</div>
             <div class="appointment-info">
                 <h3>${services}</h3>
                 <p><strong>Date:</strong> ${app.date} at ${app.time}</p>
                 <p><strong>Styles:</strong> ${styles}</p>
-                <p><strong>Status:</strong> <span class="status ${status}">${status}</span></p>
             </div>
+            <span class="status-badge ${status}">${status}</span>
         `;
-        appointmentsListEl.appendChild(li);
+        container.appendChild(card);
     });
+
+    // Update badges
+    tabs.forEach(tab => {
+        const tabName = tab.dataset.tab;
+        tab.querySelector(".badge").textContent = counts[tabName] || 0;
+    });
+
+    // Auto-select first tab that has appointments
+    let activeSet = false;
+    tabs.forEach(tab => {
+        const tabName = tab.dataset.tab;
+        if (!activeSet && counts[tabName] > 0) {
+            setActiveTab(tab);
+            activeSet = true;
+        }
+    });
+    if (!activeSet) setActiveTab(tabs[0]);
 }
+
+// --- Tab Switching ---
+function setActiveTab(tab) {
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    tabContents.forEach(tc => tc.classList.remove("active"));
+    document.getElementById(tab.dataset.tab).classList.add("active");
+}
+
+// Attach click events to tabs
+tabs.forEach(tab => tab.addEventListener("click", () => setActiveTab(tab)));
+
+// --- Initial render ---
+renderAppointments();
 </script>
 </body>
 </html>
