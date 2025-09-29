@@ -393,88 +393,162 @@ a:hover {
   </div>  
   
   <script>
-  const form = document.getElementById("signupForm");
-  const pwd = document.getElementById("password");
-  const confirmPwd = document.getElementById("confirm");
-  const meter = document.getElementById("pwdMeter");
-  const pwdText = document.getElementById("pwdText");
-  const emailInput = document.getElementById("email");
-  const emailError = document.getElementById("emailError");
-  const confirmError = document.getElementById("confirmError");
+const form = document.getElementById("signupForm");
+const pwd = document.getElementById("password");
+const confirmPwd = document.getElementById("confirm");
+const meter = document.getElementById("pwdMeter");
+const pwdText = document.getElementById("pwdText");
+const emailInput = document.getElementById("email");
+const emailError = document.getElementById("emailError");
+const confirmError = document.getElementById("confirmError");
+const phoneInput = document.getElementById("phone");
+const firstNameInput = document.getElementById("firstName");
+const lastNameInput = document.getElementById("lastName");
 
-  // --- Password strength ---
-  function passwordScore(pw) {
-    let score = 0;
-    if (!pw) return 0;
-    if (pw.length >= 8) score++;
-    if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
-    if (/\d/.test(pw)) score++;
-    if (/[^A-Za-z0-9]/.test(pw)) score++;
-    return Math.min(score, 4);
-  }
+// --- Password strength ---
+function passwordScore(pw) {
+  let score = 0;
+  if (!pw) return 0;
+  if (pw.length >= 8) score++;
+  if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
+  if (/\d/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  return Math.min(score, 4);
+}
 
-  function updatePwdMeter() {
-    const s = passwordScore(pwd.value);
-    meter.value = s;
-    const labels = ["Very weak", "Weak", "Okay", "Good", "Strong"];
-    pwdText.textContent = labels[s];
-  }
-  pwd.addEventListener("input", updatePwdMeter);
+function updatePwdMeter() {
+  const s = passwordScore(pwd.value);
+  meter.value = s;
+  const labels = ["Very weak", "Weak", "Okay", "Good", "Strong"];
+  pwdText.textContent = labels[s];
+}
+pwd.addEventListener("input", updatePwdMeter);
 
-  // --- Helpers ---
-  function saveAccounts(accounts) {
-    localStorage.setItem("accounts", JSON.stringify(accounts));
-  }
-  function loadAccounts() {
-    return JSON.parse(localStorage.getItem("accounts")) || [];
-  }
-  function generateUserId() {
-    return 'user-' + Date.now(); // unique user ID
-  }
+// --- Helpers ---
+function saveAccounts(accounts) {
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+}
+function loadAccounts() {
+  return JSON.parse(localStorage.getItem("accounts")) || [];
+}
+function generateUserId() {
+  return 'user-' + Date.now();
+}
 
-  // --- Form submit ---
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+// --- Field validation ---
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email.toLowerCase());
+}
 
-    if (pwd.value !== confirmPwd.value) {
-      confirmError.textContent = "Passwords do not match";
-      confirmError.classList.remove("hidden");
-      return;
-    } else {
-      confirmError.classList.add("hidden");
-    }
+function validatePhone(phone) {
+  return phone === "" || /^\+?[0-9\s-]{7,20}$/.test(phone);
+}
 
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const email = emailInput.value.trim().toLowerCase();
-    const phone = document.getElementById("phone").value.trim();
-    const password = pwd.value;
-
-    const accounts = loadAccounts();
-    if (accounts.some(acc => acc.email === email)) {
-      emailError.textContent = "Account already exists.";
-      emailError.classList.remove("hidden");
-      return;
-    }
-
-    // --- Create account with unique ID ---
-    const account = { 
-      id: generateUserId(),      // 🔑 unique user ID
-      name: `${firstName} ${lastName}`, 
-      email, 
-      phone, 
-      password 
-    };
-
-    accounts.push(account);
-    saveAccounts(accounts);
-
-    // Log them in immediately
-    localStorage.setItem("gg_logged_in", JSON.stringify(account));
-
-    // Redirect to home
-    window.location.href = "home.html";
+// --- Clear previous errors ---
+function clearErrors() {
+  [firstNameInput, lastNameInput, emailInput, phoneInput, pwd, confirmPwd].forEach(input => {
+    input.classList.remove("input-error");
   });
+  [emailError, confirmError, document.getElementById("firstNameError"), document.getElementById("lastNameError"), document.getElementById("phoneError")].forEach(err => {
+    if (err) { err.style.display = "none"; err.textContent = ""; }
+  });
+}
+
+// --- Add error elements ---
+[firstNameInput, lastNameInput, phoneInput].forEach(input => {
+  const errDiv = document.createElement("div");
+  errDiv.className = "error-msg";
+  errDiv.id = input.id + "Error";
+  input.parentNode.appendChild(errDiv);
+});
+
+// --- Form submit ---
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  clearErrors();
+
+  const firstName = firstNameInput.value.trim();
+  const lastName = lastNameInput.value.trim();
+  const email = emailInput.value.trim().toLowerCase();
+  const phone = phoneInput.value.trim();
+  const password = pwd.value;
+  const confirmPassword = confirmPwd.value;
+
+  let hasError = false;
+
+  if (!firstName) {
+    const err = document.getElementById("firstNameError");
+    err.textContent = "First name is required.";
+    err.style.display = "block";
+    firstNameInput.classList.add("input-error");
+    hasError = true;
+  }
+
+  if (!lastName) {
+    const err = document.getElementById("lastNameError");
+    err.textContent = "Last name is required.";
+    err.style.display = "block";
+    lastNameInput.classList.add("input-error");
+    hasError = true;
+  }
+
+  if (!validateEmail(email)) {
+    emailError.textContent = "Please enter a valid email address.";
+    emailError.style.display = "block";
+    emailInput.classList.add("input-error");
+    hasError = true;
+  }
+
+  if (!validatePhone(phone)) {
+    const err = document.getElementById("phoneError");
+    err.textContent = "Please enter a valid phone number.";
+    err.style.display = "block";
+    phoneInput.classList.add("input-error");
+    hasError = true;
+  }
+
+  if (passwordScore(password) < 3) {
+    const err = document.getElementById("pwdHint");
+    err.textContent = "Password too weak. Use letters, numbers & symbols.";
+    err.style.color = "#e44f6f";
+    pwd.classList.add("input-error");
+    hasError = true;
+  }
+
+  if (password !== confirmPassword) {
+    confirmError.textContent = "Passwords do not match.";
+    confirmError.style.display = "block";
+    confirmPwd.classList.add("input-error");
+    hasError = true;
+  }
+
+  const accounts = loadAccounts();
+  if (accounts.some(acc => acc.email === email)) {
+    emailError.textContent = "Account already exists.";
+    emailError.style.display = "block";
+    emailInput.classList.add("input-error");
+    hasError = true;
+  }
+
+  if (hasError) return;
+
+  // --- Create account ---
+  const account = { 
+    id: generateUserId(),
+    name: `${firstName} ${lastName}`, 
+    email, 
+    phone, 
+    password 
+  };
+
+  accounts.push(account);
+  saveAccounts(accounts);
+  localStorage.setItem("gg_logged_in", JSON.stringify(account));
+
+  // Redirect
+  window.location.href = "home.html";
+});
 </script>
   
   </body>
