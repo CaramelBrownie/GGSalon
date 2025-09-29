@@ -175,12 +175,14 @@ const successModal = document.getElementById("successModal");
 const successDetails = document.getElementById("successDetails");
 const agreeTerms = document.getElementById("agreeTerms");
 
-// --- Load logged-in client and appointment --------------------------------
-const loggedIn = JSON.parse(localStorage.getItem("gg_logged_in"));
-const clientId = loggedIn?.clientId || "guest";
-const clientName = loggedIn?.fullname || appointment?.client?.fullname || "Guest User";
-
-let appointment = JSON.parse(localStorage.getItem("appointment")) || {
+// --- Load appointment safely ----------------------------------------------
+let appointment;
+try {
+    appointment = JSON.parse(localStorage.getItem("appointment"));
+} catch(e) {
+    appointment = null;
+}
+appointment = appointment || {
     client: { fullname: "", title: "", gender: "" },
     contact: { phone: "", email: "" },
     categories: [],
@@ -195,6 +197,11 @@ let appointment = JSON.parse(localStorage.getItem("appointment")) || {
     deposit: 0
 };
 
+// --- Load logged-in client ------------------------------------------------
+const loggedIn = JSON.parse(localStorage.getItem("gg_logged_in"));
+const clientId = loggedIn?.clientId || "guest";
+const clientName = loggedIn?.fullname || appointment?.client?.fullname || "Guest User";
+
 // --- Helper: Format currency ---------------------------------------------
 function formatR(n) {
     n = Number(n) || 0;
@@ -205,14 +212,16 @@ function formatR(n) {
 function renderSummary(mode = "deposit") {
     appointmentSummaryEl.innerHTML = "";
 
-    const clientName = appointment.client?.fullname ? `${appointment.client.title} ${appointment.client.fullname}` : "—";
+    const clientNameDisplay = appointment.client?.fullname 
+        ? `${appointment.client.title} ${appointment.client.fullname}` 
+        : "—";
     const email = appointment.contact?.email || "—";
     const phone = appointment.contact?.phone || "—";
-    const services = appointment.itemNames?.join(", ") || "—";
-    const styles = appointment.styleNames?.join(", ") || "—";
+    const services = appointment.itemNames?.length ? appointment.itemNames.join(", ") : "—";
+    const styles = appointment.styleNames?.length ? appointment.styleNames.join(", ") : "—";
 
     const summaryItems = [
-        { k: "Client", v: clientName },
+        { k: "Client", v: clientNameDisplay },
         { k: "Email", v: email },
         { k: "Phone", v: phone },
         { k: "Services", v: services },
@@ -228,7 +237,6 @@ function renderSummary(mode = "deposit") {
         appointmentSummaryEl.appendChild(li);
     });
 
-    // Total / Deposit
     const deposit = appointment.deposit || Math.round(appointment.price * 0.5);
     if (mode === "full") {
         summaryTotalEl.textContent = formatR(appointment.price);
@@ -273,11 +281,9 @@ form.addEventListener("submit", e => {
     e.preventDefault();
     const mode = document.querySelector('input[name="paymentType"]:checked').value;
 
-    // Ensure arrays exist
     appointment.itemNames = appointment.itemNames || [];
     appointment.styleNames = appointment.styleNames || [];
 
-    // Build the confirmed appointment object
     const confirmedAppointment = {
         id: "apt_" + Date.now(),
         clientId: clientId,
@@ -288,12 +294,10 @@ form.addEventListener("submit", e => {
         timestamp: new Date().toISOString()
     };
 
-    // Save into global confirmedAppointments (array)
     let allConfirmed = JSON.parse(localStorage.getItem("confirmedAppointments")) || [];
     allConfirmed.push(confirmedAppointment);
     localStorage.setItem("confirmedAppointments", JSON.stringify(allConfirmed));
 
-    // Success modal
     successDetails.textContent = `You have successfully booked "${appointment.itemNames.join(", ") || 'service'}" on ${appointment.date} at ${appointment.time}.`;
     successModal.style.display = "flex";
 
