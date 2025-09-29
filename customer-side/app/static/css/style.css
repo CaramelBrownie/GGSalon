@@ -693,6 +693,104 @@ footer {
   margin-bottom: 1rem;
 }
 
+
+
+/* Scoped styles for the About section */
+.ggs-about {
+  max-width: 1100px;
+  margin: 3.5rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: var(--card, #ffffff);
+  box-shadow: 0 6px 24px rgba(42, 31, 26, 0.06);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial;
+}
+.ggs-about .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.ggs-about .card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+.ggs-about .cta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+.ggs-btn {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.ggs-btn.primary {
+  background: var(--primary, #e44f6f);
+  color: white;
+}
+.ggs-btn.ghost {
+  border: 1px solid var(--line, #eee6df);
+  background: transparent;
+  color: var(--text, #2b2b2b);
+}
+.ggs-team {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.ggs-team img {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.muted {
+  color: var(--muted, #6d6d6d);
+}
+.meta {
+  font-size: 0.9rem;
+  color: var(--muted, #6d6d6d);
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 900px) {
+  .ggs-about .grid {
+    grid-template-columns: 1fr 360px;
+  }
+}
+.ggs-about h2 {
+  font-size: 1.75rem;
+  margin: 0 0 0.25rem;
+  color: var(--dark, #2a1f1a);
+}
+.ggs-about p.lead {
+  margin: 0 0 1rem;
+  color: var(--muted, #6d6d6d);
+  line-height: 1.5;
+}
+.ggs-about .cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.ggs-about .card {
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.98)
+  );
+}
+
 @media (max-width: 980px) {
   .container {
     margin: 0 20px;
@@ -757,98 +855,4 @@ footer {
   .features {
     grid-template-columns: 1fr;
   }
-}
-
-/* Scoped styles for the About section */
-.ggs-about {
-  max-width: 1100px;
-  margin: 3.5rem auto;
-  padding: 2rem;
-  border-radius: 12px;
-  background: var(--card, #ffffff);
-  box-shadow: 0 6px 24px rgba(42, 31, 26, 0.06);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial;
-}
-.ggs-about .grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  align-items: center;
-}
-@media (min-width: 900px) {
-  .ggs-about .grid {
-    grid-template-columns: 1fr 360px;
-  }
-}
-.ggs-about h2 {
-  font-size: 1.75rem;
-  margin: 0 0 0.25rem;
-  color: var(--dark, #2a1f1a);
-}
-.ggs-about p.lead {
-  margin: 0 0 1rem;
-  color: var(--muted, #6d6d6d);
-  line-height: 1.5;
-}
-.ggs-about .cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-.ggs-about .card {
-  padding: 1rem;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.9),
-    rgba(255, 255, 255, 0.98)
-  );
-}
-.ggs-about .card h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1rem;
-}
-.ggs-about .cta {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  margin-top: 1.25rem;
-}
-.ggs-btn {
-  display: inline-block;
-  padding: 0.6rem 1rem;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: 600;
-}
-.ggs-btn.primary {
-  background: var(--primary, #e44f6f);
-  color: white;
-}
-.ggs-btn.ghost {
-  border: 1px solid var(--line, #eee6df);
-  background: transparent;
-  color: var(--text, #2b2b2b);
-}
-.ggs-team {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-.ggs-team img {
-  width: 72px;
-  height: 72px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-.muted {
-  color: var(--muted, #6d6d6d);
-}
-.meta {
-  font-size: 0.9rem;
-  color: var(--muted, #6d6d6d);
-  margin-top: 0.5rem;
 }
