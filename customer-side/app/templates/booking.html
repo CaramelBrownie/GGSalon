@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -8,7 +8,11 @@
   <meta name="description" content="Premium 8-step booking flow for God's Grace Salon" />
   <style>
     :root{
-      --bg:#fffaf8; --card:#ffffff; --text:#222; --muted:#6d6d6d; --line:#eee6df; --primary:#e44f6f; --accent:#ff9c48; --success:#1f8f4a;
+      --bg:#ffffff; 
+      --card:#ffffff; 
+      --text:#222; --muted:#6d6d6d; --line:#eee6df; --primary:#e44f6f; --accent:#ff9c48; --success:#1f8f4a;
+      /* NEW ERROR COLOR VARIABLE */
+      --error: #d32f2f; 
       font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     }
     *{box-sizing:border-box}
@@ -19,29 +23,80 @@
     .muted{color:var(--muted)}
     .wizard{display:flex;gap:20px}
     .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(23,23,23,0.06)}
-    .steps{flex:1}
-    .progress-wrap{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .steps{flex:1; background:transparent; border-radius:0; padding:0; box-shadow:none;}
+    .progress-wrap{display:flex;align-items:center;gap:12px;margin-bottom:12px; padding-top:10px;}
     .progress-track{background:var(--line);height:10px;border-radius:999px;flex:1;position:relative}
     .progress-bar{background:linear-gradient(90deg,var(--primary),var(--accent));height:100%;width:0;border-radius:999px}
     .step-ind{min-width:88px;text-align:right;font-weight:600}
-    .step{display:none}
+    .step{display:none; padding:18px 0; border-top:1px solid var(--line);} 
     .step.active{display:block}
     label{display:block;margin-bottom:6px;font-weight:600}
     input[type=text], input[type=email], input[type=tel], select{width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);margin-bottom:12px}
+    /* NEW: Error styles for inputs */
+    input.error, select.error {
+        border-color: var(--error) !important;
+        box-shadow: 0 0 0 1px var(--error);
+    }
+    /* NEW: Error message label style */
+    .error-message {
+        color: var(--error);
+        font-size: 0.85rem;
+        margin-top: -6px; 
+        margin-bottom: 12px;
+        display: block;
+        font-weight: 500;
+    }
+
     .row{display:flex;gap:12px}
     .col{flex:1}
     .btn{padding:10px 12px;border-radius:8px;border:1px solid transparent;background:#f3f3f3;cursor:pointer}
     .btn-primary{background:var(--primary);color:#fff;border:0}
     .btn-ghost{background:transparent;border:1px solid var(--line)}
-    .aside{width:340px}
+    .aside{width:340px; background:transparent; border-radius:0; padding:0; box-shadow:none;}
+    /* Summary background is transparent/matching the body */
+    .summary{padding:18px; background:transparent; border-radius:0; box-shadow:none; border:0;} 
+    .summary-list{border-top:1px solid var(--line); padding-top:10px;}
     .summary h3{margin-top:0}
-    .summary-list{display:flex;flex-direction:column;gap:8px}
     .summary-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line)}
     .cats{display:flex;flex-wrap:wrap;gap:8px}
-    .cat{border:1px solid var(--line);padding:12px;border-radius:8px;min-width:180px;cursor:pointer}
+    /* UPDATED CAT STYLES FOR IMAGE */
+    .cat{
+        border:1px solid var(--line);
+        border-radius:8px;
+        min-width:180px;
+        cursor:pointer;
+        display: flex; 
+        flex-direction: column;
+        overflow: hidden;
+        padding: 0; 
+    }
+    .cat-image-wrap {
+        width: 100%;
+        height: 100px; 
+        overflow: hidden;
+    }
+    .cat-image-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    .cat-content {
+        padding: 12px; 
+    }
     .cat.selected{border-color:var(--accent);box-shadow:0 6px 14px rgba(255,156,72,0.06)}
+    /* NEW: Error style for categories wrap */
+    .cats.error {
+      border: 1px solid var(--error);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    /* END UPDATED CAT STYLES */
     .items, .styles{display:flex;flex-direction:column;gap:8px}
     .item{display:flex;justify-content:space-between;padding:12px;border:1px solid var(--line);border-radius:8px}
+    .item.error { border-color: var(--error) !important; } /* NEW: Error for item list */
     .tiny{font-size:0.85rem;color:var(--muted)}
     .timeslots{display:flex;flex-wrap:wrap;gap:8px}
     .note{background:#fff7f7;padding:8px;border-radius:8px;border:1px solid #ffeaea}
@@ -49,7 +104,57 @@
     .top-actions{display:flex;gap:8px}
     .cancel{background:transparent;border:1px solid #f3d4d9;color:var(--muted)}
     .big{font-size:1.25rem;font-weight:700}
-    @media(max-width:980px){.container{grid-template-columns:1fr;}.aside{width:100%}}
+    .summary-separator{border:0; border-top:1px solid var(--line); margin: 20px 0;}
+    @media(max-width:980px){.container{grid-template-columns:1fr;}.aside{width:100%; margin-top:20px;}} 
+    
+    /* --- MODAL STYLES --- */
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(4px); 
+        -webkit-backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-backdrop.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    .modal-content {
+        background: var(--card);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+    }
+    .modal-backdrop.visible .modal-content {
+        transform: scale(1);
+    }
+    .modal-actions {
+        display: flex;
+        justify-content: space-around;
+        gap: 12px;
+        margin-top: 20px;
+    }
+    .btn-danger {
+        background: var(--error);
+        color: #fff;
+        border: 0;
+    }
+    /* -------------------------- */
   </style>
 </head>
 <body>
@@ -64,135 +169,149 @@
           <div class="muted">Progress: <span id="stepText">1/8</span></div>
           <a class="btn btn-ghost" href="home.html">Return to site</a>
         </div>
-      </header><div class="card steps">
-    <div class="progress-wrap">
-      <div style="display:flex;gap:8px;align-items:center">
-        <div class="muted">Step</div>
-        <div class="step-ind" id="stepIndicator">1 — Client Info</div>
-      </div>
-      <div class="progress-track" aria-hidden>
-        <div id="progBar" class="progress-bar"></div>
-      </div>
-    </div>
+      </header>
+      
+      <hr class="summary-separator" style="margin-top:0;">
 
-    <!-- Step 1: Client Info -->
-    <section class="step active" id="step-1">
-      <h2>1. Client information</h2>
-      <p class="muted">We need basic identity info. Short and professional — no surprises.</p>
-      <label for="fullname">Full name</label>
-      <input id="fullname" type="text" placeholder="e.g. Thabo Mokoena" />
-      <div class="row">
-        <div class="col">
-          <label for="title">Title</label>
-          <select id="title"><option value="Mr">Mr</option><option value="Mrs">Mrs</option><option value="Ms">Ms</option><option value="Miss">Miss</option><option value="Dr">Dr</option></select>
-        </div>
-        <div class="col">
-          <label>Gender</label>
-          <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
-            <label><input type="radio" name="gender" value="male"> Male</label>
-            <label><input type="radio" name="gender" value="female"> Female</label>
-            <label><input type="radio" name="gender" value="other"> Other / Prefer not to say</label>
+      <div class="steps">
+        <div class="progress-wrap">
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="muted">Step</div>
+            <div class="step-ind" id="stepIndicator">1 — Client Info</div>
+          </div>
+          <div class="progress-track" aria-hidden>
+            <div id="progBar" class="progress-bar"></div>
           </div>
         </div>
+
+        <section class="step active" id="step-1">
+          <h2>1. Client information</h2>
+          <p class="muted">We need basic identity info. Short and professional — no surprises.</p>
+          <label for="fullname">Full name</label>
+          <input id="fullname" type="text" placeholder="e.g. Thabo Mokoena" />
+          <div id="error-fullname" class="error-message"></div> <div class="row">
+            <div class="col">
+              <label for="title">Title</label>
+              <select id="title"><option value="Mr">Mr</option><option value="Mrs">Mrs</option><option value="Ms">Ms</option><option value="Miss">Miss</option><option value="Dr">Dr</option></select>
+            </div>
+            <div class="col">
+              <label>Gender</label>
+              <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
+                <label><input type="radio" name="gender" value="male"> Male</label>
+                <label><input type="radio" name="gender" value="female"> Female</label>
+                <label><input type="radio" name="gender" value="other"> Other / Prefer not to say</label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" id="step-2">
+          <h2>2. Contact information</h2>
+          <label for="phone">Phone number</label>
+          <input id="phone" type="tel" placeholder="e.g. +27 82 123 4567" />
+          <div id="error-phone" class="error-message"></div> <label for="email">Email</label>
+          <input id="email" type="email" placeholder="e.g. you@example.com" />
+          <div id="error-email" class="error-message"></div> <label>Preferred reminders</label>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
+            <label><input type="radio" name="reminder" value="email_inapp"> Email + In-App</label>
+            <label><input type="radio" name="reminder" value="inapp"> In-App only</label>
+          </div>
+        </section>
+
+        <section class="step" id="step-3">
+          <h2>3. Choose service categories</h2>
+          <p class="muted">Select one or more service categories you want to book from.</p>
+          <div class="cats" id="categories"></div>
+          <div id="error-categories" class="error-message"></div> </section>
+
+        <section class="step" id="step-4">
+          <h2>4. Choose one item per selected category</h2>
+          <p class="muted">For each category you selected, pick a single service item.</p>
+          <div id="itemsWrap"></div>
+          <div id="error-items" class="error-message"></div> </section>
+
+        <section class="step" id="step-5">
+          <h2>5. Choose a style for each selected item</h2>
+          <p class="muted">Pick one style per selected item (e.g. nail art style, braiding pattern, cut style).</p>
+          <div id="stylesWrap"></div>
+          <div id="error-styles" class="error-message"></div> </section>
+
+        <section class="step" id="step-6">
+          <h2>6. Date & time</h2>
+          <p class="muted">Pick a day and then choose an available time slot (times computed from total duration).</p>
+          <label for="date">Date</label>
+          <input id="date" type="date" />
+          <div id="error-date" class="error-message"></div> <div id="timeslots" class="timeslots" style="margin-top:12px"></div>
+          <div id="error-time" class="error-message"></div> </section>
+
+        <section class="step" id="step-7">
+          <h2>7. Quick summary & confirm</h2>
+          <div id="confirmSummary"></div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn btn-ghost" id="editBtn">Edit selections</button>
+            <button class="btn btn-primary" id="toCheckout">Proceed to checkout</button>
+          </div>
+        </section>
+
+        <footer class="wizard-actions">
+          <div class="top-actions">
+            <button class="btn btn-ghost" id="backBtn">Back</button>
+            <button class="btn cancel" id="cancelBtn">Cancel booking</button>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn" id="saveDraft">Save draft</button>
+            <button class="btn btn-primary" id="nextBtn">Next</button>
+          </div>
+        </footer>
       </div>
-    </section>
+      
+      <hr class="summary-separator">
 
-    <!-- Step 2: Contact Info -->
-    <section class="step" id="step-2">
-      <h2>2. Contact information</h2>
-      <label for="phone">Phone number</label>
-      <input id="phone" type="tel" placeholder="e.g. +27 82 123 4567" />
-      <label for="email">Email</label>
-      <input id="email" type="email" placeholder="e.g. you@example.com" />
-      <label>Preferred reminders</label>
-      <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
-        <label><input type="radio" name="reminder" value="email_inapp"> Email + In-App</label>
-        <label><input type="radio" name="reminder" value="inapp"> In-App only</label>
+    </div>
+    
+    <aside class="aside">
+      <div class="summary" id="floatingSummary">
+        <h3>Booking summary</h3>
+        <div class="summary-list" id="summaryList">
+          <div class="summary-item"><div class="muted">Client</div><div id="sumClient">—</div></div>
+          <div class="summary-item"><div class="muted">Contact</div><div id="sumContact">—</div></div>
+          <div class="summary-item"><div class="muted">Categories</div><div id="sumCats">—</div></div>
+          <div class="summary-item"><div class="muted">Items</div><div id="sumItems">—</div></div>
+          <div class="summary-item"><div class="muted">Styles</div><div id="sumStyles">—</div></div>
+          <div class="summary-item"><div class="muted">Duration</div><div id="sumDuration">0 min</div></div>
+          <div class="summary-item"><div class="muted">Estimate</div><div id="sumPrice">R0.00</div></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
+          <div class="muted">Estimate only</div>
+          <div><button class="btn btn-ghost" id="editSelection">Edit</button></div>
+        </div>
       </div>
-    </section>
-
-    <!-- Step 3: Main Services (multiple select) -->
-    <section class="step" id="step-3">
-      <h2>3. Choose service categories</h2>
-      <p class="muted">Select one or more service categories you want to book from.</p>
-      <div class="cats" id="categories"></div>
-    </section>
-
-    <!-- Step 4: Service items (one per selected category) -->
-    <section class="step" id="step-4">
-      <h2>4. Choose one item per selected category</h2>
-      <p class="muted">For each category you selected, pick a single service item.</p>
-      <div id="itemsWrap"></div>
-    </section>
-
-    <!-- Step 5: Styles for each selected item -->
-    <section class="step" id="step-5">
-      <h2>5. Choose a style for each selected item</h2>
-      <p class="muted">Pick one style per selected item (e.g. nail art style, braiding pattern, cut style).</p>
-      <div id="stylesWrap"></div>
-    </section>
-
-    <!-- Step 6: Date & Time -->
-    <section class="step" id="step-6">
-      <h2>6. Date & time</h2>
-      <p class="muted">Pick a day and then choose an available time slot (times computed from total duration).</p>
-      <label for="date">Date</label>
-      <input id="date" type="date" />
-      <div id="timeslots" class="timeslots" style="margin-top:12px"></div>
-    </section>
-
-    <!-- Step 7: Quick summary & confirm -->
-    <section class="step" id="step-7">
-      <h2>7. Quick summary & confirm</h2>
-      <div id="confirmSummary"></div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button class="btn btn-ghost" id="editBtn">Edit selections</button>
-        <button class="btn btn-primary" id="toCheckout">Proceed to checkout</button>
+      <div style="margin-top:20px; display:flex; flex-direction:column; gap:8px;">
+          <div id="bookingStartMarker" class="btn btn-ghost" style="text-align:left; justify-content:flex-start; pointer-events:none;">📍 Booking Starts Here</div>
+          <div id="bookingEndMarker" class="btn btn-ghost" style="text-align:left; justify-content:flex-start; pointer-events:none;">🏁 Booking Ends Here</div>
       </div>
-    </section>
+    </aside>
 
-    <!-- Step 8 is the external checkout redirect -->
-
-    <footer class="wizard-actions">
-      <div class="top-actions">
-        <button class="btn btn-ghost" id="backBtn">Back</button>
-        <button class="btn cancel" id="cancelBtn">Cancel booking</button>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn" id="saveDraft">Save draft</button>
-        <button class="btn btn-primary" id="nextBtn">Next</button>
-      </div>
-    </footer>
   </div>
-</div>
 
-<aside class="card summary aside">
-  <h3>Booking summary</h3>
-  <div class="summary-list" id="summaryList">
-    <div class="summary-item"><div class="muted">Client</div><div id="sumClient">—</div></div>
-    <div class="summary-item"><div class="muted">Contact</div><div id="sumContact">—</div></div>
-    <div class="summary-item"><div class="muted">Categories</div><div id="sumCats">—</div></div>
-    <div class="summary-item"><div class="muted">Items</div><div id="sumItems">—</div></div>
-    <div class="summary-item"><div class="muted">Styles</div><div id="sumStyles">—</div></div>
-    <div class="summary-item"><div class="muted">Duration</div><div id="sumDuration">0 min</div></div>
-    <div class="summary-item"><div class="muted">Estimate</div><div id="sumPrice">R0.00</div></div>
+  <div id="customModal" class="modal-backdrop">
+      <div class="modal-content">
+          <h3>Confirm Cancellation</h3>
+          <p class="muted">Are you sure you want to cancel this booking? All your selections will be lost.</p>
+          <div class="modal-actions">
+              <button class="btn btn-ghost" id="modalNo">No, keep editing</button>
+              <button class="btn btn-danger" id="modalYes">Yes, cancel booking</button>
+          </div>
+      </div>
   </div>
-  <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:12px">
-    <div class="muted">Estimate only</div>
-    <div><button class="btn btn-ghost" id="editSelection">Edit</button></div>
-  </div>
-</aside>
-
-  </div>
-  
   <script>
       // --- Data model ------------------------------------------------------------
 const CATEGORIES = [
-  {id:'glow', name:'Glow Studio'},
-  {id:'crown', name:'Crown Collective'},
-  {id:'nail', name:'Nail Couture'},
-  {id:'gent', name:"Gentleman's Den"},
-  {id:'divine', name:'Divine Styles'}
+  {id:'glow', name:'Glow Studio', img:'/static/images/categories/glow_studio.jpg'},
+  {id:'crown', name:'Crown Collective', img:'../static/images/categories/crown_collective.jpg'},
+  {id:'nail', name:'Nail Couture', img:'/static/images/categories/nail_couture.jpg'},
+  {id:'gent', name:"Gentleman's Den", img:'/static/images/categories/gentlemans_den.jpg'},
+  {id:'divine', name:'Divine Styles', img:'/static/images/categories/divine_styles.jpg'}
 ];
 
 const ITEMS = {
@@ -268,6 +387,31 @@ function calcTotals(){
   return {totalPrice, totalDuration};
 }
 
+// --- NEW: Error Handling Functions ------------------------------------------
+function displayError(fieldId, message) {
+    const fieldEl = $(fieldId);
+    const errorEl = $(`error-${fieldId}`);
+    if (fieldEl) fieldEl.classList.add('error');
+    if (errorEl) errorEl.textContent = message;
+}
+
+function clearErrors(stepNum) {
+    const stepEl = $(`step-${stepNum}`);
+    if (!stepEl) return;
+    
+    // Clear input/select errors
+    stepEl.querySelectorAll('input.error, select.error').forEach(el => el.classList.remove('error'));
+    // Clear error messages
+    stepEl.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+    // Clear category/item list errors
+    const catEl = $('categories');
+    if(catEl) catEl.classList.remove('error');
+    const itemsWrap = $('itemsWrap');
+    if(itemsWrap) itemsWrap.querySelectorAll('.item.error').forEach(el => el.classList.remove('error'));
+    const timeslotsEl = $('timeslots');
+    if(timeslotsEl) timeslotsEl.classList.remove('error');
+}
+
 // --- Rendering ----------------------------------------------------------
 function updateProgress(){
   const prog = (state.step-1)/7*100;
@@ -283,10 +427,22 @@ function updateProgress(){
 }
 
 function renderCategories(){
+  clearErrors(3); // Clear errors for step 3 on render
   const wrap = $('categories'); wrap.innerHTML='';
   CATEGORIES.forEach(c=>{
-    const el = document.createElement('div'); el.className='cat'+(state.categories.includes(c.id)? ' selected':'');
-    el.innerHTML = `<div style="font-weight:700;margin-bottom:6px">${c.name}</div><div class='tiny'>Select to include this category in your booking</div>`;
+    const el = document.createElement('div'); 
+    el.className='cat'+(state.categories.includes(c.id)? ' selected':'');
+    
+    el.innerHTML = `
+      <div class="cat-image-wrap">
+          <img src="${c.img}" alt="${c.name}">
+      </div>
+      <div class="cat-content">
+          <div style="font-weight:700;margin-bottom:6px">${c.name}</div>
+          <div class='tiny'>Select to include this category in your booking</div>
+      </div>
+    `;
+
     el.addEventListener('click', ()=>{
       const idx = state.categories.indexOf(c.id);
       if(idx>-1){ state.categories.splice(idx,1); delete state.items[c.id]; }
@@ -298,20 +454,33 @@ function renderCategories(){
 }
 
 function renderItems(){
+  clearErrors(4); // Clear errors for step 4 on render
   const wrap = $('itemsWrap'); wrap.innerHTML='';
   if(state.categories.length===0){ wrap.innerHTML='<div class="muted">Please pick at least one category first (Step 3).</div>'; return; }
   state.categories.forEach(catId=>{
     const cat = CATEGORIES.find(c=>c.id===catId);
     const box = document.createElement('div'); box.style.marginBottom='12px';
     box.innerHTML = `<div style="font-weight:700;margin-bottom:8px">${cat.name}</div>`;
+    
+    // NEW: Add a specific error message div for each category's items
+    const catErrorEl = document.createElement('div');
+    catErrorEl.id = `error-item-cat-${catId}`;
+    catErrorEl.className = 'error-message';
+    box.appendChild(catErrorEl);
+
     const list = ITEMS[catId]||[];
     const itemsWrap = document.createElement('div'); itemsWrap.className='items';
     list.forEach(it=>{
-      const d = document.createElement('div'); d.className='item';
-      d.innerHTML = `<div><div style='font-weight:700'>${it.name}</div><div class='tiny'>${minsToStr(it.duration)} • ${money(it.price)}</div></div><div><input type='radio' name='item-${catId}' value='${it.id}' ${state.items[catId]===it.id? 'checked':''}></div>`;
+      const isSelected = state.items[catId]===it.id;
+      const d = document.createElement('div'); 
+      d.className='item'+ (isSelected ? ' selected' : '');
+      d.setAttribute('data-category-id', catId); // Used for validation styling
+      d.innerHTML = `<div><div style='font-weight:700'>${it.name}</div><div class='tiny'>${minsToStr(it.duration)} • ${money(it.price)}</div></div><div><input type='radio' name='item-${catId}' value='${it.id}' ${isSelected? 'checked':''}></div>`;
       d.querySelector('input').addEventListener('change', (e)=>{
         state.items[catId] = e.target.value;
-        renderStyles(); syncSummary();
+        renderItems(); // Re-render to update 'selected' class
+        renderStyles(); 
+        syncSummary();
       });
       itemsWrap.appendChild(d);
     });
@@ -321,6 +490,7 @@ function renderItems(){
 }
 
 function renderStyles(){
+  clearErrors(5); // Clear errors for step 5 on render
   const wrap = $('stylesWrap'); wrap.innerHTML='';
   const selectedItems = Object.values(state.items).filter(Boolean);
   if(selectedItems.length===0){ wrap.innerHTML='<div class="muted">No items selected. Go back to Step 4 and pick at least one item for each category.</div>'; return; }
@@ -329,11 +499,25 @@ function renderStyles(){
     const list = STYLES[itemId] || STYLES.default;
     const box = document.createElement('div'); box.style.marginBottom='12px';
     box.innerHTML = `<div style="font-weight:700;margin-bottom:8px">Style for: ${item.name}</div>`;
+    
+    // NEW: Add a specific error message div for each item's style
+    const styleErrorEl = document.createElement('div');
+    styleErrorEl.id = `error-style-item-${itemId}`;
+    styleErrorEl.className = 'error-message';
+    box.appendChild(styleErrorEl);
+
     const swrap = document.createElement('div'); swrap.className='styles';
     list.forEach(s=>{
-      const row = document.createElement('div'); row.className='item';
-      row.innerHTML = `<div><div style='font-weight:700'>${s.name}</div><div class='tiny'>Choose one</div></div><div><input type='radio' name='style-${itemId}' value='${s.id}' ${state.styles[itemId]===s.id? 'checked':''}></div>`;
-      row.querySelector('input').addEventListener('change',(e)=>{ state.styles[itemId]=e.target.value; syncSummary(); });
+      const isSelected = state.styles[itemId]===s.id;
+      const row = document.createElement('div'); 
+      row.className='item'+(isSelected? ' selected':'');
+      row.setAttribute('data-item-id', itemId); // Used for validation styling
+      row.innerHTML = `<div><div style='font-weight:700'>${s.name}</div><div class='tiny'>Choose one</div></div><div><input type='radio' name='style-${itemId}' value='${s.id}' ${isSelected? 'checked':''}></div>`;
+      row.querySelector('input').addEventListener('change',(e)=>{ 
+        state.styles[itemId]=e.target.value; 
+        renderStyles(); // Re-render to update 'selected' class
+        syncSummary(); 
+      });
       swrap.appendChild(row);
     });
     box.appendChild(swrap);
@@ -342,6 +526,7 @@ function renderStyles(){
 }
 
 function generateTimeSlots(dateStr){
+  clearErrors(6); // Clear errors for step 6 on render
   const totals = calcTotals();
   const totalMin = totals.totalDuration;
   const el = $('timeslots'); el.innerHTML='';
@@ -358,7 +543,17 @@ function generateTimeSlots(dateStr){
   slots.forEach(s=>{
     const b = document.createElement('button'); b.className='btn'; b.style.margin=0; b.innerText=s;
     if(state.date===dateStr && state.time===s) b.className='btn btn-primary';
-    b.addEventListener('click', ()=>{ state.date=dateStr; state.time=s; syncSummary(); renderConfirmSummary(); generateTimeSlots(dateStr); });
+    b.addEventListener('click', ()=>{ 
+        state.date=dateStr; 
+        state.time=s; 
+        // NEW: Clear time error when a slot is picked
+        $('error-time').textContent = '';
+        $('timeslots').classList.remove('error');
+
+        syncSummary(); 
+        renderConfirmSummary(); 
+        generateTimeSlots(dateStr); 
+    });
     el.appendChild(b);
   });
 }
@@ -395,16 +590,94 @@ function syncSummary(){
   $('sumPrice').innerText = money(totals.totalPrice);
 }
 
+// --- NEW: Validation Logic ------------------------------------------------
+function validateStep(stepNum) {
+    clearErrors(stepNum);
+    let hasError = false;
+
+    if (stepNum === 1) {
+        if (!state.client.fullname.trim()) {
+            displayError('fullname', 'Please enter your full name. This field is required.');
+            hasError = true;
+        }
+    } else if (stepNum === 2) {
+        if (!state.contact.phone.trim()) {
+            displayError('phone', 'Please enter a phone number so we can contact you.');
+            hasError = true;
+        }
+        if (!state.contact.email.trim()) {
+            displayError('email', 'Please enter your email address. It is required for reminders.');
+            hasError = true;
+        } else if (!state.contact.email.includes('@') || !state.contact.email.includes('.')) {
+            displayError('email', 'Please enter a valid email address (e.g., name@domain.com).');
+            hasError = true;
+        }
+    } else if (stepNum === 3) {
+        if (state.categories.length === 0) {
+            displayError('categories', 'You must select at least one service category to proceed.');
+            $('categories').classList.add('error'); // Highlight the whole category area
+            hasError = true;
+        }
+    } else if (stepNum === 4) {
+        const missing = state.categories.filter(c => !state.items[c]);
+        if (missing.length > 0) {
+            displayError('items', `Please select a service item for all ${missing.length} selected categories.`);
+            // Highlight the items area for missing selections
+            missing.forEach(catId => {
+              const itemRows = document.querySelectorAll(`#itemsWrap [data-category-id][data-category-id="${catId}"]`);
+              itemRows.forEach(row => row.classList.add('error'));
+              $(`error-item-cat-${catId}`).textContent = 'Selection required for this category.';
+            });
+            hasError = true;
+        }
+    } else if (stepNum === 5) {
+        const selectedItems = Object.values(state.items).filter(Boolean);
+        const missing = selectedItems.filter(it => {
+            const stylesList = STYLES[it] || STYLES.default;
+            return stylesList.length > 1 && !state.styles[it];
+        });
+        if (missing.length > 0) {
+            displayError('styles', `Please select a style for all ${missing.length} selected service items.`);
+            // Highlight the style area for missing selections
+            missing.forEach(itemId => {
+                const styleRows = document.querySelectorAll(`#stylesWrap [data-item-id][data-item-id="${itemId}"]`);
+                styleRows.forEach(row => row.classList.add('error'));
+                $(`error-style-item-${itemId}`).textContent = 'Style selection is required.';
+            });
+            hasError = true;
+        }
+    } else if (stepNum === 6) {
+        if (!state.date) {
+            displayError('date', 'Please select a date for your appointment.');
+            hasError = true;
+        }
+        if (!state.time) {
+            displayError('time', 'Please select an available time slot.');
+            $('timeslots').classList.add('error'); // Highlight the timeslots area
+            hasError = true;
+        }
+    }
+
+    return !hasError;
+}
+// --- END: Validation Logic ------------------------------------------------
+
 // --- Navigation ----------------------------------------------------------
 function goToStep(n){
   if(n>state.step){
-    if(state.step===1 && !state.client.fullname.trim()){ alert('Please enter full name.'); return; }
-    if(state.step===2 && (!state.contact.phone.trim() || !state.contact.email.trim())){ alert('Please enter phone & email.'); return; }
-    if(state.step===3 && state.categories.length===0){ alert('Please select at least one category.'); return; }
-    if(state.step===4){ const missing=state.categories.filter(c=>!state.items[c]); if(missing.length){ alert('Pick one item for each category.'); return; } }
-    if(state.step===5){ const missing=Object.values(state.items).filter(it=>!state.styles[it]); if(missing.length){ alert('Pick a style for each selected item.'); return; } }
-    if(state.step===6 && (!state.date || !state.time)){ alert('Pick date & time.'); return; }
+    if(!validateStep(state.step)){
+        // If validation fails, scroll the user to the error area
+        const firstErrorEl = document.querySelector(`#step-${state.step} .error, #step-${state.step} .error-message:not(:empty)`);
+        if(firstErrorEl) firstErrorEl.scrollIntoView({behavior: 'smooth', block: 'center'});
+        return; 
+    }
   }
+
+  // NEW: Clear errors on the next step when moving backward
+  if(n < state.step) {
+      clearErrors(state.step);
+  }
+
   state.step = n;
   updateProgress();
   if(n===3) renderCategories();
@@ -414,22 +687,57 @@ function goToStep(n){
   syncSummary();
 }
 
+// --- MODAL FUNCTIONS ----------------------------------------------------
+function showCancelModal() {
+    $('customModal').classList.add('visible');
+}
+
+function hideCancelModal() {
+    $('customModal').classList.remove('visible');
+}
+
+function executeCancel() {
+    localStorage.removeItem('salon_draft_v2');
+    window.location.href='home.html';
+}
+
 // --- DOM Events ----------------------------------------------------------
 document.addEventListener('DOMContentLoaded', ()=>{
   updateProgress();
   renderCategories();
   syncSummary();
 
-  $('fullname').addEventListener('input', e=>{ state.client.fullname=e.target.value; syncSummary(); });
+  // NEW: Add event listeners to clear errors on input/change
+  const requiredInputs = ['fullname', 'phone', 'email', 'date'];
+  requiredInputs.forEach(id => {
+      const el = $(id);
+      if (el) {
+          el.addEventListener('input', e => { 
+              state.client[id] = e.target.value; // For fullname
+              state.contact[id] = e.target.value; // For phone/email
+              if (el.classList.contains('error')) {
+                  el.classList.remove('error');
+                  $(`error-${id}`).textContent = '';
+              }
+              if (id !== 'date') syncSummary();
+          });
+      }
+  });
+
+
   $('title').addEventListener('change', e=>{ state.client.title=e.target.value; syncSummary(); });
   Array.from(document.getElementsByName('gender')).forEach(n=>n.addEventListener('change', e=>{ state.client.gender=e.target.value; }));
-  $('phone').addEventListener('input', e=>{ state.contact.phone=e.target.value; syncSummary(); });
-  $('email').addEventListener('input', e=>{ state.contact.email=e.target.value; syncSummary(); });
   Array.from(document.getElementsByName('reminder')).forEach(n=>n.addEventListener('change', e=>{ state.contact.reminder=e.target.value; }));
 
   $('nextBtn').addEventListener('click', ()=>{
     if(state.step<7) goToStep(state.step+1);
     else if(state.step===7){
+      // Re-validate step 6 on final confirmation before checkout
+      if(!validateStep(6)){
+          goToStep(6);
+          return;
+      }
+
       const totals = calcTotals();
       const user = JSON.parse(localStorage.getItem('gg_logged_in'));
       const appointment = {
@@ -453,15 +761,28 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   $('backBtn').addEventListener('click', ()=>{ if(state.step>1) goToStep(state.step-1); });
   $('saveDraft').addEventListener('click', ()=>{ localStorage.setItem('salon_draft_v2', JSON.stringify(state)); alert('Draft saved locally.'); });
-  $('cancelBtn').addEventListener('click', ()=>{ if(confirm('Cancel this booking? All changes will be lost.')){ localStorage.removeItem('salon_draft_v2'); window.location.href='home.html'; } });
+  
+  // MODIFIED: Show custom modal instead of native confirm()
+  $('cancelBtn').addEventListener('click', showCancelModal); 
+  
+  // Modal action buttons
+  $('modalYes').addEventListener('click', executeCancel);
+  $('modalNo').addEventListener('click', hideCancelModal);
+
   $('editSelection').addEventListener('click', ()=> goToStep(4));
   $('editBtn').addEventListener('click', ()=> goToStep(4));
-  $('toCheckout').addEventListener('click', ()=>{ const totals = calcTotals(); const user = JSON.parse(localStorage.getItem('gg_logged_in')); const appointment={ client:state.client, contact:state.contact, categories:state.categories, items:state.items, styles:state.styles, date:state.date, time:state.time, duration: minsToStr(totals.totalDuration), price:totals.totalPrice, clientId:user?.id || null }; localStorage.setItem('appointment', JSON.stringify(appointment)); window.location.href='checkout.html'; });
+  $('toCheckout').addEventListener('click', ()=>{ 
+    if(!validateStep(6)){ // Final validation check
+        goToStep(6);
+        return;
+    }
+    const totals = calcTotals(); const user = JSON.parse(localStorage.getItem('gg_logged_in')); const appointment={ client:state.client, contact:state.contact, categories:state.categories, items:state.items, styles:state.styles, date:state.date, time:state.time, duration: minsToStr(totals.totalDuration), price:totals.totalPrice, clientId:user?.id || null }; localStorage.setItem('appointment', JSON.stringify(appointment)); window.location.href='checkout.html'; 
+  });
 
   $('date').addEventListener('change', e=>generateTimeSlots(e.target.value));
 
   try{ const raw=localStorage.getItem('salon_draft_v2'); if(raw){ Object.assign(state, JSON.parse(raw)); renderCategories(); renderItems(); renderStyles(); syncSummary(); } }catch(e){}
 });
   </script>  
-  </body>
+</body>
 </html>
