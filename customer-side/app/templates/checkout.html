@@ -63,17 +63,79 @@
     .btn-pay { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #fff; border: 0; padding: 0.95rem 1.6rem; font-weight: 700; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.6rem; }
     .btn-pay:disabled { opacity: 0.55; cursor: not-allowed; }
 
+    /* Style for Cancel Payment button */
+    .btn-ghost { background: transparent; color: var(--muted); border: none; padding: 0.95rem 1.6rem; font-weight: 600; }
+    
+    /* --- COMMON MODAL STYLING (Used by both success and cancel modals) --- */
+    .modal-backdrop { 
+        position: fixed; inset: 0; display: none; align-items: center; 
+        justify-content: center; background: rgba(0, 0, 0, 0.45); z-index: 2000; 
+    }
+    .modal-card { 
+        background: var(--card); padding: 2rem; border-radius: 12px; 
+        max-width: 520px; width: 94%; text-align: center; box-shadow: var(--shadow); 
+        border: 1px solid #efe7df; 
+    }
+    .success-check { 
+        width: 88px; height: 88px; border-radius: 999px; 
+        background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); 
+        display: grid; place-items: center; margin: 0 auto 1rem; color: #fff; 
+        font-size: 2.25rem; 
+    }
+    .success-title, .cancel-title { 
+        font-family: "Playfair Display", serif; font-size: 1.25rem; margin-top: 0.25rem; 
+    }
+    .success-msg, .cancel-msg { color: var(--muted); margin-top: 0.5rem; }
+
+    /* --- NEW CANCEL MODAL SPECIFIC STYLING --- */
+    .cancel-buttons {
+        display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;
+    }
+    .btn-primary { 
+        padding: 0.75rem 1.5rem; border-radius: 999px; font-weight: 600; 
+        border: none;
+    }
+    #confirmCancelBtn {
+        background-color: #d85050; /* A clear cancel/danger color */
+        color: white;
+    }
+    #keepPaymentBtn {
+        background: var(--bg);
+        border: 1px solid #ccc;
+        color: var(--text);
+    }
+    
     .terms { margin-top: 1rem; font-size: 0.92rem; color: var(--muted); }
     .terms a { color: var(--text); text-decoration: underline; font-weight: 600; }
 
-    .success-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.45); z-index: 2000; }
-    .success-card { background: var(--card); padding: 2rem; border-radius: 12px; max-width: 520px; width: 94%; text-align: center; box-shadow: var(--shadow); border: 1px solid #efe7df; }
-    .success-check { width: 88px; height: 88px; border-radius: 999px; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); display: grid; place-items: center; margin: 0 auto 1rem; color: #fff; font-size: 2.25rem; }
-    .success-title { font-family: "Playfair Display", serif; font-size: 1.25rem; margin-top: 0.25rem; }
-    .success-msg { color: var(--muted); margin-top: 0.5rem; }
+    .critical-card-details {
+      background: transparent !important; 
+      border: none !important; 
+      padding: 0 !important; 
+      box-shadow: none !important; 
+    }
 
-    @media (max-width: 980px) { .checkout-container { padding: 1rem; gap: 1rem; } .summary-panel { position: relative; top: 0; } }
-    @media (max-width: 720px) { .checkout-container { flex-direction: column; } .payment-section { order: 2; } .summary-panel { order: 1; } }
+    /* RESPONSIVE FIXES */
+    @media (max-width: 980px) {
+      .checkout-container { padding: 1rem; gap: 1rem; }
+      .summary-panel { position: relative; top: 0; }
+    }
+    
+    /* SUMMARY PANEL POSITION (Desktop/Tablet) */
+    @media (min-width: 981px) {
+      .checkout-container {
+        flex-direction: row; 
+      }
+      .payment-section { order: 1; } 
+      .summary-panel { order: 2; } 
+    }
+    
+    /* SUMMARY PANEL POSITION (Mobile) */
+    @media (max-width: 720px) {
+      .checkout-container { flex-direction: column; } 
+      .payment-section { order: 2; } 
+      .summary-panel { order: 1; } 
+    }
   </style>
 </head>
 <body>
@@ -112,7 +174,8 @@
     </div>
 
     <form id="paymentForm" novalidate>
-      <div class="group card-inputs">
+      
+      <div class="group card-inputs critical-card-details">
         <h2 style="font-size:1rem;margin-bottom:0.25rem">Card Details</h2>
         <label class="field">Cardholder Name
           <input type="text" id="cardName" required placeholder="Full name on card">
@@ -150,20 +213,32 @@
 
       <div class="controls" style="margin-top:1.25rem">
         <button class="btn-pay" id="payButton" type="submit" disabled><span id="payLabel">Confirm & Pay</span></button>
-        <button type="button" class="btn-ghost" id="payLaterBtn">Pay Later</button>
+        <button type="button" class="btn-ghost" id="payLaterBtn">Cancel Payment</button>
         <div style="margin-left:auto" class="muted">Secure payment • PCI compliant</div>
       </div>
     </form>
   </section>
 </main>
 
-<div class="success-modal" id="successModal">
-  <div class="success-card">
+<div class="modal-backdrop" id="successModal">
+  <div class="modal-card">
     <div class="success-check">✓</div>
     <h3 class="success-title">Thank you — your appointment is confirmed</h3>
     <p id="successDetails" class="success-msg"></p>
   </div>
 </div>
+
+<div class="modal-backdrop" id="cancelConfirmationModal">
+    <div class="modal-card">
+        <h3 class="cancel-title" style="color:#d85050;">Wait! Are You Sure?</h3>
+        <p class="cancel-msg">If you cancel now, your appointment slot will be lost and you will need to book again.</p>
+        <div class="cancel-buttons">
+            <button id="keepPaymentBtn" class="btn-primary" type="button">Keep Appointment</button>
+            <button id="confirmCancelBtn" class="btn-primary" type="button">Yes, Cancel Appointment</button>
+        </div>
+    </div>
+</div>
+
 
 <script>
 // --- Elements -------------------------------------------------------------
@@ -176,6 +251,10 @@ const form = document.getElementById("paymentForm");
 const successModal = document.getElementById("successModal");
 const successDetails = document.getElementById("successDetails");
 const agreeTerms = document.getElementById("agreeTerms");
+const payLaterBtn = document.getElementById("payLaterBtn"); 
+const cancelConfirmationModal = document.getElementById("cancelConfirmationModal"); // NEW
+const confirmCancelBtn = document.getElementById("confirmCancelBtn"); // NEW
+const keepPaymentBtn = document.getElementById("keepPaymentBtn"); // NEW
 
 // --- Load appointment safely ----------------------------------------------
 let appointment;
@@ -201,7 +280,7 @@ appointment = appointment || {
 
 // --- Load logged-in client ------------------------------------------------
 const loggedIn = JSON.parse(localStorage.getItem("gg_logged_in") || "null");
-const clientId = loggedIn?.clientId || "guest";
+const clientId = loggedIn?.id || "guest";   
 const clientName = loggedIn?.fullname || appointment?.client?.fullname || "Guest User";
 
 // --- Helper: Format currency ---------------------------------------------
@@ -289,7 +368,7 @@ form.addEventListener("submit", e => {
 
     const confirmedAppointment = {
         id: "apt_" + Date.now(),
-        clientId: clientId,
+        clientId: clientId,      
         clientName: clientName,
         ...appointment,
         paid: mode,
@@ -317,6 +396,26 @@ form.addEventListener("submit", e => {
         successModal.style.display = "none";
         window.location.href = "appointments.html";
     }, 2500);
+});
+
+// --- NEW FIX: Custom Cancel Payment Confirmation Modal Logic ----------------
+payLaterBtn.addEventListener('click', () => {
+    // Show the custom modal
+    cancelConfirmationModal.style.display = "flex";
+});
+
+// Listener for the "Yes, Cancel Appointment" button
+confirmCancelBtn.addEventListener('click', () => {
+    // Close the modal and redirect
+    cancelConfirmationModal.style.display = "none";
+    // Redirect to home.html as requested
+    window.location.href = "home.html"; 
+});
+
+// Listener for the "Keep Appointment" button
+keepPaymentBtn.addEventListener('click', () => {
+    // Just close the modal, allowing the user to return to the form
+    cancelConfirmationModal.style.display = "none";
 });
 </script>
 </body>
