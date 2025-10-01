@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../static/css/style.css" />
     
     <style>
+      /* --- Custom Modal Styling --- */
       .custom-modal {
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
@@ -730,6 +731,28 @@
       </div>
     </div>
     
+    <div id="logoutConfirmationModal" class="custom-modal" style="display: none;">
+      <div class="custom-modal-content">
+        <span class="close-modal-btn" data-action="cancel">&times;</span>
+        <h2 class="modal-title">Ready to Leave? 👋</h2>
+        <p class="modal-message">
+          You're about to log out of **God's Grace Salon**. Your current session will end.
+          <br><br>
+          **Note:** Any unsaved booking details will be lost.
+        </p>
+
+        <div class="modal-actions">
+          <button id="confirmLogoutBtn" class="btn btn-danger">
+            <span aria-hidden="true">🚪</span> Yes, Log Out
+          </button>
+
+          <button id="cancelLogoutBtn" class="btn btn-secondary">
+            <span aria-hidden="true">↩️</span> Stay Logged In
+          </button>
+        </div>
+      </div>
+    </div>
+    
     <script>
       // Function to explicitly close the mobile menu
       function closeMobileMenu() {
@@ -737,32 +760,68 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        // Desktop elements
+        // --- Setup Elements ---
+        // Logout Modal Elements (NEW)
+        const logoutModal = document.getElementById("logoutConfirmationModal");
+        const confirmLogoutBtn = document.getElementById("confirmLogoutBtn");
+        const cancelLogoutBtn = document.getElementById("cancelLogoutBtn");
+        const closeModalBtns = logoutModal.querySelectorAll(".close-modal-btn");
+        
+        // Navigation/User Elements
         const accountBtn = document.getElementById("accountBtn");
         const userProfile = document.getElementById("userProfile");
         const profileBtn = userProfile ? userProfile.querySelector('.profile-btn') : null; 
         const logoutBtnDesktop = document.getElementById("logoutBtnDesktop");
-
-        // Mobile elements
         const mobileAccountBtn = document.getElementById("mobileAccountBtn");
         const mobileUserProfile = document.getElementById("mobileUserProfile");
         const logoutBtnMobile = document.getElementById("logoutBtnMobile");
 
         let user = JSON.parse(localStorage.getItem("gg_logged_in"));
 
-        const handleLogout = (e) => {
-          e.preventDefault();
-          localStorage.removeItem("gg_logged_in");
-          // Redirect to homepage after logout
-          window.location.href = "home.html";
+        // --- Logout Modal Functions ---
+        const showLogoutModal = () => {
+            logoutModal.style.display = "flex";
         };
 
-        // Attach event listeners to both logout buttons
-        if (logoutBtnDesktop)
-          logoutBtnDesktop.addEventListener("click", handleLogout);
-        if (logoutBtnMobile)
-          logoutBtnMobile.addEventListener("click", handleLogout);
+        const hideLogoutModal = () => {
+            logoutModal.style.display = "none";
+        };
+        
+        // --- Core Logout Logic ---
+        const confirmLogout = () => {
+          localStorage.removeItem("gg_logged_in");
+          // Redirect to homepage after successful logout
+          window.location.href = "home.html"; // Use index.html or the primary home page URL
+        };
+        
+        // --- Logout Button Handler (Shows the modal) ---
+        const handleLogoutClick = (e) => {
+          e.preventDefault();
+          showLogoutModal();
+        };
 
+        // --- Attach Logout Event Listeners ---
+        if (logoutBtnDesktop)
+          logoutBtnDesktop.addEventListener("click", handleLogoutClick);
+        if (logoutBtnMobile)
+          logoutBtnMobile.addEventListener("click", handleLogoutClick);
+          
+        // Modal action handlers
+        confirmLogoutBtn.addEventListener("click", confirmLogout);
+        cancelLogoutBtn.addEventListener("click", hideLogoutModal);
+        
+        // Close modal when clicking the 'x' button
+        closeModalBtns.forEach(btn => btn.addEventListener("click", hideLogoutModal));
+
+        // Close modal when clicking outside of the content
+        window.addEventListener("click", (event) => {
+          if (logoutModal.style.display === "flex" && event.target === logoutModal) {
+            hideLogoutModal();
+          }
+        });
+
+
+        // --- User State Management ---
         if (user) {
           // Ensure user has a unique id (retained from previous fix)
           if (!user.id) {
@@ -780,7 +839,7 @@
           accountBtn.style.display = "none";
           userProfile.style.display = "block";
           
-          // NEW FIX: Add click listener to desktop profile button
+          // Add click listener to desktop profile button
           if (profileBtn) {
               profileBtn.addEventListener('click', () => {
                   userProfile.classList.toggle('open');
@@ -824,7 +883,7 @@
         // 1. Get elements
         const modal = document.getElementById("bookingAccessModal");
         const bookTriggers = document.querySelectorAll(".book-trigger");
-        const closeModalBtn = document.querySelector(".close-modal-btn");
+        const closeModalBtn = document.querySelector("#bookingAccessModal .close-modal-btn");
         const modalLoginBtn = document.getElementById("modalLoginBtn");
         const modalGuestBtn = document.getElementById("modalGuestBtn");
 
@@ -856,7 +915,7 @@
         });
 
         // 5. Modal close handlers (for when the modal is visible)
-        closeModalBtn.addEventListener("click", hideModal);
+        if(closeModalBtn) closeModalBtn.addEventListener("click", hideModal);
 
         // Close the modal if the user clicks anywhere outside of the content box
         window.addEventListener("click", (event) => {
