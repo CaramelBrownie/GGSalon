@@ -14,7 +14,80 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/style.css" />
+    
+    <style>
+      .custom-modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1001; /* High z-index to sit on top of everything */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent overlay */
+        backdrop-filter: blur(2px); /* Subtle blur effect */
+        /* Center the modal content using flex */
+        align-items: center;
+        justify-content: center;
+      }
+
+      .custom-modal-content {
+        background-color: white;
+        margin: 0 auto; 
+        padding: 30px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+        text-align: center;
+      }
+
+      .modal-title {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--color-primary);
+      }
+
+      .modal-message {
+        color: var(--color-text);
+        margin-bottom: 20px;
+      }
+
+      .modal-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .modal-actions .btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-weight: 600;
+      }
+
+      .close-modal-btn {
+        color: #aaa;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 30px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+
+      .close-modal-btn:hover {
+        color: var(--color-danger);
+      }
+    </style>
+  </head>
   <body>
     <header>
       <nav class="container nav" aria-label="Primary">
@@ -36,32 +109,49 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
 
-         <div>
-         
-<div id="userProfile" class="user-profile drop desktop-view" style="padding:0.1rem; display:none">
-  <button class="profile-btn">
-    <img src="../static/img/avatar.jpg" alt="User Avatar" class="avatar" />
-    <h1> <span class="user-name"></span></h1>
-    <span class="dropdown-icon">▼</span>
-  </button>
+        <div class="desktop-right-controls">
+          <div
+            id="userProfile"
+            class="user-profile drop desktop-view"
+            style="display: none"
+          >
+            <button
+              class="profile-btn"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <img
+                src="../static/img/avatar.jpg"
+                alt="User Avatar"
+                class="avatar"
+              />
+              <span class="user-name"></span>
+              <span class="dropdown-icon">▼</span>
+            </button>
 
-  <ul class="profile-dropdown">
-    <li><a href="profile.html">Profile</a></li>
-    <li><a href="appointments.html">My Appointments</a></li>
-    <li><a id="logoutBtn">Logout</a></li>
-  </ul>
-</div>
+            <ul class="profile-dropdown">
+              <li><a href="profile.html">Profile</a></li>
+              <li><a href="appointments.html">My Appointments</a></li>
+              <li><a id="logoutBtnDesktop">Logout</a></li>
+            </ul>
+          </div>
 
-<!-- Account button -->
-<a id="accountBtn" class="btn btn-secondary desktop-view" href="login.html" aria-label="Login Account">Account</a>
+          <a
+            id="accountBtn"
+            class="btn btn-secondary desktop-view"
+            href="login.html"
+            aria-label="Login Account"
+            style="display: inline-block"
+            >Account</a
+          >
 
-        <a
-          class="btn btn-primary desktop-view"
-          href="booking.html"
-          aria-label="Book appointment now"
-          >Book Now</a
-        >
-         </div>
+          <button
+            id="desktopBookBtn"
+            class="btn btn-primary desktop-view book-trigger"
+            aria-label="Book appointment now"
+            >Book Now</button
+          >
+        </div>
 
         <button
           class="mobile-toggle"
@@ -74,23 +164,40 @@
 
       <div class="mobile-menu" aria-hidden="true">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#home" onclick="closeMobileMenu()">Home</a></li>
+          <li><a href="#services" onclick="closeMobileMenu()">Services</a></li>
+          <li><a href="#about" onclick="closeMobileMenu()">About</a></li>
+          <li><a href="#gallery" onclick="closeMobileMenu()">Gallery</a></li>
+          <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
         </ul>
+
         <a
+          id="mobileAccountBtn"
           class="btn btn-secondary"
           href="login.html"
-          style="margin-top: 12px; width: 100%"
+          style="margin-top: 12px; width: 100%; display: block;"
+          onclick="closeMobileMenu()"
           >Account</a
         >
-        <a
-          class="btn btn-primary"
-          href="booking.html"
+
+        <div
+          id="mobileUserProfile"
+          class="user-Profile mobile-user btn-secondary"
+          style="display: none; margin-top: 12px; width: 100%; display: block;"
+        >
+          <a href="profile.html" style="display: flex; align-items: center; justify-content: start; gap: 8px;">
+            <img src="../static/img1/stylists/Yeager.jpg" alt="User Profile Image" style="width: 32px; height: 32px; border-radius: 50%;">
+            <span class="user-name">Profile</span>
+          </a>
+          <a id="logoutBtnMobile" style="margin-top: 8px; color: var(--color-danger); display: block; text-align: center; cursor: pointer;">Logout</a>
+        </div>
+
+        <button
+          id="mobileBookBtn"
+          class="btn btn-primary book-trigger"
           style="margin-top: 12px; width: 100%"
-          >Book Now</a
+          onclick="closeMobileMenu()"
+          >Book Now</button
         >
       </div>
     </header>
@@ -111,26 +218,31 @@
               <svg viewBox="0 0 24 24" width="18" height="18">
                 <path
                   d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                  fill="url(#g1)"
                 />
               </svg>
               <svg viewBox="0 0 24 24" width="18" height="18">
                 <path
                   d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                  fill="url(#g1)"
                 />
               </svg>
               <svg viewBox="0 0 24 24" width="18" height="18">
                 <path
                   d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                  fill="url(#g1)"
                 />
               </svg>
               <svg viewBox="0 0 24 24" width="18" height="18">
                 <path
                   d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                  fill="url(#g1)"
                 />
               </svg>
               <svg viewBox="0 0 24 24" width="18" height="18">
                 <path
                   d="M12 .587l3.668 7.431L24 9.753l-6 5.848 1.417 8.272L12 19.771l-7.417 4.102L6 15.601 0 9.753l8.332-1.735z"
+                  fill="url(#g1)"
                 />
               </svg>
             </span>
@@ -147,7 +259,9 @@
           </p>
 
           <div class="hero-ctas">
-            <a href="booking.html" class="btn btn-primary">Book Appointment</a>
+            <button id="heroBookBtn" class="btn btn-primary book-trigger">
+              Book Appointment
+            </button>
             <a href="#services" class="btn btn-ghost">View Services</a>
           </div>
 
@@ -163,7 +277,7 @@
         </div>
       </div>
     </section>
- 
+
     <section id="services" class="section">
       <div class="container">
         <h2 class="title" style="font-size: 2rem; margin-bottom: 0.5rem;">
@@ -175,7 +289,6 @@
           confidence.
         </p>
 
-        <!-- Category Tabs -->
         <div class="service-tabs" role="tablist">
           <button class="tab" data-tab="all">All</button>
           <button class="tab active" data-tab="glow">Glow Studio</button>
@@ -185,7 +298,6 @@
           <button class="tab" data-tab="divine">Divine Styles</button>
         </div>
 
-        <!-- Tab Content -->
         <div class="service-content">
 
           <div class="tab-panel" id="all">
@@ -265,7 +377,6 @@
             </div>
           </div>
 
-          <!-- Glow Studio -->
           <div class="tab-panel active" id="glow">
             <div class="svc-grid">
               <div class="svc-card">
@@ -289,7 +400,6 @@
             </div>
           </div>
 
-          <!-- Crown Collective -->
           <div class="tab-panel" id="crown">
             <div class="svc-grid">
               <div class="svc-card">
@@ -313,7 +423,6 @@
             </div>
           </div>
 
-          <!-- Nail Couture -->
           <div class="tab-panel" id="nails">
             <div class="svc-grid">
               <div class="svc-card">
@@ -331,7 +440,6 @@
             </div>
           </div>
 
-          <!-- Gentleman’s Den -->
           <div class="tab-panel" id="gentlemen">
             <div class="svc-grid">
               <div class="svc-card">
@@ -349,7 +457,6 @@
             </div>
           </div>
 
-          <!-- Divine Styles -->
           <div class="tab-panel" id="divine">
             <div class="svc-grid">
               <div class="svc-card">
@@ -370,74 +477,159 @@
         </div>
       </div>
     </section>
-    
+
     <section id="about" class="ggs-about" aria-labelledby="about-heading">
       <div class="wrap">
         <div class="grid">
           <div>
-            <h2 id="about-heading">God’s Grace Salon — Where Beauty Meets Serenity</h2>
-            <p class="lead">At God’s Grace Salon, we combine technical skill with a calm, restorative atmosphere so you leave looking polished and feeling renewed. We provide hair, nails, skin, and makeup services tailored to each client — delivered with humility, excellence, and care.</p>
+            <h2 id="about-heading">
+              God’s Grace Salon — Where Beauty Meets Serenity
+            </h2>
+            <p class="lead">
+              At God’s Grace Salon, we combine technical skill with a calm,
+              restorative atmosphere so you leave looking polished and feeling
+              renewed. We provide hair, nails, skin, and makeup services tailored
+              to each client — delivered with humility, excellence, and care.
+            </p>
 
             <div class="cards" role="list">
-              <article class="card" role="listitem" aria-labelledby="mission-title">
+              <article
+                class="card"
+                role="listitem"
+                aria-labelledby="mission-title"
+              >
                 <h3 id="mission-title">Our Mission</h3>
-                <p class="muted">Deliver professional, personalized beauty services that build confidence and celebrate each client's natural grace — consistently, safely, and with heart.</p>
+                <p class="muted">
+                  Deliver professional, personalized beauty services that build
+                  confidence and celebrate each client's natural grace —
+                  consistently, safely, and with heart.
+                </p>
               </article>
 
-              <article class="card" role="listitem" aria-labelledby="expertise-title">
+              <article
+                class="card"
+                role="listitem"
+                aria-labelledby="expertise-title"
+              >
                 <h3 id="expertise-title">Our Expertise</h3>
-                <p class="muted">Our team stays current with global trends and industry training — from precision cutting and colour to bridal makeup, advanced nail art, and restorative skincare.</p>
+                <p class="muted">
+                  Our team stays current with global trends and industry training
+                  — from precision cutting and colour to bridal makeup, advanced
+                  nail art, and restorative skincare.
+                </p>
               </article>
 
-              <article class="card" role="listitem" aria-labelledby="experience-title">
+              <article
+                class="card"
+                role="listitem"
+                aria-labelledby="experience-title"
+              >
                 <h3 id="experience-title">The Experience</h3>
-                <p class="muted">Step into a welcoming space focused on comfort, hygiene, and a calm client experience — quick consultations, honest recommendations, and results you can trust.</p>
+                <p class="muted">
+                  Step into a welcoming space focused on comfort, hygiene, and a
+                  calm client experience — quick consultations, honest
+                  recommendations, and results you can trust.
+                </p>
               </article>
 
-              <article class="card" role="listitem" aria-labelledby="trust-title">
+              <article
+                class="card"
+                role="listitem"
+                aria-labelledby="trust-title"
+              >
                 <h3 id="trust-title">Trust & Safety</h3>
-                <p class="muted">We follow strict sanitation protocols, use high-quality products, and provide transparent pricing so there are no surprises at checkout.</p>
+                <p class="muted">
+                  We follow strict sanitation protocols, use high-quality
+                  products, and provide transparent pricing so there are no
+                  surprises at checkout.
+                </p>
               </article>
             </div>
 
             <div class="cta">
-                <a class="btn btn-primary" href="booking.html">Book an Appointment</a>
-                <a class="btn btn-ghost" href="#contact">Learn More</a>
+              <button class="btn btn-primary book-trigger"
+                >Book an Appointment</button
+              >
+              <a class="btn btn-ghost" href="#contact">Learn More</a>
             </div>
 
-            <p class="meta">Got questions? Call us or visit our <a href="/contact.html">Contact</a> page. We welcome walk-ins where possible — professionalism with a personal touch.</p>
+            <p class="meta">
+              Got questions? Call us or visit our
+              <a href="/contact.html">Contact</a> page. We welcome walk-ins where
+              possible — professionalism with a personal touch.
+            </p>
           </div>
 
           <aside aria-label="Salon snapshot and team" class="aside">
-            <figure style="margin:0">
-              <img src="../static/img/Interior.png" alt="God's Grace Salon interior" style="width:100%;border-radius:10px;max-height:260px;object-fit:cover">
-              <figcaption class="muted" style="margin-top:.5rem;font-size:.9rem">Our salon — warm, clean, and inviting.</figcaption>
+            <figure style="margin: 0">
+              <img
+                src="../static/img/Interior.png"
+                alt="God's Grace Salon interior"
+                style="
+                  width: 100%;
+                  border-radius: 10px;
+                  max-height: 260px;
+                  object-fit: cover;
+                "
+              />
+              <figcaption
+                class="muted"
+                style="margin-top: 0.5rem; font-size: 0.9rem"
+              >
+                Our salon — warm, clean, and inviting.
+              </figcaption>
             </figure>
 
             <div class="ggs-team" aria-hidden="false">
-              <div style="display:flex;align-items:center;gap:.5rem">
-                <img src="../static/img/stylist/Maduna.png" alt="Stylist - Maria"/>
-                <div style="font-size:.95rem"><strong>Hlumelihle</strong><br><span class="muted">Senior Stylist</span></div>
+              <div style="display: flex; align-items: center; gap: 0.5rem">
+                <img
+                  src="../static/img/stylist/Maduna.png"
+                  alt="Stylist - Hlumelihle"
+                />
+                <div style="font-size: 0.95rem">
+                  <strong>Hlumelihle</strong><br /><span class="muted"
+                    >Senior Stylist</span
+                  >
+                </div>
               </div>
 
-              <div style="display:flex;align-items:center;gap:.5rem">
-                <img src="../static/img/stylist/Mbuli.png" alt="Nail Artist - Thabo"/>
-                <div style="font-size:.95rem"><strong>Yollanda</strong><br><span class="muted">Nail Artist</span></div>
+              <div style="display: flex; align-items: center; gap: 0.5rem">
+                <img
+                  src="../static/img/stylist/Mbuli.png"
+                  alt="Nail Artist - Yollanda"
+                />
+                <div style="font-size: 0.95rem">
+                  <strong>Yollanda</strong><br /><span class="muted"
+                    >Nail Artist</span
+                  >
+                </div>
               </div>
             </div>
-
           </aside>
         </div>
 
-        <!-- Yindawo ye'Short testimonial strip as social proof -->
-        <div style="margin-top:1.5rem;padding:1rem;border-radius:10px;background:linear-gradient(180deg,rgba(228,79,111,0.05),transparent);border:1px solid rgba(228,79,111,0.06)">
-          <strong>"Consistently excellent service — I always leave feeling refreshed."</strong>
-          <div class="muted" style="margin-top:.5rem">— Mpesh</div>
+        <div
+          style="
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background: linear-gradient(
+              180deg,
+              rgba(228, 79, 111, 0.05),
+              transparent
+            );
+            border: 1px solid rgba(228, 79, 111, 0.06);
+          "
+        >
+          <strong
+            >"Consistently excellent service — I always leave feeling
+            refreshed."</strong
+          >
+          <div class="muted" style="margin-top: 0.5rem">— Mpesh</div>
         </div>
       </div>
     </section>
 
-    <!-- ======= Footer ======= -->
     <footer id="contact">
       <div class="container footer">
         <div>
@@ -445,7 +637,9 @@
             <span class="logo">GG</span>
             <div>
               <strong class="brand-name">God’s Grace Salon</strong>
-              <small class="brand-tagline">Experience Divine Beauty &amp; Grace</small>
+              <small class="brand-tagline"
+                >Experience Divine Beauty &amp; Grace</small
+              >
             </div>
           </div>
 
@@ -455,13 +649,21 @@
 
           <p class="contact-info">
             <a href="tel:+27100000000">+27 (00) 000-0000</a><br />
-            <a href="mailto:hello@godsgracesalon.com">hello@godsgracesalon.com</a>
+            <a href="mailto:hello@godsgracesalon.com"
+              >hello@godsgracesalon.com</a
+            >
           </p>
 
           <div class="socials" aria-label="Social links">
-            <a href="#" aria-label="Instagram">⌁</a>
-            <a href="#" aria-label="Facebook">f</a>
-            <a href="#" aria-label="TikTok">♬</a>
+            <a href="#" aria-label="Instagram"
+              ><span aria-hidden="true">🖼️</span></a
+            >
+            <a href="#" aria-label="Facebook"
+              ><span aria-hidden="true">f</span></a
+            >
+            <a href="#" aria-label="TikTok"
+              ><span aria-hidden="true">🎵</span></a
+            >
           </div>
         </div>
 
@@ -490,54 +692,193 @@
           <p class="directions-text">
             Street parking available. Wheelchair accessible entrance.
           </p>
-          <a class="btn btn-ghost" href="#" aria-label="Open Google Maps">Open in Maps</a>
+          <a class="btn btn-ghost" href="#" aria-label="Open Google Maps"
+            >Open in Maps</a
+          >
         </div>
       </div>
 
       <div class="container copyright">
-        <small>© <span id="y"></span> God’s Grace Salon. All rights reserved.</small>
-        <small><a href="#">Privacy Policy</a> • <a href="#">Terms of Service</a></small>
+        <small
+          >© <span id="y"></span> God’s Grace Salon. All rights reserved.</small
+        >
+        <small
+          ><a href="#">Privacy Policy</a> •
+          <a href="#">Terms of Service</a></small
+        >
       </div>
     </footer>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const accountBtn = document.getElementById("accountBtn");
-  const userProfile = document.getElementById("userProfile");
-  const logoutBtn = document.getElementById("logoutBtn");
 
-  let user = JSON.parse(localStorage.getItem("gg_logged_in"));
+    <div id="bookingAccessModal" class="custom-modal" style="display: none;">
+      <div class="custom-modal-content">
+        <span class="close-modal-btn">&times;</span>
+        <h2 class="modal-title">Continue Booking?</h2>
+        <p class="modal-message">
+          To ensure the best experience and track your appointments, please choose
+          how you'd like to proceed.
+        </p>
 
-  if (user) {
-    // Ensure user has a unique id
-    if (!user.id) {
-      user.id = 'user-' + Date.now();
-      // Save updated user back to accounts
-      const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
-      const idx = accounts.findIndex(acc => acc.email === user.email);
-      if (idx !== -1) accounts[idx].id = user.id;
-      localStorage.setItem("accounts", JSON.stringify(accounts));
-      localStorage.setItem("gg_logged_in", JSON.stringify(user));
-    }
+        <div class="modal-actions">
+          <button id="modalLoginBtn" class="btn btn-primary">
+            <span aria-hidden="true">🔒</span> Log In First
+          </button>
 
-    // User is logged in → show profile
-    accountBtn.style.display = "none";
-    userProfile.style.display = "block";
-    document.querySelectorAll(".user-name").forEach(el => el.textContent = user.name);
+          <button id="modalGuestBtn" class="btn btn-secondary">
+            <span aria-hidden="true">🚶</span> Continue as Guest
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Function to explicitly close the mobile menu
+      function closeMobileMenu() {
+          document.querySelector('.mobile-menu').classList.remove('open');
+      }
 
-  } else {
-    // Not logged in → show account button
-    accountBtn.style.display = "inline-block";
-    userProfile.style.display = "none";
-  }
+      document.addEventListener("DOMContentLoaded", () => {
+        // Desktop elements
+        const accountBtn = document.getElementById("accountBtn");
+        const userProfile = document.getElementById("userProfile");
+        const profileBtn = userProfile ? userProfile.querySelector('.profile-btn') : null; 
+        const logoutBtnDesktop = document.getElementById("logoutBtnDesktop");
 
-  // Logout
-  logoutBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    localStorage.removeItem("gg_logged_in");
-    window.location.href = "home.html";
-  });
-});
-</script>
+        // Mobile elements
+        const mobileAccountBtn = document.getElementById("mobileAccountBtn");
+        const mobileUserProfile = document.getElementById("mobileUserProfile");
+        const logoutBtnMobile = document.getElementById("logoutBtnMobile");
+
+        let user = JSON.parse(localStorage.getItem("gg_logged_in"));
+
+        const handleLogout = (e) => {
+          e.preventDefault();
+          localStorage.removeItem("gg_logged_in");
+          // Redirect to homepage after logout
+          window.location.href = "home.html";
+        };
+
+        // Attach event listeners to both logout buttons
+        if (logoutBtnDesktop)
+          logoutBtnDesktop.addEventListener("click", handleLogout);
+        if (logoutBtnMobile)
+          logoutBtnMobile.addEventListener("click", handleLogout);
+
+        if (user) {
+          // Ensure user has a unique id (retained from previous fix)
+          if (!user.id) {
+            user.id = "user-" + Date.now();
+            const accounts =
+              JSON.parse(localStorage.getItem("accounts")) || [];
+            const idx = accounts.findIndex((acc) => acc.email === user.email);
+            if (idx !== -1) accounts[idx].id = user.id;
+            localStorage.setItem("accounts", JSON.stringify(accounts));
+            localStorage.setItem("gg_logged_in", JSON.stringify(user));
+          }
+
+          // === USER IS LOGGED IN ===
+          // 1. Desktop View: Hide Account, Show Profile
+          accountBtn.style.display = "none";
+          userProfile.style.display = "block";
+          
+          // NEW FIX: Add click listener to desktop profile button
+          if (profileBtn) {
+              profileBtn.addEventListener('click', () => {
+                  userProfile.classList.toggle('open');
+                  const isExpanded = userProfile.classList.contains('open');
+                  profileBtn.setAttribute('aria-expanded', isExpanded);
+              });
+              
+              // Optional: Close dropdown when clicking outside
+              document.addEventListener('click', (e) => {
+                  if (userProfile.classList.contains('open') && !userProfile.contains(e.target)) {
+                       userProfile.classList.remove('open');
+                       profileBtn.setAttribute('aria-expanded', false);
+                  }
+              });
+          }
+
+
+          // 2. Mobile View (inside menu): Hide Account Link, Show Profile Link
+          mobileAccountBtn.style.display = "none";
+          mobileUserProfile.style.display = "block";
+
+          // Set user name for both views
+          document
+            .querySelectorAll(".user-name")
+            .forEach((el) => (el.textContent = user.name));
+        } else {
+          // === USER IS LOGGED OUT ===
+          // 1. Desktop View: Show Account, Hide Profile
+          accountBtn.style.display = "inline-block";
+          userProfile.style.display = "none";
+
+          // 2. Mobile View (inside menu): Show Account Link, Hide Profile Link
+          mobileAccountBtn.style.display = "block";
+          mobileUserProfile.style.display = "none";
+        }
+      });
+    </script>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // 1. Get elements
+        const modal = document.getElementById("bookingAccessModal");
+        const bookTriggers = document.querySelectorAll(".book-trigger");
+        const closeModalBtn = document.querySelector(".close-modal-btn");
+        const modalLoginBtn = document.getElementById("modalLoginBtn");
+        const modalGuestBtn = document.getElementById("modalGuestBtn");
+
+        // Retrieve the user object to check login status
+        const user = JSON.parse(localStorage.getItem("gg_logged_in"));
+
+        // 2. Function to show the modal (for logged-out users)
+        const showModal = (e) => {
+          e.preventDefault(); // Stop the button/link from following its original href
+          modal.style.display = "flex";
+        };
+
+        // 3. Function to hide the modal
+        const hideModal = () => {
+          modal.style.display = "none";
+        };
+
+        // 4. Handle all 'Book' button clicks
+        bookTriggers.forEach((trigger) => {
+          trigger.addEventListener("click", (e) => {
+            if (user) {
+              // USER IS LOGGED IN: Skip the modal and proceed directly to booking.
+              window.location.href = "booking.html";
+            } else {
+              // USER IS LOGGED OUT: Show the "Log In or Guest" modal.
+              showModal(e);
+            }
+          });
+        });
+
+        // 5. Modal close handlers (for when the modal is visible)
+        closeModalBtn.addEventListener("click", hideModal);
+
+        // Close the modal if the user clicks anywhere outside of the content box
+        window.addEventListener("click", (event) => {
+          if (modal.style.display === "flex" && event.target === modal) {
+            hideModal();
+          }
+        });
+
+        // 6. Modal action handlers (when user is logged out)
+        modalLoginBtn.addEventListener("click", () => {
+          hideModal();
+          // Redirect to the login page, allowing redirect back to booking
+          window.location.href = "login.html?redirect=booking.html";
+        });
+
+        modalGuestBtn.addEventListener("click", () => {
+          hideModal();
+          // Redirect directly to the booking page as a guest
+          window.location.href = "booking.html";
+        });
+      });
+    </script>
     <script src="../static/js/script.js"></script>
   </body>
 </html>
