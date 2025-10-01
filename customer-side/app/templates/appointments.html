@@ -4,45 +4,71 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>God’s Grace Salon — My Appointments</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
+  /* --- Global Reset & Typography --- */
   body {
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #F7F4F1;
-    color: #222;
+    font-family: 'Open Sans', sans-serif; /* Clean, modern body font */
+    background-color: #fafafa; /* Soft Cream background */
+    color: #1a1a1a; /* Deep Charcoal text */
+    line-height: 1.6;
   }
   a { text-decoration: none; color: inherit; }
-  button { cursor: pointer; }
+  button { cursor: pointer; border: none; }
 
-  /* Header */
+  /* --- Colors --- */
+  :root {
+    --color-primary: #b8860b; /* Darker Gold/Brass Accent */
+    --color-dark: #1a1a1a;
+    --color-light: #fafafa;
+    --color-gray: #555;
+    --color-border: #eee;
+  }
+
+  /* --- Header --- */
   .header {
-    padding: 2rem;
-    background: #fff;
-    border-bottom: 1px solid #ddd;
+    padding: 3rem 2rem 1.5rem;
+    background: var(--color-light);
+    border-bottom: 1px solid var(--color-border);
   }
   .header h1 {
-    font-family: 'Georgia', serif;
-    font-size: 2rem;
+    font-family: 'Playfair Display', serif; /* Elegant serif font for heading */
+    font-size: 2.5rem;
     margin: 0;
-    margin-left: -25px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+  }
+  .header .back-link {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--color-dark);
+    cursor: pointer;
+    margin-right: 1rem;
+    line-height: 1;
   }
   .header p {
     margin: 0.5rem 0 0;
-    color: #555;
+    color: var(--color-gray);
+    font-size: 1rem;
   }
   .breadcrumb {
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    margin-top: 1rem;
     color: #999;
   }
 
-  /* Tabs */
+  /* --- Tabs --- */
   .tabs {
     display: flex;
     overflow-x: auto;
-    background: #fff;
+    background: var(--color-light);
     padding: 0 2rem;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 1rem; /* Space before content area */
   }
   .tabs::-webkit-scrollbar { display: none; }
   .tab {
@@ -50,149 +76,238 @@
     cursor: pointer;
     font-weight: 600;
     white-space: nowrap;
-    color: #555;
-    border-bottom: 3px solid transparent;
+    color: var(--color-gray);
+    position: relative;
+    transition: color 0.3s;
   }
+  /* Cleaner tab active state */
   .tab.active {
-    color: #D4AF37;
-    border-bottom: 3px solid #D4AF37;
+    color: var(--color-dark);
+  }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-primary);
   }
   .tab .badge {
     background: #ddd;
-    color: #fff;
+    color: var(--color-dark);
     font-size: 0.75rem;
-    padding: 0.2rem 0.5rem;
+    padding: 0.1rem 0.5rem;
     border-radius: 12px;
     margin-left: 0.5rem;
-    vertical-align: top;
+    font-weight: 400;
+  }
+  .tab.active .badge {
+    background: var(--color-primary);
+    color: var(--color-light);
   }
 
-  /* Tab content */
+  /* --- Tab content --- */
   .tab-content {
-    max-width: 1000px;
-    margin: 2rem auto;
+    max-width: 900px;
+    margin: 1.5rem auto;
+    padding: 0 2rem;
     display: none;
   }
   .tab-content.active { display: block; }
 
-  /* Appointment Cards */
+  /* --- Appointment Cards (Premium Look) --- */
   .appointment-card {
     display: flex;
     align-items: center;
-    background: #fff;
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+    background: var(--color-light);
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+    /* Soft, elevated shadow */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08); 
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
     position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .appointment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   }
   .appointment-thumb {
-    width: 120px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 0.5rem;
-    background: #eee;
+    background: #f5f5f5;
     flex-shrink: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
-    color: #555;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--color-primary); /* Gold/Brass accent */
     margin-right: 1.5rem;
+    border: 1px dashed #e0e0e0;
   }
-  .appointment-info {
-    flex: 1;
-  }
+  .appointment-thumb .day-date { font-size: 0.8rem; color: var(--color-gray); }
+
+  .appointment-info { flex: 1; }
   .appointment-info h3 {
-    margin: 0;
-    font-weight: 600;
-    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-dark);
   }
   .appointment-info p {
     margin: 0.3rem 0;
-    color: #555;
-    font-size: 0.9rem;
+    color: #666;
+    font-size: 0.95rem;
   }
   .appointment-date {
-    font-weight: bold;
-    color: #222;
+    font-weight: 600;
+    color: var(--color-dark);
   }
+
+  /* Status Badges */
   .status-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    position: static; /* Positioned inline for better flow/mobile */
     padding: 0.3rem 0.8rem;
     font-size: 0.8rem;
     font-weight: 600;
     border-radius: 20px;
-    color: #fff;
+    color: var(--color-light);
+    margin-left: 1.5rem;
+    flex-shrink: 0;
   }
-  .pending { background: #F1C40F; color: #222; }
-  .completed { background: #27AE60; }
-  .canceled { background: #7F8C8D; }
-  .unapproved { background: #E74C3C; }
+  /* New, refined colors for statuses */
+  .pending { background: #E6B0AA; color: var(--color-dark); } /* Soft Pink for Pending */
+  .completed { background: #82E0AA; color: var(--color-dark); } /* Soft Green for Completed */
+  .canceled { background: #AAB7B8; } /* Muted Gray for Canceled */
+  .unapproved { background: #C0392B; } /* Strong Red for Unapproved */
 
   .appointment-actions {
-    margin-top: 0.8rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
   }
   .appointment-actions button {
-    background: #D4AF37;
-    border: none;
-    color: #fff;
-    padding: 0.5rem 1rem;
+    background: var(--color-primary);
+    color: var(--color-light);
+    padding: 0.6rem 1.5rem;
     border-radius: 50px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-right: 0.5rem;
+    box-shadow: 0 3px 10px rgba(184, 134, 11, 0.3);
+    margin-right: 0.75rem;
     font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
   }
   .appointment-actions button:hover {
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    background: #a37909; /* Slightly darker on hover */
+    box-shadow: 0 6px 15px rgba(184, 134, 11, 0.4);
+    transform: translateY(-1px);
+  }
+  .secondary-button {
+    background: none !important;
+    color: var(--color-gray) !important;
+    border: 1px solid #ccc;
+    box-shadow: none !important;
+  }
+  .secondary-button:hover {
+    color: var(--color-dark) !important;
+    border-color: var(--color-dark);
+    transform: none;
   }
 
-  /* Floating CTA */
+  /* --- Floating CTA (More premium look) --- */
   .floating-cta {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    background: #D4AF37;
-    color: #fff;
-    padding: 1rem 2rem;
+    background: var(--color-primary);
+    color: var(--color-light);
+    padding: 1rem 2.5rem;
     border-radius: 50px;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 18px rgba(184, 134, 11, 0.4);
     z-index: 999;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
-  .floating-cta:hover { transform: translateY(-2px); }
+  .floating-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(184, 134, 11, 0.5); }
 
-  /* Empty state */
+  /* --- Empty state --- */
   .empty-state {
     text-align: center;
-    padding: 3rem 1rem;
-    color: #555;
+    padding: 4rem 1rem;
+    color: var(--color-gray);
+    background: #fff;
+    border-radius: 0.75rem;
+    border: 1px dashed #ddd;
+    margin: 2rem 0;
+  }
+  .empty-state h3 {
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
   }
 
-  /* Responsive */
-  @media (max-width: 768px) {
+  /* --- Responsive --- */
+  @media (max-width: 900px) {
+    .tab-content { padding: 0 1rem; }
+    .header { padding: 2rem 1rem 1rem; }
     .tabs { padding: 0 1rem; }
-    .appointment-card { flex-direction: column; align-items: flex-start; }
-    .appointment-thumb { margin-right: 0; margin-bottom: 1rem; width: 100%; height: 150px; }
-    .appointment-actions { text-align: center; width: 100%; }
+  }
+  @media (max-width: 600px) {
+    .appointment-card { 
+        flex-direction: column; 
+        align-items: flex-start;
+        padding: 1rem;
+    }
+    .appointment-thumb { 
+        margin-right: 0; 
+        margin-bottom: 1rem; 
+        width: 100%; 
+        height: 100px;
+        flex-direction: row;
+        justify-content: flex-start;
+        font-size: 1.5rem;
+        padding: 0 1rem;
+    }
+    .appointment-thumb .day-date { margin-left: 1rem; }
+
+    .appointment-info { width: 100%; }
+    .status-badge { 
+        position: absolute; 
+        top: 1rem; 
+        right: 1rem; 
+        margin-left: 0;
+    }
+    .appointment-actions { 
+        width: 100%; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 0.5rem;
+    }
+    .appointment-actions button { 
+        margin-right: 0; 
+        width: 100%; 
+        text-align: center;
+    }
     .floating-cta { padding: 0.8rem 1.5rem; bottom: 1rem; right: 1rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <header class="header">
     <h1>
-    <a onclick="window.history.back()" style="font-weight:900;color:#000;cursor:pointer;">《</a>
+    <a onclick="window.history.back()" class="back-link">《</a>
   My Appointments</h1>
-  <p>Track all your past, current, and pending appointments. Book a new one anytime.</p>
+  <p>Your sanctuary awaits. Track all your upcoming, past, and pending bookings.</p>
   <div class="breadcrumb"><a href="home.html">Home</a> &gt; <a href="profile.html">My Account</a> &gt; <a href="#appointments">Appointments </a></div>
 </header>
 
-<!-- Tabs -->
 <div class="tabs" id="appointments">
   <div class="tab active" data-tab="pending">Pending <span class="badge">0</span></div>
   <div class="tab" data-tab="completed">Completed <span class="badge">0</span></div>
@@ -200,14 +315,12 @@
   <div class="tab" data-tab="unapproved">Unapproved <span class="badge">0</span></div>
 </div>
 
-<!-- Tab Contents -->
-<div id="pending" class="tab-content"></div>
+<div id="pending" class="tab-content active"></div>
 <div id="completed" class="tab-content"></div>
 <div id="canceled" class="tab-content"></div>
 <div id="unapproved" class="tab-content"></div>
 
-<!-- Floating CTA -->
-<a href="booking.html" class="floating-cta">+ New Appointment</a>
+<a href="booking.html" class="floating-cta">+ Book New Treatment</a>
 
 <script>
 // --- Tabs ---
@@ -236,6 +349,28 @@ function loadAppointments() {
     return all;
 }
 
+// --- Helper for Date Formatting (New feature) ---
+function formatDate(dateStr, timeStr) {
+    try {
+        const dateTime = new Date(`${dateStr}T${timeStr}`);
+        const day = dateTime.toLocaleDateString('en-US', { day: 'numeric' });
+        const month = dateTime.toLocaleDateString('en-US', { month: 'short' });
+        const weekday = dateTime.toLocaleDateString('en-US', { weekday: 'short' });
+        const time = dateTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        
+        return {
+            date: dateStr,
+            time: time,
+            day: day,
+            month: month,
+            weekday: weekday,
+            fullDate: `${weekday}, ${month} ${day}, ${dateTime.getFullYear()}`
+        };
+    } catch (e) {
+        return { date: dateStr, time: timeStr, day: '?', month: '?', weekday: '?', fullDate: dateStr };
+    }
+}
+
 // --- Render Appointments ---
 function renderAppointments() {
     const allAppointments = loadAppointments();
@@ -243,7 +378,7 @@ function renderAppointments() {
     // Filter appointments for this client safely
     const clientAppointments = allAppointments.filter(
         a => String(a.clientId || "guest") === String(clientId)
-    );
+    ).sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by newest first
 
     // Clear tab contents
     tabContents.forEach(tc => tc.innerHTML = "");
@@ -252,7 +387,7 @@ function renderAppointments() {
     const counts = { pending: 0, completed: 0, canceled: 0, unapproved: 0 };
 
     if (clientAppointments.length === 0) {
-        tabContents.forEach(tc => tc.innerHTML = "<div class='empty-state'>You don’t have any appointments yet.</div>");
+        tabContents.forEach(tc => tc.innerHTML = "<div class='empty-state'><h3>No Appointments Found</h3><p>You currently don’t have any appointments in this category. Book your first one today!</p></div>");
         tabs.forEach(tab => tab.querySelector(".badge").textContent = 0);
         return;
     }
@@ -264,15 +399,35 @@ function renderAppointments() {
         const container = document.getElementById(status);
         const card = document.createElement("div");
         card.className = "appointment-card";
-        const services = app.itemNames?.join(", ") || "—";
-        const styles = app.styleNames?.join(", ") || "—";
+        const services = app.itemNames?.join(" & ") || "Consultation";
+        const styles = app.styleNames?.join(", ") || "No specific styles";
+        
+        const dateInfo = formatDate(app.date, app.time);
 
+        let actionButtons = '';
+        if (status === 'pending') {
+            actionButtons = `
+                <button>Reschedule</button>
+                <button class="secondary-button">Cancel</button>
+            `;
+        } else if (status === 'completed') {
+            actionButtons = `
+                <button class="secondary-button">Book Again</button>
+            `;
+        }
+        
+        // Use a more detailed card structure
         card.innerHTML = `
-            <div class="appointment-thumb">📅</div>
+            <div class="appointment-thumb">
+                ${dateInfo.day}
+                <span class="day-date">${dateInfo.month}</span>
+            </div>
             <div class="appointment-info">
                 <h3>${services}</h3>
-                <p><strong>Date:</strong> ${app.date} at ${app.time}</p>
-                <p><strong>Styles:</strong> ${styles}</p>
+                <p><strong>Stylist:</strong> ${app.stylistName || 'TBD'}</p>
+                <p class="appointment-date">${dateInfo.fullDate} at ${dateInfo.time}</p>
+                <p>Styles: ${styles}</p>
+                ${actionButtons ? `<div class="appointment-actions">${actionButtons}</div>` : ''}
             </div>
             <span class="status-badge ${status}">${status}</span>
         `;
@@ -294,6 +449,7 @@ function renderAppointments() {
             activeSet = true;
         }
     });
+    // If no appointments in any tab, stick to 'pending' as default
     if (!activeSet) setActiveTab(tabs[0]);
 }
 
@@ -302,7 +458,11 @@ function setActiveTab(tab) {
     tabs.forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
     tabContents.forEach(tc => tc.classList.remove("active"));
-    document.getElementById(tab.dataset.tab).classList.add("active");
+    
+    const targetContent = document.getElementById(tab.dataset.tab);
+    if (targetContent) {
+        targetContent.classList.add("active");
+    }
 }
 
 // Attach click events to tabs
@@ -310,6 +470,14 @@ tabs.forEach(tab => tab.addEventListener("click", () => setActiveTab(tab)));
 
 // --- Initial render ---
 renderAppointments();
+
+// --- Set initial tab if not set by render ---
+window.onload = () => {
+    let hasActive = Array.from(tabs).some(tab => tab.classList.contains('active'));
+    if (!hasActive) {
+        setActiveTab(tabs[0]); // Default to pending if render didn't pick one
+    }
+};
 </script>
 </body>
 </html>
