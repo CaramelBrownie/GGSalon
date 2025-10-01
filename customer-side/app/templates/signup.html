@@ -1,556 +1,525 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sign up — God's Grace Salon</title>
-  <meta name="description" content="Sign up page for God's Grace Salon customers — create account to book services." />
-  <style>
-    *,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>God’s Grace Salon — My Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/profile.css" />
+    <style>
+/* --------------------------------------------------
+  REIMAGINED CSS: MODERN, SALON-CHIC
+  --------------------------------------------------
+*/
 
-:root {
-  --bg: #fff8f3;
-  --card: #ffffff;
-  --text: #2b2b2b;
-  --muted: #6d6d6d;
-  --line: #eee6df;
-  --primary: #e44f6f;
-  --primary-2: #ff9c48;
-  --dark: #2a1f1a;
-  --accent: #f5d1b8;
-  --radius: 7px;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.06);
-  --grad: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    #ff7c64 35%,
-    var(--primary-2) 100%
-  );
-}
-
+/* General */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  line-height: 1.5;
-  color: var(--text);
-  background-color: var(--bg);
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif; /* Modern, clean sans-serif */
+    background-color: #fcf8f5; /* Very soft cream/blush background */
+    color: #333333;
+    line-height: 1.6;
 }
-
-.wrap {
-  width: 100%;
-  max-width: 1000px;
-}
-
-.card {
-  display: flex;
-  background-color: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  max-width: 100%;
-}
-
-@media (max-width: 768px) {
-  .card {
-    flex-direction: column;
-  }
-}
-
-.panel-visual {
-  flex: 1;
-  background-image: var(--grad);
-  color: var(--card);
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-@media (max-width: 768px) {
-  .panel-visual {
-    padding: 20px;
-  }
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo {
-  font-size: 28px;
-  font-weight: 900;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: var(--card);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-soft);
-  background-image: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.panel-visual h2 {
-  font-size: 2em;
-  font-weight: 700;
-  margin: 0;
-}
-
-.lead {
-  font-size: 1.1em;
-  opacity: 0.9;
-}
-
-.form-side {
-  flex: 1.2;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background-color: var(--card);
-}
-
-@media (max-width: 768px) {
-  .form-side {
-    padding: 20px;
-  }
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.row {
-  display: flex;
-  gap: 15px;
-}
-
-@media (max-width: 480px) {
-  .row {
-    flex-direction: column;
-    gap: 16px;
-  }
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-}
-
-label {
-  font-size: 0.9em;
-  font-weight: 600;
-  color: var(--text);
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"] {
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  font-size: 1em;
-  color: var(--dark);
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background-color: var(--card);
-}
-
-input:focus {
-  border-color: var(--primary);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15);
-}
-
-input:invalid:not(:placeholder-shown) {
-  border-color: var(--primary);
-}
-
-.tiny {
-  font-size: 0.8em;
-  color: var(--muted);
-}
-
-.pwd-row {
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
-}
-
-.pwd-toggle {
-  background-color: var(--line);
-  color: var(--text);
-  border: none;
-  border-radius: var(--radius);
-  padding: 0 12px;
-  cursor: pointer;
-  font-size: 0.9em;
-  flex-shrink: 0;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.pwd-toggle:hover {
-  background-color: var(--muted);
-  color: var(--card);
-}
-
-meter {
-  height: 8px;
-  flex: 1;
-  border-radius: 4px;
-  overflow: hidden;
-  border: none;
-}
-
-meter::-webkit-meter-bar {
-  background: var(--line);
-}
-
-meter::-webkit-meter-optimum-value,
-meter::-webkit-meter-suboptimum-value,
-meter::-webkit-meter-even-less-good-value {
-  transition: width 0.3s;
-  background-color: #f4c430; /* Medium strength default */
-}
-
-/* Example meter strength colors - must be set via JS typically */
-/* meter[value="4"]::-webkit-meter-optimum-value { background: #5cb85c; } green */
-/* meter[value="3"]::-webkit-meter-suboptimum-value { background: #f4c430; } yellow */
-/* meter[value="2"]::-webkit-meter-even-less-good-value { background: #f0ad4e; } orange */
-/* meter[value="1"]::-webkit-meter-even-less-good-value { background: var(--primary); } red */
-
-.error-msg {
-  color: var(--primary);
-  font-size: 0.8em;
-  margin-top: -4px;
-}
-
-.hidden {
-  display: none;
-}
-
-.actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 5px;
-}
-
-button {
-  padding: 10px 20px;
-  border-radius: var(--radius);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 1em;
-}
-
-button.primary {
-  flex: 2;
-  background-image: var(--grad);
-  color: var(--card);
-  border: none;
-  box-shadow: var(--shadow-soft);
-}
-
-button.primary:hover {
-  box-shadow: 0 8px 25px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.4);
-  transform: translateY(-1px);
-}
-
-button.ghost {
-  flex: 1;
-  background-color: transparent;
-  color: var(--muted);
-  border: 1px solid var(--line);
-}
-
-button.ghost:hover {
-  color: var(--text);
-  border-color: var(--muted);
-}
-
 a {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s;
+    text-decoration: none;
+    color: inherit;
+}
+button {
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-a:hover {
-  color: var(--dark);
-  text-decoration: underline;
+/* Colors and Styles */
+:root {
+    --primary-color: #B48460; /* Elegant, dusty rose/soft gold */
+    --secondary-color: #E6E0D5; /* Light accent */
+    --danger-color: #E44F6F;
+    --card-bg: #FFFFFF;
+    --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 }
 
-.footer-small {
-  font-size: 0.9em;
-  text-align: center;
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
-  margin-top: 16px;
+/* Header */
+.header {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 3rem 2rem 1rem; /* More vertical padding for prominence */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-title h1 {
+    font-family: 'Playfair Display', serif; /* Elegant serif for the title */
+    font-size: 2.2rem;
+    margin: 0;
+}
+.header-title p {
+    margin: 0.3rem 0 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+}
+.logout-btn {
+    background: none;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    border-radius: 50px;
+    font-weight: 600;
+}
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="card" role="region" aria-label="Create account card">
-      <div class="panel-visual">
-        <div class="brand">
-          <div class="logo" aria-hidden>GG</div>
-          <div>
-            <div style="font-weight:700">God's Grace Salon</div>
-            <div class="tiny">Beauty • Hair • Wellness</div>
-          </div>
+/* Main Content Wrapper */
+.main-content-wrapper {
+    max-width: 1000px;
+    margin: -4rem auto 2rem; /* Pulling the profile card up into the header area */
+    padding: 0 1rem;
+    position: relative;
+    z-index: 10;
+}
+
+
+/* Profile Card */
+.profile-card {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    position: relative;
+    border-top: 5px solid var(--primary-color); /* Stronger accent border */
+}
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--secondary-color);
+    background-color: #faf6f3; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+}
+.profile-info {
+    flex: 1;
+}
+.profile-info h2 {
+    margin: 0 0 0.2rem;
+    font-size: 1.8rem;
+    color: #222;
+}
+.profile-info p {
+    margin: 0.3rem 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+.profile-card-actions {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    gap: 10px;
+}
+.edit-profile, .settings-btn {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #999;
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+.edit-profile:hover, .settings-btn:hover {
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+}
+.member-status {
+    display: inline-block;
+    background-color: #fffaf0; /* Light gold background */
+    color: #c0a158; /* Gold text */
+    padding: 0.2rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+/* Tabs */
+.tabs-container {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    padding: 0.5rem 1.5rem;
+}
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+}
+.tabs::-webkit-scrollbar {
+    display: none;
+}
+.tab {
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+    color: #777;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+.tab.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
+.tab:hover:not(.active) {
+    color: #555;
+}
+
+/* Tab Content */
+.tab-content {
+    padding: 2rem 0;
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+.content-section {
+    padding: 1rem 0;
+    border-bottom: 1px dashed #eee;
+}
+.content-section:last-child {
+    border-bottom: none;
+}
+.content-section h3 {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-top: 0;
+}
+.info-block {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+.info-block span {
+    color: #555;
+}
+
+/* Profile Info Form */
+.profile-form label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #555;
+}
+.profile-form input,
+.profile-form select,
+.profile-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.3rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    box-sizing: border-box; /* Crucial for responsiveness */
+    background-color: #fcfcfc;
+}
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+.form-group {
+    flex: 1;
+}
+
+.profile-form .save-btn {
+    margin-top: 2rem;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(180, 132, 96, 0.4);
+    font-weight: 700;
+}
+.profile-form .save-btn:hover {
+    background: #a37554;
+}
+.profile-form .delete-btn {
+    margin-top: 1.5rem;
+    background: none;
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: block;
+    width: fit-content;
+}
+.profile-form .delete-btn:hover {
+    background: var(--danger-color);
+    color: #fff;
+}
+
+/* Content specific styles */
+.appointments-content .save-btn {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 50px;
+    margin-top: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header {
+        padding: 2rem 1rem 1rem;
+    }
+    .main-content-wrapper {
+        margin: -2rem auto 2rem;
+    }
+    .profile-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    .profile-avatar {
+        margin-bottom: 1rem;
+        margin-right: 0;
+    }
+    .profile-info h2 {
+        font-size: 1.5rem;
+    }
+    .profile-card-actions {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    .tabs-container {
+        border-radius: 0;
+    }
+    .tab {
+        padding: 0.8rem 1rem;
+    }
+    .tab-content {
+        padding: 1rem;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+    </style>
+  </head>
+  <body>
+    <header class="header">
+        <div class="header-title">
+            <h1>My Account</h1>
+            <p>Welcome back to God's Grace Salon.</p>
         </div>
-        <h2>Create your customer account</h2>
-        <p class="lead">Book appointments, manage your profile and pay securely.</p>
+        <button id="logoutBtn" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+    </header>
+
+    <div class="main-content-wrapper">
+        <section class="profile-card">
+            <div class="profile-avatar">JG</div>
+            <div class="profile-info">
+                <h2>Hello, Jane!</h2>
+                <p>jane.doe@example.com | +27 123 456 789</p>
+                <div class="member-status">Gold Member — 120 points</div>
+            </div>
+            <div class="profile-card-actions">
+                <button class="edit-profile" title="Edit Profile">&#9998;</button>
+                <button class="settings-btn" title="Settings"><i class="fa-solid fa-gear"></i></button>
+            </div>
+        </section>
+
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="profile-info">Profile Info</div>
+                <div class="tab" data-tab="appointments">Appointments</div>
+                <div class="tab" data-tab="liked">Inspiration</div>
+                <div class="tab" data-tab="wallet">Wallet & Payments</div>
+            </div>
         
-      </div><div class="form-side">
-    <h3 style="margin:0 0 12px 0">Sign up</h3>
-    <form id="signupForm" novalidate>
-      <div class="row">
-        <div class="field" style="flex:1">
-          <label for="firstName">First name</label>
-          <input id="firstName" name="first_name" type="text" placeholder="Thandi" required autocomplete="given-name" />
+            <div id="profile-info" class="tab-content active">
+                <form class="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" value="Jane Doe" />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="jane.doe@example.com" />
+                        </div>
+                    </div>
+
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" value="+27 123 456 789" />
+                    
+                    <h3>Hair Profile (For your Stylist)</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hair-type">Hair Type</label>
+                            <select id="hair-type">
+                                <option>Straight</option>
+                                <option>Wavy</option>
+                                <option>Curly</option>
+                                <option selected>Coily</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hair-length">Hair Length</label>
+                            <select id="hair-length">
+                                <option>Short</option>
+                                <option>Medium</option>
+                                <option selected>Long</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <label for="allergies">Allergies / Sensitive Scalp Notes</label>
+                    <textarea id="allergies" placeholder="e.g., Sensitive to sulfates, allergic to PPD dye, etc."></textarea>
+
+                    <button type="submit" class="save-btn">Save Changes</button>
+                    <button type="button" class="delete-btn">Deactivate Account</button>
+                </form>
+            </div>
+
+            <div id="appointments" class="tab-content appointments-content">
+                <h3>Upcoming Appointments</h3>
+                <div class="content-section">
+                    <p>You have no appointments scheduled for the next 30 days. Time to treat yourself!</p>
+                </div>
+                <button class="save-btn">Book New Appointment</button>
+            </div>
+
+            <div id="liked" class="tab-content">
+                <h3>Liked Hairstyles & Looks</h3>
+                <p>This is your inspiration board! Styles you've loved and saved will appear here for your next consultation.</p>
+            </div>
+
+            <div id="wallet" class="tab-content">
+                <h3>Saved Payment Methods</h3>
+                <p>View your saved cards, prepaid deposits, and a record of your past transactions.</p>
+            </div>
         </div>
-        <div class="field" style="flex:1">
-          <label for="lastName">Last name</label>
-          <input id="lastName" name="last_name" type="text" placeholder="Dlamini" required autocomplete="family-name" />
-        </div>
-      </div>
+    </div> <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabs = document.querySelectorAll(".tab");
+            const tabContents = document.querySelectorAll(".tab-content");
 
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" placeholder="you@domain.com" required autocomplete="email" />
-        <div id="emailError" class="error-msg hidden"></div>
-      </div>
+            // Function to handle tab switching
+            function switchTab(targetId) {
+                tabs.forEach(tab => {
+                    tab.classList.remove("active");
+                    if (tab.dataset.tab === targetId) {
+                        tab.classList.add("active");
+                    }
+                });
 
-      <div class="field">
-        <label for="phone">Phone</label>
-        <input id="phone" name="phone" type="tel" placeholder="+27 82 123 4567" autocomplete="tel" pattern="^\+?[0-9\s-]{7,20}$" />
-        <div class="tiny">International format recommended. e.g. +27821234567</div>
-      </div>
+                tabContents.forEach(content => {
+                    content.classList.remove("active");
+                    if (content.id === targetId) {
+                        content.classList.add("active");
+                    }
+                });
+            }
 
-      <div class="field">
-        <label for="password">Password</label>
-        <div class="pwd-row">
-          <input id="password" name="password" type="password" placeholder="Create a password" minlength="8" required autocomplete="new-password" style="flex:1" />
-          <button type="button" id="togglePwd" class="pwd-toggle" aria-label="Show password">Show</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
-          <meter id="pwdMeter" min="0" max="4" value="0"></meter>
-          <div id="pwdText" class="tiny">Too short</div>
-        </div>
-        <div id="pwdHint" class="tiny">Use at least 8 characters, mix letters, numbers & symbols.</div>
-      </div>
+            // Add click listeners to tabs
+            tabs.forEach(tab => {
+                tab.addEventListener("click", () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
 
-      <div class="field">
-        <label for="confirm">Confirm password</label>
-        <input id="confirm" name="confirm_password" type="password" placeholder="Repeat password" required autocomplete="new-password" />
-        <div id="confirmError" class="error-msg hidden"></div>
-      </div>
+            // --- Your Existing Logic Below ---
 
-      <div class="actions">
-        <button class="primary" type="submit">Create account</button>
-        <button type="button" class="ghost" id="clearBtn">Clear</button>
-      </div>
+            const user = JSON.parse(localStorage.getItem("gg_logged_in"));
 
-      <div id="status" class="status" aria-live="polite"></div>
+            if (!user) {
+                // Not logged in → go to login
+                window.location.href = "login.html";
+            } else {
+                // Avatar initials
+                const avatar = document.querySelector(".profile-avatar");
+                avatar.textContent = user.name
+                    .split(" ")
+                    .map(n => n[0])
+                    .join("")
+                    .toUpperCase();
 
-      <input type="hidden" name="created_at" id="createdAtInput" />
-    </form>
+                // Greeting and info
+                document.querySelector(".profile-info h2").textContent = `Hello, ${user.name.split(" ")[0]}!`;
+                document.querySelector(".profile-info p:nth-of-type(1)").textContent = `${user.email} | ${user.phone}`;
 
-    <div class="footer-small">Already have an account? <a href="login.html">Log in</a></div>
+                // Form fields
+                document.getElementById("name").value = user.name;
+                document.getElementById("email").value = user.email;
+                document.getElementById("phone").value = user.phone;
 
-    <div style="margin-top:16px;font-size:13px;color:var(--muted)">
-      
-    </div>
-  </div>
-</div>
+                // Handle save
+                document.querySelector(".profile-form").addEventListener("submit", (e) => {
+                    e.preventDefault();
 
-  </div>  
-  
-  <script>
-const form = document.getElementById("signupForm");
-const pwd = document.getElementById("password");
-const confirmPwd = document.getElementById("confirm");
-const meter = document.getElementById("pwdMeter");
-const pwdText = document.getElementById("pwdText");
-const emailInput = document.getElementById("email");
-const emailError = document.getElementById("emailError");
-const confirmError = document.getElementById("confirmError");
-const phoneInput = document.getElementById("phone");
-const firstNameInput = document.getElementById("firstName");
-const lastNameInput = document.getElementById("lastName");
+                    const updatedUser = {
+                        ...user,
+                        name: document.getElementById("name").value.trim(),
+                        email: document.getElementById("email").value.trim().toLowerCase(),
+                        phone: document.getElementById("phone").value.trim(),
+                        // Add other form fields here if you want them saved (e.g., hair type/length)
+                    };
 
-// --- Password strength ---
-function passwordScore(pw) {
-  let score = 0;
-  if (!pw) return 0;
-  if (pw.length >= 8) score++;
-  if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
-  if (/\d/.test(pw)) score++;
-  if (/[^A-Za-z0-9]/.test(pw)) score++;
-  return Math.min(score, 4);
-}
+                    // Update in accounts
+                    const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+                    const index = accounts.findIndex(acc => acc.email === user.email);
+                    if (index !== -1) {
+                        accounts[index] = updatedUser;
+                        localStorage.setItem("accounts", JSON.stringify(accounts));
+                    }
 
-function updatePwdMeter() {
-  const s = passwordScore(pwd.value);
-  meter.value = s;
-  const labels = ["Very weak", "Weak", "Okay", "Good", "Strong"];
-  pwdText.textContent = labels[s];
-}
-pwd.addEventListener("input", updatePwdMeter);
+                    // Update current session
+                    localStorage.setItem("gg_logged_in", JSON.stringify(updatedUser));
+                    alert("Profile updated!");
+                    location.reload();
+                });
+                
+                // Handle logout
+                document.getElementById("logoutBtn").addEventListener("click", () => {
+                    localStorage.removeItem("gg_logged_in");
+                    window.location.href = "login.html";
+                });
 
-// --- Helpers ---
-function saveAccounts(accounts) {
-  localStorage.setItem("accounts", JSON.stringify(accounts));
-}
-function loadAccounts() {
-  return JSON.parse(localStorage.getItem("accounts")) || [];
-}
-function generateUserId() {
-  return 'user-' + Date.now();
-}
-
-// --- Field validation ---
-function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email.toLowerCase());
-}
-
-function validatePhone(phone) {
-  return phone === "" || /^\+?[0-9\s-]{7,20}$/.test(phone);
-}
-
-// --- Clear previous errors ---
-function clearErrors() {
-  [firstNameInput, lastNameInput, emailInput, phoneInput, pwd, confirmPwd].forEach(input => {
-    input.classList.remove("input-error");
-  });
-  [emailError, confirmError, document.getElementById("firstNameError"), document.getElementById("lastNameError"), document.getElementById("phoneError")].forEach(err => {
-    if (err) { err.style.display = "none"; err.textContent = ""; }
-  });
-}
-
-// --- Add error elements ---
-[firstNameInput, lastNameInput, phoneInput].forEach(input => {
-  const errDiv = document.createElement("div");
-  errDiv.className = "error-msg";
-  errDiv.id = input.id + "Error";
-  input.parentNode.appendChild(errDiv);
-});
-
-// --- Form submit ---
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  clearErrors();
-
-  const firstName = firstNameInput.value.trim();
-  const lastName = lastNameInput.value.trim();
-  const email = emailInput.value.trim().toLowerCase();
-  const phone = phoneInput.value.trim();
-  const password = pwd.value;
-  const confirmPassword = confirmPwd.value;
-
-  let hasError = false;
-
-  if (!firstName) {
-    const err = document.getElementById("firstNameError");
-    err.textContent = "First name is required.";
-    err.style.display = "block";
-    firstNameInput.classList.add("input-error");
-    hasError = true;
-  }
-
-  if (!lastName) {
-    const err = document.getElementById("lastNameError");
-    err.textContent = "Last name is required.";
-    err.style.display = "block";
-    lastNameInput.classList.add("input-error");
-    hasError = true;
-  }
-
-  if (!validateEmail(email)) {
-    emailError.textContent = "Please enter a valid email address.";
-    emailError.style.display = "block";
-    emailInput.classList.add("input-error");
-    hasError = true;
-  }
-
-  if (!validatePhone(phone)) {
-    const err = document.getElementById("phoneError");
-    err.textContent = "Please enter a valid phone number.";
-    err.style.display = "block";
-    phoneInput.classList.add("input-error");
-    hasError = true;
-  }
-
-  if (passwordScore(password) < 3) {
-    const err = document.getElementById("pwdHint");
-    err.textContent = "Password too weak. Use letters, numbers & symbols.";
-    err.style.color = "#e44f6f";
-    pwd.classList.add("input-error");
-    hasError = true;
-  }
-
-  if (password !== confirmPassword) {
-    confirmError.textContent = "Passwords do not match.";
-    confirmError.style.display = "block";
-    confirmPwd.classList.add("input-error");
-    hasError = true;
-  }
-
-  const accounts = loadAccounts();
-  if (accounts.some(acc => acc.email === email)) {
-    emailError.textContent = "Account already exists.";
-    emailError.style.display = "block";
-    emailInput.classList.add("input-error");
-    hasError = true;
-  }
-
-  if (hasError) return;
-
-  // --- Create account ---
-  const account = { 
-    id: generateUserId(),
-    name: `${firstName} ${lastName}`, 
-    email, 
-    phone, 
-    password 
-  };
-
-  accounts.push(account);
-  saveAccounts(accounts);
-  localStorage.setItem("gg_logged_in", JSON.stringify(account));
-
-  // Redirect
-  window.location.href = "home.html";
-});
-</script>
-  
+                // Handle delete/deactivate
+                document.querySelector(".delete-btn").addEventListener("click", () => {
+                    if (confirm("Are you sure you want to permanently deactivate your account? This action cannot be undone.")) {
+                        let accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+                        accounts = accounts.filter(acc => acc.email !== user.email);
+                        localStorage.setItem("accounts", JSON.stringify(accounts));
+                        localStorage.removeItem("gg_logged_in");
+                        alert("Account deactivated successfully. We're sorry to see you go!");
+                        window.location.href = "signup.html";
+                    }
+                });
+            }
+        });
+    </script>
   </body>
 </html>
-
