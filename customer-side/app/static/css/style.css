@@ -73,8 +73,9 @@ ul {
   border-radius: 5px;
 }
 .btn-secondary {
-  background: var(--card);
-  color: #fff;
+  /* Adjusted for better button contrast, assuming primary is dark */
+  background: transparent; 
+  color: var(--primary);
   padding: 0.35rem 1.9rem;
   border: 0.1rem solid var(--primary);
   border-radius: 5px;
@@ -170,26 +171,48 @@ header {
   color: var(--primary);
 }
 
-.userProfile {
-  position: relative;
-  display: inline-block;
-  border: 0.1rem solid var(--primary);
-  justify-content: center;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem 1.25rem;
-  border-radius: 5px;
-  font-weight: 700;
-  border: 0.1rem solid var(--primary);
-  cursor: pointer;
-  transition: 0.25s transform ease, 0.25s box-shadow ease, 0.25s background ease;
-  text-align: center;
-  white-space: nowrap;
+/* Container for all right-side desktop elements (Account/Profile/Book Now) */
+.desktop-right-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.user-name {
-    font-size: 0.9rem;
+.user-profile.drop {
+  padding: 4px 8px;
+  max-width: 160px;
+  overflow: visible;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background-color: var(--card);
+  transition: all 0.2s ease;
 }
+
+.user-profile.drop:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.user-profile.open {
+  border-color: var(--primary);
+}
+
+
+.user-name {
+  max-width: 60px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+}
+
 
 .profile-btn {
   display: flex;
@@ -200,6 +223,11 @@ header {
   cursor: pointer;
   font-size: 0.95rem;
   padding: 6px 10px;
+  color: var(--text); /* Set default text color */
+}
+
+.profile-btn:hover {
+  color: var(--primary);
 }
 
 .profile-btn .avatar {
@@ -209,23 +237,79 @@ header {
   object-fit: cover;
 }
 
-.dropdown-icon {
-  font-size: 0.5rem;
+.mobile-user{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
 }
 
-.profile-dropdown {
-  display: none;
-  position: absolute;
-  top: 110%;
-  right: 0;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  list-style: none;
-  padding: 8px 0;
-  min-width: 140px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.mobile-user a{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    width: 100%;
+    color: var(--text);
+    font-weight: 600;
 }
+.mobile-user a:last-child {
+    margin-top: 8px;
+    color: var(--primary);
+    text-align: center;
+    justify-content: center;
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.mobile-user a img {
+    width :30px; /* Increased size for better touch target/visibility */
+    height: 30px;
+    border-radius: 100%;
+    outline: 2px solid var(--primary);
+    border: 2px solid white;
+}
+
+/* FIX: Corrected typo in class selector */
+.mobile-user a .user-name {
+    max-width: 100px;        
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+}
+
+.dropdown-icon {
+  font-size: 0.5rem;
+  margin-left: 4px;
+}
+
+/* 1. Hide the dropdown list by default */
+.user-profile .profile-dropdown {
+    /* FIX: Set display to none by default, so it only appears on JS toggle */
+    display: none;
+    position: absolute;
+    z-index: 55; /* Higher than header */
+    top: 110%; /* Positions below the profile button */
+    right: 0;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    list-style: none;
+    padding: 8px 0;
+    min-width: 180px; /* Increased width for readability */
+    box-shadow: var(--shadow-soft);
+}
+
+/* 2. Show the dropdown list when the parent container has the 'open' class */
+.user-profile.open .profile-dropdown {
+    display: block;
+}
+
 
 .profile-dropdown li {
   padding: 0;
@@ -234,17 +318,20 @@ header {
 .profile-dropdown li a {
   display: block;
   padding: 8px 12px;
-  color: #333;
+  color: var(--text);
   text-decoration: none;
+  font-weight: 500;
 }
 
 .profile-dropdown li a:hover {
-  background: #f5f5f5;
+  background: var(--accent);
+  color: var(--dark);
 }
 
-.user-profile:hover .profile-dropdown {
+/* Removed hover behavior that forced it open without click */
+/* .user-profile:hover .profile-dropdown {
   display: block;
-}
+} */
 
 .mobile-toggle {
   display: none;
@@ -794,7 +881,8 @@ footer {
     margin: 0 20px;
   }
   .brand div small {
-    display: none;
+    /* Kept for consistency, though 890px removes it */
+    display: none; 
   }
   .hero-inner,
   .about .wrap {
@@ -820,6 +908,7 @@ footer {
     display: none;
   }
   .desktop-view {
+    /* Ensures desktop elements are hidden on smaller screens */
     display: none !important;
   }
 
@@ -831,7 +920,8 @@ footer {
   }
   .svc-grid,
   .features {
-    grid-template-columns: 2, 1fr;
+    /* Corrected to 2 columns */
+    grid-template-columns: repeat(2, 1fr); 
   }
   .brand .logo {
     width: 32px;
