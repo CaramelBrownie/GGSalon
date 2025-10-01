@@ -1,525 +1,854 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>God’s Grace Salon — My Account</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/profile.css" />
-    <style>
-/* --------------------------------------------------
-  REIMAGINED CSS: MODERN, SALON-CHIC
-  --------------------------------------------------
-*/
-
-/* General */
-body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif; /* Modern, clean sans-serif */
-    background-color: #fcf8f5; /* Very soft cream/blush background */
-    color: #333333;
-    line-height: 1.6;
-}
-a {
-    text-decoration: none;
-    color: inherit;
-}
-button {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* Colors and Styles */
-:root {
-    --primary-color: #B48460; /* Elegant, dusty rose/soft gold */
-    --secondary-color: #E6E0D5; /* Light accent */
-    --danger-color: #E44F6F;
-    --card-bg: #FFFFFF;
-    --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-}
-
-/* Header */
-.header {
-    background-color: var(--primary-color);
-    color: #ffffff;
-    padding: 3rem 2rem 1rem; /* More vertical padding for prominence */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.header-title h1 {
-    font-family: 'Playfair Display', serif; /* Elegant serif for the title */
-    font-size: 2.2rem;
-    margin: 0;
-}
-.header-title p {
-    margin: 0.3rem 0 0;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1rem;
-}
-.logout-btn {
-    background: none;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    padding: 0.5rem 1.2rem;
-    font-size: 0.9rem;
-    border-radius: 50px;
-    font-weight: 600;
-}
-.logout-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-/* Main Content Wrapper */
-.main-content-wrapper {
-    max-width: 1000px;
-    margin: -4rem auto 2rem; /* Pulling the profile card up into the header area */
-    padding: 0 1rem;
-    position: relative;
-    z-index: 10;
-}
-
-
-/* Profile Card */
-.profile-card {
-    display: flex;
-    align-items: center;
-    background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow);
-    margin-bottom: 2rem;
-    position: relative;
-    border-top: 5px solid var(--primary-color); /* Stronger accent border */
-}
-.profile-avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: 3px solid var(--secondary-color);
-    background-color: #faf6f3; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-right: 1.5rem;
-    flex-shrink: 0;
-}
-.profile-info {
-    flex: 1;
-}
-.profile-info h2 {
-    margin: 0 0 0.2rem;
-    font-size: 1.8rem;
-    color: #222;
-}
-.profile-info p {
-    margin: 0.3rem 0;
-    color: #555;
-    font-size: 0.95rem;
-}
-.profile-card-actions {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    display: flex;
-    gap: 10px;
-}
-.edit-profile, .settings-btn {
-    background: none;
-    border: none;
-    font-size: 1.1rem;
-    color: #999;
-    padding: 0.5rem;
-    border-radius: 50%;
-}
-.edit-profile:hover, .settings-btn:hover {
-    color: var(--primary-color);
-    background-color: var(--secondary-color);
-}
-.member-status {
-    display: inline-block;
-    background-color: #fffaf0; /* Light gold background */
-    color: #c0a158; /* Gold text */
-    padding: 0.2rem 0.6rem;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-top: 0.5rem;
-}
-
-/* Tabs */
-.tabs-container {
-    background: var(--card-bg);
-    border-radius: 1rem;
-    box-shadow: var(--shadow);
-    padding: 0.5rem 1.5rem;
-}
-.tabs {
-    display: flex;
-    border-bottom: 1px solid #eee;
-    overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
-}
-.tabs::-webkit-scrollbar {
-    display: none;
-}
-.tab {
-    padding: 1rem 1.2rem;
-    cursor: pointer;
-    font-weight: 600;
-    white-space: nowrap;
-    color: #777;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
-}
-.tab.active {
-    color: var(--primary-color);
-    border-bottom: 3px solid var(--primary-color);
-}
-.tab:hover:not(.active) {
-    color: #555;
-}
-
-/* Tab Content */
-.tab-content {
-    padding: 2rem 0;
-    display: none;
-}
-.tab-content.active {
-    display: block;
-}
-.content-section {
-    padding: 1rem 0;
-    border-bottom: 1px dashed #eee;
-}
-.content-section:last-child {
-    border-bottom: none;
-}
-.content-section h3 {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    margin-top: 0;
-}
-.info-block {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-}
-.info-block span {
-    color: #555;
-}
-
-/* Profile Info Form */
-.profile-form label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #555;
-}
-.profile-form input,
-.profile-form select,
-.profile-form textarea {
-    width: 100%;
-    padding: 0.8rem;
-    margin-top: 0.3rem;
-    border-radius: 0.5rem;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-    box-sizing: border-box; /* Crucial for responsiveness */
-    background-color: #fcfcfc;
-}
-.form-row {
-    display: flex;
-    gap: 20px;
-}
-.form-group {
-    flex: 1;
-}
-
-.profile-form .save-btn {
-    margin-top: 2rem;
-    background: var(--primary-color);
-    color: #fff;
-    border: none;
-    padding: 0.9rem 2rem;
-    font-size: 1rem;
-    border-radius: 50px;
-    box-shadow: 0 4px 10px rgba(180, 132, 96, 0.4);
-    font-weight: 700;
-}
-.profile-form .save-btn:hover {
-    background: #a37554;
-}
-.profile-form .delete-btn {
-    margin-top: 1.5rem;
-    background: none;
-    color: var(--danger-color);
-    border: 1px solid var(--danger-color);
-    padding: 0.7rem 1.5rem;
-    font-size: 0.9rem;
-    border-radius: 50px;
-    font-weight: 600;
-    display: block;
-    width: fit-content;
-}
-.profile-form .delete-btn:hover {
-    background: var(--danger-color);
-    color: #fff;
-}
-
-/* Content specific styles */
-.appointments-content .save-btn {
-    background: var(--primary-color);
-    color: #fff;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 50px;
-    margin-top: 1rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .header {
-        padding: 2rem 1rem 1rem;
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign up — God's Grace Salon</title>
+  <meta name="description" content="Sign up page for God's Grace Salon customers — create account to book services." />
+  <style>
+    /* ---------------------- BASE STYLES ---------------------- */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
     }
-    .main-content-wrapper {
-        margin: -2rem auto 2rem;
+
+    :root {
+      --bg: #fff8f3;
+      --card: #ffffff;
+      --text: #2b2b2b;
+      --muted: #6d6d6d;
+      --line: #eee6df;
+      --primary: #e44f6f;
+      --primary-2: #ff9c48;
+      --dark: #2a1f1a;
+      --accent: #f5d1b8;
+      --radius: 7px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.06);
+      --grad: linear-gradient(
+        135deg,
+        var(--primary) 0%,
+        #ff7c64 35%,
+        var(--primary-2) 100%
+      );
     }
-    .profile-card {
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.5;
+      color: var(--text);
+      background-color: var(--bg);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .card {
+      display: flex;
+      background-color: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .card {
         flex-direction: column;
+      }
+    }
+
+    .panel-visual {
+      flex: 1;
+      background-image: var(--grad);
+      color: var(--card);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .panel-visual {
+        padding: 20px;
+      }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--card);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-soft);
+      background-image: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .panel-visual h2 {
+      font-size: 2em;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .lead {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .form-side {
+      flex: 1.2;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background-color: var(--card);
+    }
+
+    @media (max-width: 768px) {
+      .form-side {
+        padding: 20px;
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+    }
+
+    @media (max-width: 480px) {
+      .row {
+        flex-direction: column;
+        gap: 16px;
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    label {
+      font-size: 0.9em;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    textarea, 
+    select { /* Added select and textarea here */
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 1em;
+      color: var(--dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-color: var(--card);
+      width: 100%; /* Ensure select/textarea stretch */
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(228, 79, 111, 0.15); /* Replaced variable color with static RGB based on --primary for meter style consistency */
+    }
+
+    input:invalid:not(:placeholder-shown) {
+      border-color: var(--primary);
+    }
+    
+    .input-error { /* Class added by JS on validation failure */
+        border-color: var(--primary) !important;
+    }
+
+    .tiny {
+      font-size: 0.8em;
+      color: var(--muted);
+    }
+
+    .pwd-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .pwd-toggle {
+      background-color: var(--line);
+      color: var(--text);
+      border: none;
+      border-radius: var(--radius);
+      padding: 0 12px;
+      cursor: pointer;
+      font-size: 0.9em;
+      flex-shrink: 0;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .pwd-toggle:hover {
+      background-color: var(--muted);
+      color: var(--card);
+    }
+
+    meter {
+      height: 8px;
+      flex: 1;
+      border-radius: 4px;
+      overflow: hidden;
+      border: none;
+    }
+
+    meter::-webkit-meter-bar {
+      background: var(--line);
+    }
+
+    meter::-webkit-meter-optimum-value,
+    meter::-webkit-meter-suboptimum-value,
+    meter::-webkit-meter-even-less-good-value {
+      transition: width 0.3s;
+      background-color: #f4c430; /* Medium strength default */
+    }
+
+    .error-msg {
+      color: var(--primary);
+      font-size: 0.8em;
+      margin-top: -4px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1em;
+    }
+
+    button.primary {
+      flex: 2;
+      background-image: var(--grad);
+      color: var(--card);
+      border: none;
+      box-shadow: var(--shadow-soft);
+    }
+
+    button.primary:hover {
+      box-shadow: 0 8px 25px rgba(228, 79, 111, 0.4);
+      transform: translateY(-1px);
+    }
+
+    button.ghost {
+      flex: 1;
+      background-color: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+
+    button.ghost:hover {
+      color: var(--text);
+      border-color: var(--muted);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    a:hover {
+      color: var(--dark);
+      text-decoration: underline;
+    }
+
+    .footer-small {
+      font-size: 0.9em;
+      text-align: center;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      margin-top: 16px;
+    }
+    
+    /* ---------------------- MULTI-STEP STYLES ---------------------- */
+
+    .step-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.3); /* Muted white */
+      color: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .step-circle.active {
+      background-color: var(--card);
+      color: var(--primary);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .step {
+        border: none;
+        padding: 0;
+        margin: 0;
+        min-height: 250px; /* Helps prevent layout jump between steps */
+    }
+    
+    .checkbox-field {
+        display: flex;
         align-items: center;
-        text-align: center;
-        padding: 1.5rem;
+        gap: 8px;
+        margin-top: 10px;
     }
-    .profile-avatar {
-        margin-bottom: 1rem;
-        margin-right: 0;
+
+    .checkbox-field input[type="checkbox"] {
+        width: auto;
+        margin: 0;
     }
-    .profile-info h2 {
-        font-size: 1.5rem;
+
+    #avatarPreview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
-    .profile-card-actions {
-        top: 0.5rem;
-        right: 0.5rem;
-    }
-    .tabs-container {
-        border-radius: 0;
-    }
-    .tab {
-        padding: 0.8rem 1rem;
-    }
-    .tab-content {
-        padding: 1rem;
-    }
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-}
-    </style>
-  </head>
-  <body>
-    <header class="header">
-        <div class="header-title">
-            <h1>My Account</h1>
-            <p>Welcome back to God's Grace Salon.</p>
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="region" aria-label="Create account card">
+      <div class="panel-visual">
+        <div class="brand">
+          <div class="logo" aria-hidden>GG</div>
+          <div>
+            <div style="font-weight:700">God's Grace Salon</div>
+            <div class="tiny">Beauty • Hair • Wellness</div>
+          </div>
         </div>
-        <button id="logoutBtn" class="logout-btn">
-            <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </button>
-    </header>
+        <h2>Create your customer account</h2>
+        <p class="lead">Book appointments, manage your profile and pay securely.</p>
 
-    <div class="main-content-wrapper">
-        <section class="profile-card">
-            <div class="profile-avatar">JG</div>
-            <div class="profile-info">
-                <h2>Hello, Jane!</h2>
-                <p>jane.doe@example.com | +27 123 456 789</p>
-                <div class="member-status">Gold Member — 120 points</div>
-            </div>
-            <div class="profile-card-actions">
-                <button class="edit-profile" title="Edit Profile">&#9998;</button>
-                <button class="settings-btn" title="Settings"><i class="fa-solid fa-gear"></i></button>
-            </div>
-        </section>
+        <div id="stepIndicator" style="display: flex; gap: 8px; margin-top: 20px;">
+            <div class="step-circle active">1</div>
+            <div class="step-circle">2</div>
+            <div class="step-circle">3</div>
+            <div class="step-circle">4</div>
+            <div class="step-circle">5</div>
+        </div>
+      </div>
 
-        <div class="tabs-container">
-            <div class="tabs">
-                <div class="tab active" data-tab="profile-info">Profile Info</div>
-                <div class="tab" data-tab="appointments">Appointments</div>
-                <div class="tab" data-tab="liked">Inspiration</div>
-                <div class="tab" data-tab="wallet">Wallet & Payments</div>
-            </div>
-        
-            <div id="profile-info" class="tab-content active">
-                <form class="profile-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" value="Jane Doe" />
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" value="jane.doe@example.com" />
-                        </div>
-                    </div>
+      <div class="form-side">
+        <h3 style="margin:0 0 12px 0"><span id="stepTitle">Step 1: Personal Details</span></h3>
+        <form id="signupForm" novalidate>
 
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" value="+27 123 456 789" />
-                    
-                    <h3>Hair Profile (For your Stylist)</h3>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="hair-type">Hair Type</label>
-                            <select id="hair-type">
-                                <option>Straight</option>
-                                <option>Wavy</option>
-                                <option>Curly</option>
-                                <option selected>Coily</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="hair-length">Hair Length</label>
-                            <select id="hair-length">
-                                <option>Short</option>
-                                <option>Medium</option>
-                                <option selected>Long</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <label for="allergies">Allergies / Sensitive Scalp Notes</label>
-                    <textarea id="allergies" placeholder="e.g., Sensitive to sulfates, allergic to PPD dye, etc."></textarea>
-
-                    <button type="submit" class="save-btn">Save Changes</button>
-                    <button type="button" class="delete-btn">Deactivate Account</button>
-                </form>
+          <fieldset class="step" data-step="1">
+            <legend class="hidden">Step 1: Personal Details</legend>
+            <div class="row">
+              <div class="field" style="flex:1">
+                <label for="firstName">First name</label>
+                <input id="firstName" name="first_name" type="text" placeholder="Thandi" required autocomplete="given-name" />
+                <div id="firstNameError" class="error-msg hidden"></div>
+              </div>
+              <div class="field" style="flex:1">
+                <label for="lastName">Last name</label>
+                <input id="lastName" name="last_name" type="text" placeholder="Dlamini" required autocomplete="family-name" />
+                <div id="lastNameError" class="error-msg hidden"></div>
+              </div>
             </div>
 
-            <div id="appointments" class="tab-content appointments-content">
-                <h3>Upcoming Appointments</h3>
-                <div class="content-section">
-                    <p>You have no appointments scheduled for the next 30 days. Time to treat yourself!</p>
+            <div class="row">
+                <div class="field" style="flex:1">
+                    <label for="title">Title</label>
+                    <select id="title" name="title" required>
+                        <option value="" disabled selected>Select Title</option>
+                        <option value="Mr">Mr</option>
+                        <option value="Ms">Ms</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Miss">Miss</option>
+                        <option value="Dr">Dr</option>
+                    </select>
                 </div>
-                <button class="save-btn">Book New Appointment</button>
+                <div class="field" style="flex:1">
+                    <label for="gender">Gender (Optional)</label>
+                    <select id="gender" name="gender">
+                        <option value="" selected>Prefer not to say</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Non-binary">Non-binary</option>
+                    </select>
+                </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="step hidden" data-step="2">
+            <legend class="hidden">Step 2: Contact Details & Security</legend>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@domain.com" required autocomplete="email" />
+              <div id="emailError" class="error-msg hidden"></div>
             </div>
 
-            <div id="liked" class="tab-content">
-                <h3>Liked Hairstyles & Looks</h3>
-                <p>This is your inspiration board! Styles you've loved and saved will appear here for your next consultation.</p>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" placeholder="+27 82 123 4567" autocomplete="tel" pattern="^\+?[0-9\s-]{7,20}$" required />
+              <div id="phoneError" class="error-msg hidden"></div>
+              <div class="tiny">e.g. +27821234567</div>
             </div>
 
-            <div id="wallet" class="tab-content">
-                <h3>Saved Payment Methods</h3>
-                <p>View your saved cards, prepaid deposits, and a record of your past transactions.</p>
+            <div class="field" style="margin-top: 15px;">
+                <label for="password">Password</label>
+                <div class="pwd-row">
+                    <input id="password" name="password" type="password" placeholder="Create a password" minlength="8" required autocomplete="new-password" style="flex:1" />
+                    <button type="button" id="togglePwd" class="pwd-toggle" aria-label="Show password">Show</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+                    <meter id="pwdMeter" min="0" max="4" value="0"></meter>
+                    <div id="pwdText" class="tiny">Too short</div>
+                </div>
+                <div id="pwdHint" class="tiny">Use at least 8 characters, mix letters, numbers & symbols.</div>
             </div>
-        </div>
-    </div> <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const tabs = document.querySelectorAll(".tab");
-            const tabContents = document.querySelectorAll(".tab-content");
 
-            // Function to handle tab switching
-            function switchTab(targetId) {
-                tabs.forEach(tab => {
-                    tab.classList.remove("active");
-                    if (tab.dataset.tab === targetId) {
-                        tab.classList.add("active");
-                    }
-                });
+            <div class="field">
+                <label for="confirm">Confirm password</label>
+                <input id="confirm" name="confirm_password" type="password" placeholder="Repeat password" required autocomplete="new-password" />
+                <div id="confirmError" class="error-msg hidden"></div>
+            </div>
+          </fieldset>
 
-                tabContents.forEach(content => {
-                    content.classList.remove("active");
-                    if (content.id === targetId) {
-                        content.classList.add("active");
-                    }
-                });
+          <fieldset class="step hidden" data-step="3">
+            <legend class="hidden">Step 3: Hair & Skin Details</legend>
+            <p class="tiny" style="margin-top:0">Knowing this helps us match you with the right stylist and products.</p>
+
+            <div class="field">
+                <label for="hairType">Hair Type/Texture *</label>
+                <select id="hairType" name="hair_type" required>
+                    <option value="" disabled selected>Select your dominant hair type</option>
+                    <option value="Straight (1)">Straight (Type 1)</option>
+                    <option value="Wavy (2)">Wavy (Type 2)</option>
+                    <option value="Curly (3)">Curly (Type 3)</option>
+                    <option value="Coily (4)">Coily (Type 4)</option>
+                    <option value="Fine">Fine / Thin</option>
+                    <option value="Thick">Thick / Coarse</option>
+                    <option value="Color Treated">Color Treated</option>
+                </select>
+            </div>
+
+            <hr style="border:0; border-top: 1px solid var(--line); margin: 15px 0;">
+
+            <div class="field">
+                <label for="skinConditionCheck" class="checkbox-field" style="font-weight: normal;">
+                    <input type="checkbox" id="skinConditionCheck" name="has_skin_condition" value="yes">
+                    <span>Do you have any **skin conditions/allergies**?</span>
+                </label>
+                <textarea id="skinConditionDetails" name="skin_condition_details" placeholder="Please specify: e.g., 'Allergic to bleach', 'Eczema on scalp'..." rows="2" class="hidden" style="margin-top: 8px;"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="disabilityCheck" class="checkbox-field" style="font-weight: normal;">
+                    <input type="checkbox" id="disabilityCheck" name="has_disability" value="yes">
+                    <span>Do you have any **disability/special needs**?</span>
+                </label>
+                <textarea id="disabilityDetails" name="disability_details" placeholder="Please specify your needs: e.g., 'Wheelchair access required', 'Request a quiet station'..." rows="2" class="hidden" style="margin-top: 8px;"></textarea>
+            </div>
+          </fieldset>
+
+          <fieldset class="step hidden" data-step="4">
+            <legend class="hidden">Step 4: Profile Picture</legend>
+            <h4 style="margin-top:0;">Setup a Profile Picture (Optional)</h4>
+            <p class="tiny">A profile picture makes your account more personal and helps us identify you.</p>
+
+            <div class="field" style="text-align: center; margin-bottom: 20px;">
+                <div id="avatarPreview" style="width: 120px; height: 120px; border-radius: 50%; background-color: var(--line); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2em; color: var(--muted); overflow: hidden;">📸</div>
+                <input type="file" id="profilePicture" name="profile_picture" accept="image/*" style="display: none;" />
+                <button type="button" onclick="document.getElementById('profilePicture').click()" class="ghost" style="border-style: dashed; padding: 8px 15px;">Upload Picture</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="step hidden" data-step="5">
+            <legend class="hidden">Step 5: Preferences</legend>
+            <h4 style="margin-top:0;">Preferences</h4>
+            <div class="field">
+                <label for="marketingCheck" class="checkbox-field" style="font-weight: 600;">
+                    <input type="checkbox" id="marketingCheck" name="marketing_consent" value="yes" checked>
+                    <span>Yes, I'd like to receive news, offers, and discounts via email/SMS.</span>
+                </label>
+                <div class="tiny" style="margin-left: 30px;">You can unsubscribe at any time from your profile settings.</div>
+            </div>
+
+            <hr style="border:0; border-top: 1px solid var(--line); margin: 15px 0;">
+
+            <div class="field">
+                <label for="referralSource">How did you hear about us? (Optional)</label>
+                <select id="referralSource" name="referral_source">
+                    <option value="" selected>Select a source</option>
+                    <option value="Search Engine">Google/Search Engine</option>
+                    <option value="Social Media">Social Media (Instagram/Facebook)</option>
+                    <option value="Friend/Family">Friend or Family Referral</option>
+                    <option value="Walk-in">Walk-in / Passed by</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="ghost" id="prevBtn" style="flex:1" disabled>Previous</button>
+            <button type="button" class="primary" id="nextBtn" style="flex:2">Next Step</button>
+            <button class="primary hidden" type="submit" id="submitBtn" style="flex:2">Create Account</button>
+          </div>
+
+          <div id="status" class="status" aria-live="polite"></div>
+          <input type="hidden" name="created_at" id="createdAtInput" />
+        </form>
+
+        <div class="footer-small">Already have an account? <a href="login.html">Log in</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+const form = document.getElementById("signupForm");
+const pwd = document.getElementById("password");
+const confirmPwd = document.getElementById("confirm");
+const meter = document.getElementById("pwdMeter");
+const pwdText = document.getElementById("pwdText");
+const emailInput = document.getElementById("email");
+const emailError = document.getElementById("emailError");
+const confirmError = document.getElementById("confirmError");
+const phoneInput = document.getElementById("phone");
+const firstNameInput = document.getElementById("firstName");
+const lastNameInput = document.getElementById("lastName");
+
+// --- New Step & UI Variables ---
+const steps = document.querySelectorAll(".step");
+const stepIndicatorCircles = document.querySelectorAll(".step-circle");
+const stepTitle = document.getElementById("stepTitle");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const submitBtn = document.getElementById("submitBtn");
+let currentStep = 1;
+const stepTitles = [
+    "Step 1: Personal Details",
+    "Step 2: Contact & Security",
+    "Step 3: Hair & Skin Details",
+    "Step 4: Profile Picture",
+    "Step 5: Preferences"
+];
+
+// --- Conditional Fields & Required Selects ---
+const skinConditionCheck = document.getElementById('skinConditionCheck');
+const skinConditionDetails = document.getElementById('skinConditionDetails');
+const disabilityCheck = document.getElementById('disabilityCheck');
+const disabilityDetails = document.getElementById('disabilityDetails');
+const hairTypeSelect = document.getElementById('hairType');
+const titleSelect = document.getElementById('title');
+
+// --- Profile Picture Preview ---
+const profilePictureInput = document.getElementById('profilePicture');
+const avatarPreview = document.getElementById('avatarPreview');
+
+// --- Password strength ---
+function passwordScore(pw) {
+  let score = 0;
+  if (!pw) return 0;
+  if (pw.length >= 8) score++;
+  if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
+  if (/\d/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  return Math.min(score, 4);
+}
+
+function updatePwdMeter() {
+  const s = passwordScore(pwd.value);
+  meter.value = s;
+  const labels = ["Very weak", "Weak", "Okay", "Good", "Strong"];
+  pwdText.textContent = labels[s];
+}
+pwd.addEventListener("input", updatePwdMeter);
+
+// --- Helpers (for local storage demo) ---
+function saveAccounts(accounts) {
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+}
+function loadAccounts() {
+  return JSON.parse(localStorage.getItem("accounts")) || [];
+}
+function generateUserId() {
+  return 'user-' + Date.now();
+}
+
+// --- Field validation helpers ---
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email.toLowerCase());
+}
+
+function validatePhone(phone) {
+  // Regex: optional '+' followed by 7 to 20 digits, spaces, or hyphens
+  return /^\+?[0-9\s-]{7,20}$/.test(phone);
+}
+
+// --- Error Management ---
+function clearErrors(stepElement) {
+    const inputs = stepElement.querySelectorAll('input:not([type="checkbox"]), select, textarea');
+    inputs.forEach(input => {
+        input.classList.remove("input-error");
+        input.style.borderColor = ""; // Clear border color for select/textarea
+    });
+    const errorMessages = stepElement.querySelectorAll(".error-msg");
+    errorMessages.forEach(err => {
+        err.classList.add("hidden");
+        err.textContent = "";
+    });
+    // Reset password hint color
+    document.getElementById("pwdHint").style.color = "var(--muted)";
+}
+
+// --- STEP NAVIGATION ---
+
+function showStep(step) {
+    steps.forEach((s, index) => {
+        const stepNum = index + 1;
+        s.classList.toggle("hidden", stepNum !== step);
+        stepIndicatorCircles[index].classList.toggle("active", stepNum === step);
+    });
+
+    stepTitle.textContent = stepTitles[step - 1];
+    prevBtn.disabled = step === 1;
+    nextBtn.classList.toggle("hidden", step === steps.length);
+    submitBtn.classList.toggle("hidden", step !== steps.length);
+    currentStep = step;
+
+    // Scroll to top of the form for better UX
+    document.querySelector('.form-side').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- STEP VALIDATION ---
+
+function validateStep(step) {
+    const currentStepEl = steps[step - 1];
+    clearErrors(currentStepEl);
+    let isValid = true;
+
+    if (step === 1) { // Personal Details
+        if (!firstNameInput.value.trim()) {
+            document.getElementById("firstNameError").textContent = "First name is required.";
+            document.getElementById("firstNameError").classList.remove("hidden");
+            firstNameInput.classList.add("input-error");
+            isValid = false;
+        }
+        if (!lastNameInput.value.trim()) {
+            document.getElementById("lastNameError").textContent = "Last name is required.";
+            document.getElementById("lastNameError").classList.remove("hidden");
+            lastNameInput.classList.add("input-error");
+            isValid = false;
+        }
+        if (!titleSelect.value) {
+            titleSelect.classList.add("input-error");
+            isValid = false;
+        }
+    }
+    else if (step === 2) { // Contact & Security
+        const phone = phoneInput.value.trim();
+        const email = emailInput.value.trim().toLowerCase();
+        const password = pwd.value;
+        const confirmPassword = confirmPwd.value;
+
+        if (!validateEmail(email)) {
+            emailError.textContent = "Please enter a valid email address.";
+            emailError.classList.remove("hidden");
+            emailInput.classList.add("input-error");
+            isValid = false;
+        }
+
+        if (!validatePhone(phone) || !phone) {
+            const err = document.getElementById("phoneError");
+            err.textContent = "Please enter a valid phone number (required).";
+            err.classList.remove("hidden");
+            phoneInput.classList.add("input-error");
+            isValid = false;
+        }
+
+        if (passwordScore(password) < 3) {
+            document.getElementById("pwdHint").textContent = "Password too weak. Use letters, numbers & symbols.";
+            document.getElementById("pwdHint").style.color = "var(--primary)";
+            pwd.classList.add("input-error");
+            isValid = false;
+        }
+
+        if (password !== confirmPassword) {
+            confirmError.textContent = "Passwords do not match.";
+            confirmError.classList.remove("hidden");
+            confirmPwd.classList.add("input-error");
+            isValid = false;
+        }
+
+        // Check for existing account
+        if (isValid) {
+            const accounts = loadAccounts();
+            if (accounts.some(acc => acc.email === email)) {
+                emailError.textContent = "An account with this email already exists.";
+                emailError.classList.remove("hidden");
+                emailInput.classList.add("input-error");
+                isValid = false;
             }
+        }
+    }
+    else if (step === 3) { // Hair & Skin Details
+        if (!hairTypeSelect.value) {
+            hairTypeSelect.classList.add("input-error");
+            isValid = false;
+        }
+    }
+    // Step 4 (Picture) and Step 5 (Preferences) are optional
 
-            // Add click listeners to tabs
-            tabs.forEach(tab => {
-                tab.addEventListener("click", () => {
-                    switchTab(tab.dataset.tab);
-                });
-            });
+    return isValid;
+}
 
-            // --- Your Existing Logic Below ---
 
-            const user = JSON.parse(localStorage.getItem("gg_logged_in"));
+// --- Event Listeners ---
 
-            if (!user) {
-                // Not logged in → go to login
-                window.location.href = "login.html";
-            } else {
-                // Avatar initials
-                const avatar = document.querySelector(".profile-avatar");
-                avatar.textContent = user.name
-                    .split(" ")
-                    .map(n => n[0])
-                    .join("")
-                    .toUpperCase();
+// Step Navigation
+nextBtn.addEventListener("click", () => {
+    if (validateStep(currentStep)) {
+        showStep(currentStep + 1);
+    }
+});
 
-                // Greeting and info
-                document.querySelector(".profile-info h2").textContent = `Hello, ${user.name.split(" ")[0]}!`;
-                document.querySelector(".profile-info p:nth-of-type(1)").textContent = `${user.email} | ${user.phone}`;
+prevBtn.addEventListener("click", () => {
+    showStep(currentStep - 1);
+});
 
-                // Form fields
-                document.getElementById("name").value = user.name;
-                document.getElementById("email").value = user.email;
-                document.getElementById("phone").value = user.phone;
+// Conditional Field Logic
+skinConditionCheck.addEventListener('change', (e) => {
+    skinConditionDetails.classList.toggle('hidden', !e.target.checked);
+    if (!e.target.checked) skinConditionDetails.value = '';
+});
 
-                // Handle save
-                document.querySelector(".profile-form").addEventListener("submit", (e) => {
-                    e.preventDefault();
+disabilityCheck.addEventListener('change', (e) => {
+    disabilityDetails.classList.toggle('hidden', !e.target.checked);
+    if (!e.target.checked) disabilityDetails.value = '';
+});
 
-                    const updatedUser = {
-                        ...user,
-                        name: document.getElementById("name").value.trim(),
-                        email: document.getElementById("email").value.trim().toLowerCase(),
-                        phone: document.getElementById("phone").value.trim(),
-                        // Add other form fields here if you want them saved (e.g., hair type/length)
-                    };
+// Password visibility toggle
+document.getElementById('togglePwd').addEventListener('click', function() {
+    const type = pwd.getAttribute('type') === 'password' ? 'text' : 'password';
+    pwd.setAttribute('type', type);
+    confirmPwd.setAttribute('type', type); // Toggle confirm password as well for convenience
+    this.textContent = type === 'password' ? 'Show' : 'Hide';
+    this.setAttribute('aria-label', type === 'password' ? 'Show password' : 'Hide password');
+});
 
-                    // Update in accounts
-                    const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
-                    const index = accounts.findIndex(acc => acc.email === user.email);
-                    if (index !== -1) {
-                        accounts[index] = updatedUser;
-                        localStorage.setItem("accounts", JSON.stringify(accounts));
-                    }
 
-                    // Update current session
-                    localStorage.setItem("gg_logged_in", JSON.stringify(updatedUser));
-                    alert("Profile updated!");
-                    location.reload();
-                });
-                
-                // Handle logout
-                document.getElementById("logoutBtn").addEventListener("click", () => {
-                    localStorage.removeItem("gg_logged_in");
-                    window.location.href = "login.html";
-                });
+// Profile Picture Preview
+profilePictureInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            avatarPreview.innerHTML = `<img src="${e.target.result}" alt="Profile Picture Preview">`;
+        }
+        reader.readAsDataURL(file);
+    } else {
+        avatarPreview.innerHTML = '📸'; // Reset if no file is selected
+    }
+});
 
-                // Handle delete/deactivate
-                document.querySelector(".delete-btn").addEventListener("click", () => {
-                    if (confirm("Are you sure you want to permanently deactivate your account? This action cannot be undone.")) {
-                        let accounts = JSON.parse(localStorage.getItem("accounts")) || [];
-                        accounts = accounts.filter(acc => acc.email !== user.email);
-                        localStorage.setItem("accounts", JSON.stringify(accounts));
-                        localStorage.removeItem("gg_logged_in");
-                        alert("Account deactivated successfully. We're sorry to see you go!");
-                        window.location.href = "signup.html";
-                    }
-                });
-            }
-        });
-    </script>
-  </body>
+
+// Form Submit (Final Step)
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Final sanity check (all previous steps MUST have been validated)
+    if (!validateStep(currentStep)) return; 
+
+    // --- Create account data object ---
+    const account = {
+        id: generateUserId(),
+        firstName: firstNameInput.value.trim(),
+        lastName: lastNameInput.value.trim(),
+        title: titleSelect.value,
+        gender: document.getElementById('gender').value,
+        email: emailInput.value.trim().toLowerCase(),
+        phone: phoneInput.value.trim(),
+        password: pwd.value, 
+        // Step 3 Data
+        hairType: hairTypeSelect.value,
+        skinConditionDetails: skinConditionCheck.checked ? skinConditionDetails.value.trim() : 'N/A',
+        disabilityDetails: disabilityCheck.checked ? disabilityDetails.value.trim() : 'N/A',
+        // Step 5 Data
+        marketingConsent: document.getElementById('marketingCheck').checked,
+        referralSource: document.getElementById('referralSource').value,
+        // Profile Picture (placeholder)
+        profilePictureFile: profilePictureInput.files[0] ? profilePictureInput.files[0].name : 'N/A'
+    };
+
+    const accounts = loadAccounts();
+    accounts.push(account);
+    saveAccounts(accounts);
+    localStorage.setItem("gg_logged_in", JSON.stringify(account));
+
+    // Display status and Redirect
+    const statusDiv = document.getElementById("status");
+    statusDiv.textContent = "✅ Account successfully created! Redirecting...";
+    statusDiv.style.color = "green";
+
+    setTimeout(() => {
+        window.location.href = "home.html";
+    }, 1000);
+});
+
+// Initialize form to first step
+document.addEventListener("DOMContentLoaded", () => {
+    showStep(1);
+    updatePwdMeter();
+});
+  </script>
+
+</body>
 </html>
